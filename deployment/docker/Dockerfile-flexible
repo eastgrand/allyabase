@@ -1,0 +1,89 @@
+FROM node:22.14.0
+
+WORKDIR /usr/src/app
+
+RUN apt-get update && apt-get install -y git
+
+RUN git clone https://www.github.com/planet-nine-app/addie.git addie
+RUN git clone https://www.github.com/planet-nine-app/aretha.git aretha
+RUN git clone https://www.github.com/planet-nine-app/bdo.git bdo
+RUN git clone https://www.github.com/planet-nine-app/continuebee.git continuebee
+RUN git clone https://www.github.com/planet-nine-app/dolores.git dolores
+RUN git clone https://www.github.com/planet-nine-app/fount.git fount
+RUN git clone https://www.github.com/planet-nine-app/joan.git joan
+RUN git clone https://www.github.com/planet-nine-app/julia.git julia
+RUN git clone https://www.github.com/planet-nine-app/minnie.git minnie
+RUN git clone https://www.github.com/planet-nine-app/pref.git pref
+RUN git clone https://www.github.com/planet-nine-app/sanora.git sanora
+RUN git clone https://www.github.com/planet-nine-app/covenant.git covenant
+
+# Expose all possible ports for 3 bases (40xx, 50xx, 60xx ranges)
+# Base 1 (40xx)
+EXPOSE 4000 4001 4002 4003 4004 4005 4006 4007 4011
+EXPOSE 4525 6277 6243
+# Base 2 (50xx) 
+EXPOSE 5000 5001 5002 5003 5004 5005 5006 5007 5011
+EXPOSE 5525 8277 8243
+# Base 3 (60xx)
+EXPOSE 6000 6001 6002 6003 6004 6005 6006 6007 6011
+EXPOSE 6525 10277 10243
+# Default ports
+EXPOSE 2525 2999 3000 3001 3002 3003 3004 3005 3006 3007 3011 7243 7277
+
+RUN npm install -g pm2
+RUN npm install -g wiki
+
+WORKDIR /usr/src/app/julia/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/continuebee/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/joan/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/pref/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/bdo/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/dolores/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/fount/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/addie/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/aretha/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/sanora/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/minnie/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app/covenant/src/server/node
+RUN npm install
+
+WORKDIR /usr/src/app
+
+# Copy scripts for flexible port management
+COPY start-with-ports.sh /usr/src/app/
+COPY update-service-ports.sh /usr/src/app/
+RUN chmod +x /usr/src/app/start-with-ports.sh
+RUN chmod +x /usr/src/app/update-service-ports.sh
+
+# Update service ports to use environment variables
+RUN ./update-service-ports.sh
+
+ENV PM2_SAVE_INTERVAL=30000
+ENV PM2_LOG_DATE_FORMAT="YYYY-MM-DD HH:mm:ss.SSS"
+
+# Default to no port offset (standard ports)
+ENV PORT_OFFSET=0
+
+CMD ["./start-with-ports.sh"]
