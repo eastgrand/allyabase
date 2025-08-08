@@ -1,0 +1,39 @@
+{
+  "name": "allyabase-bootstrap",
+  "version": "1.0.0",
+  "description": "Bootstrap service for allyabase with fedwiki configuration UI",
+  "main": "bootstrap-service.js",
+  "scripts": {
+    "start": "node bootstrap-service.js",
+    "dev": "nodemon bootstrap-service.js",
+    "config": "node fedwiki-config-server.js",
+    "test": "mocha test/*.js"
+  },
+  "keywords": [
+    "allyabase",
+    "planet-nine",
+    "bootstrap",
+    "fedwiki",
+    "configuration"
+  ],
+  "author": "Planet Nine",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "wiki": "^0.25.0",
+    "axios": "^1.6.0",
+    "fs-extra": "^11.1.1",
+    "jsonschema": "^1.4.1",
+    "cron": "^3.1.6",
+    "winston": "^3.11.0",
+    "sessionless-node": "^1.1.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

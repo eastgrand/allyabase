@@ -1,0 +1,70 @@
+{
+  "baseInfo": {
+    "name": "My Planet Nine Base",
+    "description": "A Planet Nine allyabase instance for decentralized social media and digital commerce",
+    "starSystemNumber": null,
+    "contactInfo": {
+      "email": "",
+      "website": ""
+    }
+  },
+  "networking": {
+    "announceToBase": [
+      {
+        "name": "Planet Nine Development Base",
+        "baseUrl": "https://dev.bdo.allyabase.com",
+        "services": {
+          "bdo": "https://dev.bdo.allyabase.com",
+          "julia": "https://dev.julia.allyabase.com",
+          "sanora": "https://dev.sanora.allyabase.com",
+          "fount": "https://dev.fount.allyabase.com",
+          "dolores": "https://dev.dolores.allyabase.com",
+          "addie": "https://dev.addie.allyabase.com",
+          "joan": "https://dev.joan.allyabase.com",
+          "minnie": "https://dev.minnie.allyabase.com",
+          "aretha": "https://dev.aretha.allyabase.com",
+          "pref": "https://dev.pref.allyabase.com",
+          "continuebee": "https://dev.continuebee.allyabase.com",
+          "covenant": "https://dev.covenant.allyabase.com"
+        },
+        "enabled": true
+      }
+    ],
+    "listenForAnnouncements": true
+  },
+  "userManagement": {
+    "maxUsers": 1000,
+    "allowedPublicKeys": [],
+    "registrationMode": "open"
+  },
+  "contentFeeds": {
+    "blueskyFeeds": [],
+    "customFeeds": []
+  },
+  "services": {
+    "enabled": [
+      "bdo",
+      "julia", 
+      "sanora",
+      "fount",
+      "dolores",
+      "addie",
+      "joan",
+      "minnie",
+      "aretha",
+      "pref", 
+      "continuebee",
+      "covenant"
+    ],
+    "ports": {
+      "basePort": 3000,
+      "portOffset": 0
+    }
+  },
+  "bootstrap": {
+    "autoAnnounce": true,
+    "announcementInterval": 1440,
+    "retryFailedAnnouncements": true,
+    "retryInterval": 15
+  }
+}

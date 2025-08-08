@@ -1,0 +1,335 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Allyabase Bootstrap Configuration",
+  "description": "Configuration schema for allyabase bootstrapping and base discovery",
+  "type": "object",
+  "properties": {
+    "baseInfo": {
+      "type": "object",
+      "description": "Information about this base",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable name for this base",
+          "minLength": 1,
+          "maxLength": 100,
+          "examples": ["My Planet Nine Base", "Development Base", "Community Hub"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of this base and its purpose",
+          "maxLength": 500,
+          "examples": ["A community base for Planet Nine development", "Personal base for testing"]
+        },
+        "starSystemNumber": {
+          "type": "integer",
+          "description": "Optional star system identifier (uint32)",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "examples": [42, 1337, 2024]
+        },
+        "contactInfo": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "Contact email for base administrator"
+            },
+            "website": {
+              "type": "string",
+              "format": "uri",
+              "description": "Website or homepage for this base"
+            }
+          }
+        }
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "networking": {
+      "type": "object",
+      "description": "Network configuration for base discovery and communication",
+      "properties": {
+        "announceToBase": {
+          "type": "array",
+          "description": "List of bases to announce this base to",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the base to announce to"
+              },
+              "baseUrl": {
+                "type": "string",
+                "format": "uri",
+                "description": "Base URL of the target base",
+                "examples": ["https://dev.bdo.allyabase.com", "https://community.planet9.net"]
+              },
+              "services": {
+                "type": "object",
+                "description": "Service endpoints for this base",
+                "properties": {
+                  "bdo": {"type": "string", "format": "uri"},
+                  "julia": {"type": "string", "format": "uri"},
+                  "sanora": {"type": "string", "format": "uri"},
+                  "fount": {"type": "string", "format": "uri"},
+                  "dolores": {"type": "string", "format": "uri"},
+                  "addie": {"type": "string", "format": "uri"},
+                  "joan": {"type": "string", "format": "uri"},
+                  "minnie": {"type": "string", "format": "uri"},
+                  "aretha": {"type": "string", "format": "uri"},
+                  "pref": {"type": "string", "format": "uri"},
+                  "continuebee": {"type": "string", "format": "uri"},
+                  "covenant": {"type": "string", "format": "uri"}
+                },
+                "additionalProperties": false
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Whether announcements to this base are enabled"
+              }
+            },
+            "required": ["name", "baseUrl"],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "listenForAnnouncements": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether this base should accept announcements from other bases"
+        }
+      },
+      "additionalProperties": false
+    },
+    "userManagement": {
+      "type": "object",
+      "description": "User access control configuration",
+      "properties": {
+        "maxUsers": {
+          "type": "integer",
+          "description": "Maximum number of users allowed on this base",
+          "minimum": 1,
+          "maximum": 1000000,
+          "default": 1000,
+          "examples": [100, 1000, 10000]
+        },
+        "allowedPublicKeys": {
+          "type": "array",
+          "description": "Optional list of specific public keys to allow (if empty, all users allowed up to maxUsers)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "publicKey": {
+                "type": "string",
+                "pattern": "^[0-9a-fA-F]{66}$",
+                "description": "Secp256k1 public key in hex format (33 bytes = 66 hex chars)",
+                "examples": ["03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd"]
+              },
+              "name": {
+                "type": "string",
+                "description": "Human-readable name or identifier for this key",
+                "maxLength": 100,
+                "examples": ["Alice", "Development Key", "alice@example.com"]
+              },
+              "permissions": {
+                "type": "array",
+                "description": "Specific permissions for this key (if different from default)",
+                "items": {
+                  "type": "string",
+                  "enum": ["read", "write", "admin", "upload", "create_content"]
+                },
+                "default": ["read", "write", "upload", "create_content"]
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Whether this key is currently allowed access"
+              }
+            },
+            "required": ["publicKey"],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "registrationMode": {
+          "type": "string",
+          "enum": ["open", "whitelist", "invite", "closed"],
+          "default": "open",
+          "description": "How new users can join this base"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contentFeeds": {
+      "type": "object",
+      "description": "External content feed configuration for Dolores",
+      "properties": {
+        "blueskyFeeds": {
+          "type": "array",
+          "description": "Bluesky feeds to import into Dolores",
+          "items": {
+            "type": "object",
+            "properties": {
+              "handle": {
+                "type": "string",
+                "description": "Bluesky handle to follow",
+                "pattern": "^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+                "examples": ["alice.bsky.social", "planetnine.dev"]
+              },
+              "feedType": {
+                "type": "string",
+                "enum": ["timeline", "likes", "reposts"],
+                "default": "timeline",
+                "description": "Type of content to import"
+              },
+              "tags": {
+                "type": "array",
+                "description": "Tags to apply to imported content",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_-]+$",
+                  "maxLength": 50
+                },
+                "default": ["bluesky", "imported"]
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Whether this feed is actively being imported"
+              },
+              "importInterval": {
+                "type": "integer",
+                "description": "How often to check for new content (in minutes)",
+                "minimum": 5,
+                "maximum": 1440,
+                "default": 60
+              }
+            },
+            "required": ["handle"],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "customFeeds": {
+          "type": "array",
+          "description": "Custom RSS/JSON feeds to import",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name for this feed",
+                "maxLength": 100
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL of the feed"
+              },
+              "feedType": {
+                "type": "string",
+                "enum": ["rss", "atom", "json", "custom"],
+                "description": "Type of feed format"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_-]+$"
+                },
+                "default": ["rss", "imported"]
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              },
+              "importInterval": {
+                "type": "integer",
+                "minimum": 5,
+                "maximum": 1440,
+                "default": 120
+              }
+            },
+            "required": ["name", "url", "feedType"],
+            "additionalProperties": false
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "services": {
+      "type": "object",
+      "description": "Service-specific configuration",
+      "properties": {
+        "enabled": {
+          "type": "array",
+          "description": "List of services to enable on this base",
+          "items": {
+            "type": "string",
+            "enum": ["bdo", "julia", "sanora", "fount", "dolores", "addie", "joan", "minnie", "aretha", "pref", "continuebee", "covenant"]
+          },
+          "default": ["bdo", "julia", "sanora", "fount", "dolores", "addie", "joan", "minnie", "aretha", "pref", "continuebee", "covenant"]
+        },
+        "ports": {
+          "type": "object",
+          "description": "Port configuration for services",
+          "properties": {
+            "basePort": {
+              "type": "integer",
+              "description": "Base port number (services will use sequential ports from this)",
+              "minimum": 1024,
+              "maximum": 65535,
+              "default": 3000
+            },
+            "portOffset": {
+              "type": "integer",
+              "description": "Port offset for this base instance",
+              "minimum": 0,
+              "maximum": 60000,
+              "default": 0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "bootstrap": {
+      "type": "object",
+      "description": "Bootstrap process configuration",
+      "properties": {
+        "autoAnnounce": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to automatically announce to configured bases on startup"
+        },
+        "announcementInterval": {
+          "type": "integer",
+          "description": "How often to re-announce to bases (in minutes, 0 = only once)",
+          "minimum": 0,
+          "maximum": 10080,
+          "default": 1440
+        },
+        "retryFailedAnnouncements": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to retry failed announcements"
+        },
+        "retryInterval": {
+          "type": "integer",
+          "description": "How long to wait before retrying failed announcements (in minutes)",
+          "minimum": 1,
+          "maximum": 1440,
+          "default": 15
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["baseInfo"],
+  "additionalProperties": false
+}

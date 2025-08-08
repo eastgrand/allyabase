@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # Comprehensive script to spin up 3 allyabase instances for ecosystem testing
-# Usage: ./spin-up-bases.sh [--clean] [--build]
-# Options:
-#   --clean: Stop and remove existing containers before starting
-#   --build: Rebuild the Docker image before starting containers
+# Usage: ./spin-up-bases-corrected.sh [--clean] [--build]
 
 set -e  # Exit on any error
 
@@ -38,7 +35,6 @@ echo ""
 if [ "$CLEAN" = true ]; then
   echo "🧹 Cleaning up existing containers..."
   
-  # Stop and remove containers if they exist
   for base in allyabase-base1 allyabase-base2 allyabase-base3; do
     if docker ps -a --format 'table {{.Names}}' | grep -q "^$base$"; then
       echo "  Stopping and removing $base..."
@@ -63,7 +59,7 @@ fi
 check_port() {
   local host=$1
   local port=$2
-  local timeout=${3:-30}  # Default 30 second timeout
+  local timeout=${3:-30}
   
   for i in $(seq 1 $timeout); do
     if nc -z $host $port 2>/dev/null; then
@@ -77,7 +73,7 @@ check_port() {
 # Function to wait for all services in a base to be ready
 wait_for_base() {
   local base_name=$1
-  local base_ports=("${@:2}")  # All remaining arguments are ports
+  local base_ports=("${@:2}")
   
   echo "  ⏳ Waiting for $base_name services to be ready..."
   
@@ -92,26 +88,26 @@ wait_for_base() {
   return 0
 }
 
-# Start Base 1 (40xx ports)
-echo "🏗️  Starting Base 1 (40xx ports)..."
+# Start Base 1 (Host ports 5111-5122 → Standard Docker internal ports)
+echo "🏗️  Starting Base 1 (Host ports 5111-5122)..."
 docker run -d \
   --name allyabase-base1 \
-  -e PORT_OFFSET=1000 \
-  -p 4000:4000 \
-  -p 3999:3999 \
-  -p 4002:4002 \
-  -p 4003:4003 \
-  -p 4004:4004 \
-  -p 4005:4005 \
-  -p 4006:4006 \
-  -p 4007:4007 \
-  -p 4011:4011 \
-  -p 3525:3525 \
-  -p 8277:8277 \
-  -p 8243:8243 \
+  -p 5111:3000 \
+  -p 5112:2999 \
+  -p 5113:3002 \
+  -p 5114:3003 \
+  -p 5115:3004 \
+  -p 5116:3005 \
+  -p 5117:3006 \
+  -p 5118:3007 \
+  -p 5119:2525 \
+  -p 5120:7277 \
+  -p 5121:7243 \
+  -p 5122:3011 \
   allyabase-flexible
 
-BASE1_PORTS=(4000 3999 4002 4003 4004 4005 4006 4007 4011 3525 8277 8243)
+# Wait for Base 1 services (check host ports)
+BASE1_PORTS=(5111 5112 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122)
 if ! wait_for_base "Base 1" "${BASE1_PORTS[@]}"; then
   echo "❌ Base 1 startup failed"
   exit 1
@@ -120,26 +116,26 @@ fi
 echo "✅ Base 1 started successfully!"
 echo ""
 
-# Start Base 2 (50xx ports) 
-echo "🏗️  Starting Base 2 (50xx ports)..."
+# Start Base 2 (Host ports 5211-5222 → Standard Docker internal ports)
+echo "🏗️  Starting Base 2 (Host ports 5211-5222)..."
 docker run -d \
   --name allyabase-base2 \
-  -e PORT_OFFSET=2000 \
-  -p 5000:5000 \
-  -p 4999:4999 \
-  -p 5002:5002 \
-  -p 5003:5003 \
-  -p 5004:5004 \
-  -p 5005:5005 \
-  -p 5006:5006 \
-  -p 5007:5007 \
-  -p 5011:5011 \
-  -p 4525:4525 \
-  -p 9277:9277 \
-  -p 9243:9243 \
+  -p 5211:3000 \
+  -p 5212:2999 \
+  -p 5213:3002 \
+  -p 5214:3003 \
+  -p 5215:3004 \
+  -p 5216:3005 \
+  -p 5217:3006 \
+  -p 5218:3007 \
+  -p 5219:2525 \
+  -p 5220:7277 \
+  -p 5221:7243 \
+  -p 5222:3011 \
   allyabase-flexible
 
-BASE2_PORTS=(5000 4999 5002 5003 5004 5005 5006 5007 5011 4525 9277 9243)
+# Wait for Base 2 services (check host ports)
+BASE2_PORTS=(5211 5212 5213 5214 5215 5216 5217 5218 5219 5220 5221 5222)
 if ! wait_for_base "Base 2" "${BASE2_PORTS[@]}"; then
   echo "❌ Base 2 startup failed"
   exit 1
@@ -148,26 +144,26 @@ fi
 echo "✅ Base 2 started successfully!"
 echo ""
 
-# Start Base 3 (60xx ports)
-echo "🏗️  Starting Base 3 (60xx ports)..."
+# Start Base 3 (Host ports 5311-5322 → Standard Docker internal ports)
+echo "🏗️  Starting Base 3 (Host ports 5311-5322)..."
 docker run -d \
   --name allyabase-base3 \
-  -e PORT_OFFSET=3000 \
-  -p 6000:6000 \
-  -p 5999:5999 \
-  -p 6002:6002 \
-  -p 6003:6003 \
-  -p 6004:6004 \
-  -p 6005:6005 \
-  -p 6006:6006 \
-  -p 6007:6007 \
-  -p 6011:6011 \
-  -p 5525:5525 \
-  -p 10277:10277 \
-  -p 10243:10243 \
+  -p 5311:3000 \
+  -p 5312:2999 \
+  -p 5313:3002 \
+  -p 5314:3003 \
+  -p 5315:3004 \
+  -p 5316:3005 \
+  -p 5317:3006 \
+  -p 5318:3007 \
+  -p 5319:2525 \
+  -p 5320:7277 \
+  -p 5321:7243 \
+  -p 5322:3011 \
   allyabase-flexible
 
-BASE3_PORTS=(6000 5999 6002 6003 6004 6005 6006 6007 6011 5525 10277 10243)
+# Wait for Base 3 services (check host ports)
+BASE3_PORTS=(5311 5312 5313 5314 5315 5316 5317 5318 5319 5320 5321 5322)
 if ! wait_for_base "Base 3" "${BASE3_PORTS[@]}"; then
   echo "❌ Base 3 startup failed"
   exit 1
@@ -179,52 +175,52 @@ echo ""
 # Final status report
 echo "🎉 All 3 allyabase instances are running!"
 echo ""
-echo "📋 Service URLs:"
+echo "📋 Service Port Mapping (Host → Docker):"
 echo ""
-echo "Base 1 (40xx):"
-echo "  julia: http://localhost:4000"
-echo "  continuebee: http://localhost:3999"
-echo "  pref: http://localhost:4002"
-echo "  bdo: http://localhost:4003"
-echo "  joan: http://localhost:4004"
-echo "  addie: http://localhost:4005"
-echo "  fount: http://localhost:4006"
-echo "  dolores: http://localhost:4007"
-echo "  covenant: http://localhost:4011"
-echo "  minnie: http://localhost:3525"
-echo "  aretha: http://localhost:8277"
-echo "  sanora: http://localhost:8243"
+echo "Base 1:"
+echo "  julia: http://localhost:5111 → docker:3000"
+echo "  continuebee: http://localhost:5112 → docker:2999" 
+echo "  pref: http://localhost:5113 → docker:3002"
+echo "  bdo: http://localhost:5114 → docker:3003"
+echo "  joan: http://localhost:5115 → docker:3004"
+echo "  addie: http://localhost:5116 → docker:3005"
+echo "  fount: http://localhost:5117 → docker:3006"
+echo "  dolores: http://localhost:5118 → docker:3007"
+echo "  minnie: http://localhost:5119 → docker:2525"
+echo "  aretha: http://localhost:5120 → docker:7277"
+echo "  sanora: http://localhost:5121 → docker:7243"
+echo "  covenant: http://localhost:5122 → docker:3011"
 echo ""
-echo "Base 2 (50xx):"
-echo "  julia: http://localhost:5000"
-echo "  continuebee: http://localhost:4999"
-echo "  pref: http://localhost:5002"
-echo "  bdo: http://localhost:5003"
-echo "  joan: http://localhost:5004"
-echo "  addie: http://localhost:5005"
-echo "  fount: http://localhost:5006"
-echo "  dolores: http://localhost:5007"
-echo "  covenant: http://localhost:5011"
-echo "  minnie: http://localhost:4525"
-echo "  aretha: http://localhost:9277"
-echo "  sanora: http://localhost:9243"
+echo "Base 2:"
+echo "  julia: http://localhost:5211 → docker:3000"
+echo "  continuebee: http://localhost:5212 → docker:2999"
+echo "  pref: http://localhost:5213 → docker:3002"
+echo "  bdo: http://localhost:5214 → docker:3003"
+echo "  joan: http://localhost:5215 → docker:3004"
+echo "  addie: http://localhost:5216 → docker:3005"
+echo "  fount: http://localhost:5217 → docker:3006"
+echo "  dolores: http://localhost:5218 → docker:3007"
+echo "  minnie: http://localhost:5219 → docker:2525"
+echo "  aretha: http://localhost:5220 → docker:7277"
+echo "  sanora: http://localhost:5221 → docker:7243"
+echo "  covenant: http://localhost:5222 → docker:3011"
 echo ""
-echo "Base 3 (60xx):"
-echo "  julia: http://localhost:6000"
-echo "  continuebee: http://localhost:5999"
-echo "  pref: http://localhost:6002"
-echo "  bdo: http://localhost:6003"
-echo "  joan: http://localhost:6004"
-echo "  addie: http://localhost:6005"
-echo "  fount: http://localhost:6006"
-echo "  dolores: http://localhost:6007"
-echo "  covenant: http://localhost:6011"
-echo "  minnie: http://localhost:5525"
-echo "  aretha: http://localhost:10277"
-echo "  sanora: http://localhost:10243"
+echo "Base 3:"
+echo "  julia: http://localhost:5311 → docker:3000"
+echo "  continuebee: http://localhost:5312 → docker:2999"
+echo "  pref: http://localhost:5313 → docker:3002"
+echo "  bdo: http://localhost:5314 → docker:3003"
+echo "  joan: http://localhost:5315 → docker:3004"
+echo "  addie: http://localhost:5316 → docker:3005"
+echo "  fount: http://localhost:5317 → docker:3006"
+echo "  dolores: http://localhost:5318 → docker:3007"
+echo "  minnie: http://localhost:5319 → docker:2525"
+echo "  aretha: http://localhost:5320 → docker:7277"
+echo "  sanora: http://localhost:5321 → docker:7243"
+echo "  covenant: http://localhost:5322 → docker:3011"
 echo ""
 echo "🛠️  Management Commands:"
 echo "  View logs: docker logs <container-name>"
 echo "  Stop all: docker stop allyabase-base1 allyabase-base2 allyabase-base3"
 echo "  Remove all: docker rm allyabase-base1 allyabase-base2 allyabase-base3"
-echo "  Restart: ./spin-up-bases.sh --clean --build"
+echo "  Restart: ./spin-up-bases-corrected.sh --clean --build"
