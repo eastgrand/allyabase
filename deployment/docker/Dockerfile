@@ -2,7 +2,7 @@ FROM node:22.14.0
 
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y git vim
 
 RUN git clone https://www.github.com/planet-nine-app/addie.git addie
 RUN git clone https://www.github.com/planet-nine-app/aretha.git aretha
