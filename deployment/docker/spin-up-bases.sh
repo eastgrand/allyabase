@@ -1,12 +1,15 @@
 #!/bin/bash
 
 # Comprehensive script to spin up 3 allyabase instances for ecosystem testing
-# Usage: ./spin-up-bases-corrected.sh [--clean] [--build]
+# Usage: ./spin-up-bases.sh [--clean] [--build] [--env=local|test] [--seed] [--seed-base=1|2|3]
 
 set -e  # Exit on any error
 
 CLEAN=false
 BUILD=false
+ENVIRONMENT="test"
+SEED=false
+SEED_BASE="1"
 
 # Parse command line arguments
 for arg in "$@"; do
@@ -19,16 +22,67 @@ for arg in "$@"; do
       BUILD=true
       shift
       ;;
+    --env=*)
+      ENVIRONMENT="${arg#*=}"
+      shift
+      ;;
+    --seed)
+      SEED=true
+      shift
+      ;;
+    --seed-base=*)
+      SEED_BASE="${arg#*=}"
+      shift
+      ;;
+    -h|--help)
+      echo "Planet Nine Ecosystem - Base Startup Script"
+      echo "Usage: $0 [OPTIONS]"
+      echo ""
+      echo "Options:"
+      echo "  --clean              Clean up existing containers before starting"
+      echo "  --build              Build Docker image before starting"
+      echo "  --env=ENV            Environment: local or test (default: test)"
+      echo "  --seed               Seed the environment with sample data"
+      echo "  --seed-base=BASE     Which base to seed (1, 2, or 3, default: 1)"
+      echo "  -h, --help           Show this help message"
+      echo ""
+      echo "Examples:"
+      echo "  $0 --clean --build --env=test --seed"
+      echo "  $0 --env=local --seed --seed-base=2"
+      echo "  $0 --clean --build"
+      exit 0
+      ;;
     *)
       echo "Unknown option: $arg"
-      echo "Usage: $0 [--clean] [--build]"
+      echo "Usage: $0 [--clean] [--build] [--env=local|test] [--seed] [--seed-base=1|2|3]"
+      echo "Use --help for detailed options"
       exit 1
       ;;
   esac
 done
 
+# Validate environment
+if [[ "$ENVIRONMENT" != "local" && "$ENVIRONMENT" != "test" ]]; then
+  echo "❌ Invalid environment: $ENVIRONMENT"
+  echo "   Must be 'local' or 'test'"
+  exit 1
+fi
+
+# Validate seed base
+if [[ "$SEED_BASE" != "1" && "$SEED_BASE" != "2" && "$SEED_BASE" != "3" ]]; then
+  echo "❌ Invalid seed base: $SEED_BASE"
+  echo "   Must be 1, 2, or 3"
+  exit 1
+fi
+
 echo "🚀 Planet Nine Ecosystem - Base Startup Script"
 echo "============================================="
+echo "Environment: $ENVIRONMENT"
+if [ "$SEED" = true ]; then
+  echo "Seeding: Enabled (Base $SEED_BASE)"
+else
+  echo "Seeding: Disabled"
+fi
 echo ""
 
 # Clean up existing containers if requested
@@ -47,11 +101,14 @@ if [ "$CLEAN" = true ]; then
   echo ""
 fi
 
-# Build Docker image if requested
-if [ "$BUILD" = true ]; then
+# Build Docker image if requested (only for test environment)
+if [ "$BUILD" = true ] && [ "$ENVIRONMENT" = "test" ]; then
   echo "🔨 Building flexible allyabase Docker image..."
   docker build -f Dockerfile-flexible -t allyabase-flexible .
   echo "✅ Docker image built successfully"
+  echo ""
+elif [ "$BUILD" = true ] && [ "$ENVIRONMENT" = "local" ]; then
+  echo "⚠️  Build flag ignored for local environment"
   echo ""
 fi
 
@@ -87,6 +144,56 @@ wait_for_base() {
   echo "  ✅ All $base_name services are ready"
   return 0
 }
+
+# Handle local environment
+if [ "$ENVIRONMENT" = "local" ]; then
+  echo "🏠 Local environment selected"
+  echo "   Assuming services are running on localhost:3000-3008, 7243, etc."
+  echo "   Skipping Docker container setup"
+  echo ""
+  
+  # Skip to seeding if requested
+  if [ "$SEED" = true ]; then
+    echo "🌱 Starting local environment seeding..."
+    
+    # Check if Node.js is available
+    if ! command -v node &> /dev/null; then
+      echo "❌ Node.js is required for seeding but not found"
+      echo "   Please install Node.js to use the seeding feature"
+      exit 1
+    fi
+    
+    # Check if seed script exists
+    if [ ! -f "seed-ecosystem.js" ]; then
+      echo "❌ Seed script not found: seed-ecosystem.js"
+      echo "   Please ensure you're running from the correct directory"
+      exit 1
+    fi
+    
+    # Run seeding for local environment
+    echo "🌱 Running ecosystem seeder for local environment..."
+    node seed-ecosystem.js local
+    
+    echo ""
+    echo "🎉 Local environment seeding complete!"
+  else
+    echo "🎉 Local environment ready!"
+    echo ""
+    echo "📋 Expected Local Service URLs:"
+    echo "  dolores: http://localhost:3007"
+    echo "  prof: http://localhost:3008"
+    echo "  sanora: http://localhost:7243"
+    echo "  bdo: http://localhost:3003"
+    echo "  covenant: http://localhost:3011"
+    echo "  julia: http://localhost:3000"
+    echo "  continuebee: http://localhost:2999"
+    echo "  fount: http://localhost:3002"
+    echo ""
+    echo "💡 Use --seed flag to populate with sample data"
+  fi
+  
+  exit 0
+fi
 
 # Start Base 1 (Host ports 5111-5122 → Standard Docker internal ports)
 echo "🏗️  Starting Base 1 (Host ports 5111-5122)..."
@@ -223,4 +330,54 @@ echo "🛠️  Management Commands:"
 echo "  View logs: docker logs <container-name>"
 echo "  Stop all: docker stop allyabase-base1 allyabase-base2 allyabase-base3"
 echo "  Remove all: docker rm allyabase-base1 allyabase-base2 allyabase-base3"
-echo "  Restart: ./spin-up-bases-corrected.sh --clean --build"
+echo "  Restart: ./spin-up-bases.sh --clean --build"
+
+# Handle seeding for test environment
+if [ "$SEED" = true ]; then
+  echo ""
+  echo "🌱 Starting ecosystem seeding for test environment..."
+  
+  # Check if Node.js is available
+  if ! command -v node &> /dev/null; then
+    echo "❌ Node.js is required for seeding but not found"
+    echo "   Please install Node.js to use the seeding feature"
+    exit 1
+  fi
+  
+  # Check if seed script exists
+  if [ ! -f "seed-ecosystem.js" ]; then
+    echo "❌ Seed script not found: seed-ecosystem.js"
+    echo "   Please ensure you're running from the correct directory"
+    exit 1
+  fi
+  
+  # Wait a moment for services to fully stabilize
+  echo "⏳ Waiting 10 seconds for services to stabilize..."
+  sleep 10
+  
+  # Run seeding for test environment
+  echo "🌱 Running ecosystem seeder for Base $SEED_BASE..."
+  node seed-ecosystem.js test $SEED_BASE
+  
+  if [ $? -eq 0 ]; then
+    echo ""
+    echo "🎉 Test environment seeding complete!"
+    echo "   Base $SEED_BASE has been populated with sample data"
+    echo ""
+    echo "🔗 Seeded Base $SEED_BASE URLs:"
+    BASE_PORT=$((5000 + SEED_BASE * 100))
+    echo "  BDO: http://localhost:$((BASE_PORT + 14))"
+    echo "  Sanora: http://localhost:$((BASE_PORT + 21))"
+    echo "  Dolores: http://localhost:$((BASE_PORT + 18))"
+    echo "  Covenant: http://localhost:$((BASE_PORT + 22))"
+  else
+    echo "❌ Seeding failed. Please check the output above for errors."
+    echo "   Services may need more time to start or there may be connection issues."
+  fi
+fi
+
+echo ""
+echo "✨ Setup complete! Your Planet Nine ecosystem is ready."
+if [ "$SEED" = false ]; then
+  echo "💡 Tip: Use --seed flag next time to populate with sample data"
+fi

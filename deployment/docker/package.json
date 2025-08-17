@@ -1,0 +1,31 @@
+{
+  "name": "planet-nine-ecosystem-seeder",
+  "version": "1.0.0",
+  "description": "Data seeding system for Planet Nine allyabase ecosystem",
+  "type": "module",
+  "main": "seed-ecosystem.js",
+  "scripts": {
+    "seed:local": "node seed-ecosystem.js local",
+    "seed:test:base1": "node seed-ecosystem.js test 1",
+    "seed:test:base2": "node seed-ecosystem.js test 2",
+    "seed:test:base3": "node seed-ecosystem.js test 3",
+    "install-deps": "npm install"
+  },
+  "dependencies": {
+    "sessionless-node": "latest",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "planet-nine",
+    "allyabase",
+    "seeding",
+    "ecosystem",
+    "testing"
+  ],
+  "author": "Planet Nine",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
