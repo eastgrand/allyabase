@@ -18,6 +18,76 @@
 
 import sessionless from 'sessionless-node';
 import fetch from 'node-fetch';
+import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
+
+// Set up deterministic test key storage for Docker environment
+const testUsers = new Map();
+
+// Helper function to create deterministic test users without relying on sessionless storage
+const createTestUser = async (seed) => {
+  // Check if we already created this user
+  if (testUsers.has(seed)) {
+    return testUsers.get(seed);
+  }
+  
+  // Create deterministic keys from seed
+  const hash = crypto.createHash('sha256').update(seed).digest('hex');
+  const privateKey = hash.substring(0, 64);
+  
+  // Create deterministic public key using secp256k1
+  try {
+    // Import secp256k1 directly
+    const { secp256k1 } = await import('ethereum-cryptography/secp256k1');
+    const { bytesToHex } = await import('ethereum-cryptography/utils.js');
+    
+    const pubKey = bytesToHex(secp256k1.getPublicKey(privateKey));
+    const uuid = sessionless.generateUUID();
+    
+    const user = {
+      uuid,
+      pubKey,
+      privateKey
+    };
+    
+    testUsers.set(seed, user);
+    return user;
+    
+  } catch (error) {
+    console.log(`⚠️  Using simple fallback key generation for ${seed}`);
+    // Simple fallback
+    const uuid = crypto.createHash('sha256').update(seed + 'uuid').digest('hex').substring(0, 32);
+    const pubKey = crypto.createHash('sha256').update(seed + 'pubkey').digest('hex');
+    
+    const user = {
+      uuid,
+      pubKey,
+      privateKey
+    };
+    
+    testUsers.set(seed, user);
+    return user;
+  }
+};
+
+// Custom sign function that works with our test users
+const signMessage = async (privateKey, message) => {
+  try {
+    const { secp256k1 } = await import('ethereum-cryptography/secp256k1');
+    const { keccak256 } = await import('ethereum-cryptography/keccak.js');
+    const { utf8ToBytes } = await import('ethereum-cryptography/utils.js');
+    
+    const messageHash = keccak256(utf8ToBytes(message));
+    const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
+    const signature = signatureAsBigInts.toCompactHex();
+    return signature;
+  } catch (error) {
+    console.log(`⚠️  Using fallback signature for message`);
+    // Simple fallback signature
+    return crypto.createHash('sha256').update(privateKey + message).digest('hex');
+  }
+};
 
 // Configuration
 const ENVIRONMENT = process.argv[2] || 'test';
@@ -520,20 +590,15 @@ class ProfSeeder {
     this.users = [];
   }
 
-  async createUser() {
-    const keys = await sessionless.generateKeys();
-    return {
-      uuid: keys.uuid,
-      pubKey: keys.pubKey,
-      privateKey: keys.privateKey
-    };
+  async createUser(seed) {
+    return await createTestUser(seed);
   }
 
   async createProfile(user, profileData) {
     try {
       const timestamp = new Date().getTime();
       const hash = sessionless.generateUUID();
-      const signature = sessionless.sign(user.privateKey, user.uuid, timestamp);
+      const signature = await signMessage(user.privateKey, user.uuid + timestamp);
 
       const response = await post(`${this.baseURL}/user/${user.uuid}/profile`, {
         uuid: user.uuid,
@@ -562,7 +627,7 @@ class ProfSeeder {
     
     for (const userData of sampleUsers) {
       try {
-        const user = await this.createUser();
+        const user = await this.createUser(`prof-user-${userData.name}`);
         const profile = await this.createProfile(user, userData);
         
         if (profile) {
@@ -586,10 +651,10 @@ class SanoraSeeder {
     this.blogPosts = [];
   }
 
-  async createUser() {
-    const keys = await sessionless.generateKeys();
+  async createUser(seed) {
+    const keys = await createTestUser(seed);
     const timestamp = new Date().getTime();
-    const signature = sessionless.sign(keys.privateKey, timestamp + keys.pubKey);
+    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey);
 
     try {
       const response = await put(`${this.baseURL}/user/create`, {
@@ -613,7 +678,7 @@ class SanoraSeeder {
     try {
       const timestamp = new Date().getTime();
       const message = timestamp + user.uuid + productData.title + productData.description + productData.price;
-      const signature = sessionless.sign(user.privateKey, message);
+      const signature = await signMessage(user.privateKey, message);
 
       const response = await put(`${this.baseURL}/user/${user.uuid}/product/${encodeURIComponent(productData.title)}`, {
         ...productData,
@@ -632,7 +697,7 @@ class SanoraSeeder {
     console.log('🛍️ Seeding Sanora service with products...');
     
     try {
-      const user = await this.createUser();
+      const user = await this.createUser('sanora-products-user');
       if (!user) {
         throw new Error('Failed to create Sanora user');
       }
@@ -659,7 +724,7 @@ class SanoraSeeder {
     console.log('📝 Seeding Sanora service with blog posts...');
     
     try {
-      const user = await this.createUser();
+      const user = await this.createUser('sanora-blogs-user');
       if (!user) {
         throw new Error('Failed to create Sanora user for blog posts');
       }
@@ -695,10 +760,10 @@ class DoloresSeeder {
     this.posts = [];
   }
 
-  async createUser() {
-    const keys = await sessionless.generateKeys();
+  async createUser(seed) {
+    const keys = await createTestUser(seed);
     const timestamp = new Date().getTime();
-    const signature = sessionless.sign(keys.privateKey, timestamp + keys.pubKey);
+    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey);
 
     try {
       const response = await put(`${this.baseURL}/user/create`, {
@@ -723,7 +788,7 @@ class DoloresSeeder {
     console.log('📱 Seeding Dolores service with social posts...');
     
     try {
-      const user = await this.createUser();
+      const user = await this.createUser('dolores-posts-user');
       if (!user) {
         throw new Error('Failed to create Dolores user');
       }
@@ -758,20 +823,15 @@ class CovenantSeeder {
     this.contracts = [];
   }
 
-  async createUser() {
-    const keys = await sessionless.generateKeys();
-    return {
-      uuid: keys.uuid,
-      pubKey: keys.pubKey,
-      privateKey: keys.privateKey
-    };
+  async createUser(seed) {
+    return await createTestUser(seed);
   }
 
   async createContract(user, contractData) {
     try {
       const timestamp = new Date().getTime();
       const message = timestamp + user.uuid;
-      const signature = sessionless.sign(user.privateKey, message);
+      const signature = await signMessage(user.privateKey, message);
 
       // Create participant UUIDs
       const participants = [];
@@ -810,7 +870,7 @@ class CovenantSeeder {
     console.log('📜 Seeding Covenant service with contracts...');
     
     try {
-      const user = await this.createUser();
+      const user = await this.createUser('covenant-contracts-user');
       const contractsData = generateContracts();
       
       for (const contractData of contractsData) {
@@ -836,11 +896,11 @@ class BDOSeeder {
     this.bases = [];
   }
 
-  async createUser() {
-    const keys = await sessionless.generateKeys();
+  async createUser(seed) {
+    const keys = await createTestUser(seed);
     const timestamp = new Date().getTime();
     const hash = sessionless.generateUUID();
-    const signature = sessionless.sign(keys.privateKey, timestamp + keys.pubKey + hash);
+    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey + hash);
 
     try {
       const response = await put(`${this.baseURL}/user/create`, {
@@ -867,7 +927,7 @@ class BDOSeeder {
     console.log('🌍 Seeding BDO service with base discovery data...');
     
     try {
-      const user = await this.createUser();
+      const user = await this.createUser('bdo-discovery-user');
       if (!user) {
         throw new Error('Failed to create BDO user');
       }
@@ -902,7 +962,7 @@ class BDOSeeder {
 
       // Save bases to BDO
       const timestamp = new Date().getTime();
-      const signature = sessionless.sign(user.privateKey, timestamp + user.uuid + user.hash);
+      const signature = await signMessage(user.privateKey, timestamp + user.uuid + user.hash);
 
       await put(`${this.baseURL}/user/${user.uuid}/bases`, {
         timestamp: timestamp.toString(),
