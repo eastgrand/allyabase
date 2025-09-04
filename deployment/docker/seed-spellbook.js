@@ -15,7 +15,7 @@ async function seedSpellbook() {
     try {
         // Use test environment BDO (Base 1)
         const bdoUrl = 'http://127.0.0.1:5114/';
-        const fountUrl = 'http://127.0.0.1:5116/';
+        const fountUrl = 'http://127.0.0.1:5117/';
         
         console.log(`📡 Connecting to BDO: ${bdoUrl}`);
         console.log(`⚡ Fount URL: ${fountUrl}`);
@@ -50,7 +50,7 @@ async function seedSpellbook() {
                     },
                     { 
                         stopName: 'fount', 
-                        stopURL: fountUrl + 'magic/spell/' 
+                        stopURL: fountUrl + 'resolve/' 
                     }
                 ],
                 resolver: 'fount',
@@ -89,6 +89,8 @@ async function seedSpellbook() {
         
         console.log(`✅ Created BDO user: ${userUuid}`);
         console.log(`📍 BDO URL: ${bdoUrl}user/${userUuid}/bdo`);
+
+//        const spellbooks = await bdo.putSpellbook(userUuid, hash, spellbook);
         
         // Verify the spellbook was stored correctly
         console.log('🔍 Verifying spellbook storage...');
