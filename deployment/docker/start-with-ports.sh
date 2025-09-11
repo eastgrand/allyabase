@@ -27,6 +27,7 @@ SANORA_PORT=$((7243 + PORT_OFFSET))
 DOLORES_PORT=$((3007 + PORT_OFFSET))
 MINNIE_PORT=$((2525 + PORT_OFFSET))
 COVENANT_PORT=$((3011 + PORT_OFFSET))
+PROF_PORT=$((3008 + PORT_OFFSET))
 
 echo "Starting allyabase with port offset: $PORT_OFFSET"
 echo "Services will run on:"
@@ -42,6 +43,11 @@ echo "  sanora: $SANORA_PORT"
 echo "  dolores: $DOLORES_PORT"
 echo "  minnie: $MINNIE_PORT"
 echo "  covenant: $COVENANT_PORT"
+if [ "$ENABLE_PROF" = "true" ]; then
+  echo "  prof: $PROF_PORT (optional - enabled)"
+else
+  echo "  prof: disabled (set ENABLE_PROF=true to enable)"
+fi
 echo ""
 
 cat > ecosystem.config.js << EOL
@@ -146,6 +152,23 @@ module.exports = {
         PORT: '$COVENANT_PORT'
       }
     }
+EOL
+
+# Add prof service conditionally
+if [ "$ENABLE_PROF" = "true" ]; then
+cat >> ecosystem.config.js << EOL
+    ,{
+      name: 'prof',
+      script: '/usr/src/app/prof/src/server/node/prof.js',
+      env: { 
+        LOCALHOST: 'true',
+        PORT: '$PROF_PORT'
+      }
+    }
+EOL
+fi
+
+cat >> ecosystem.config.js << EOL
   ]
 }
 EOL

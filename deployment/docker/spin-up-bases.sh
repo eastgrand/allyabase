@@ -34,6 +34,10 @@ for arg in "$@"; do
       SEED_BASE="${arg#*=}"
       shift
       ;;
+    --enable-prof)
+      ENABLE_PROF=true
+      shift
+      ;;
     -h|--help)
       echo "Planet Nine Ecosystem - Base Startup Script"
       echo "Usage: $0 [OPTIONS]"
@@ -44,17 +48,18 @@ for arg in "$@"; do
       echo "  --env=ENV            Environment: local or test (default: test)"
       echo "  --seed               Seed the environment with sample data"
       echo "  --seed-base=BASE     Which base to seed (1, 2, or 3, default: 1)"
+      echo "  --enable-prof        Enable prof service (profile management)"
       echo "  -h, --help           Show this help message"
       echo ""
       echo "Examples:"
       echo "  $0 --clean --build --env=test --seed"
       echo "  $0 --env=local --seed --seed-base=2"
-      echo "  $0 --clean --build"
+      echo "  $0 --clean --build --enable-prof"
       exit 0
       ;;
     *)
       echo "Unknown option: $arg"
-      echo "Usage: $0 [--clean] [--build] [--env=local|test] [--seed] [--seed-base=1|2|3]"
+      echo "Usage: $0 [--clean] [--build] [--env=local|test] [--seed] [--seed-base=1|2|3] [--enable-prof]"
       echo "Use --help for detailed options"
       exit 1
       ;;
@@ -82,6 +87,11 @@ if [ "$SEED" = true ]; then
   echo "Seeding: Enabled (Base $SEED_BASE)"
 else
   echo "Seeding: Disabled"
+fi
+if [ "$ENABLE_PROF" = true ]; then
+  echo "Prof Service: Enabled"
+else
+  echo "Prof Service: Disabled"
 fi
 echo ""
 
@@ -181,7 +191,11 @@ if [ "$ENVIRONMENT" = "local" ]; then
     echo ""
     echo "📋 Expected Local Service URLs:"
     echo "  dolores: http://localhost:3007"
-    echo "  prof: http://localhost:3008"
+    if [ "$ENABLE_PROF" = true ]; then
+      echo "  prof: http://localhost:3008 (enabled)"
+    else
+      echo "  prof: http://localhost:3008 (disabled - use --enable-prof)"
+    fi
     echo "  sanora: http://localhost:7243"
     echo "  bdo: http://localhost:3003"
     echo "  covenant: http://localhost:3011"
@@ -195,10 +209,21 @@ if [ "$ENVIRONMENT" = "local" ]; then
   exit 0
 fi
 
+# Build prof port arguments
+PROF_PORTS=""
+if [ "$ENABLE_PROF" = true ]; then
+  PROF_PORTS="-p 5123:3008"
+fi
+
 # Start Base 1 (Host ports 5111-5122 → Standard Docker internal ports)
 echo "🏗️  Starting Base 1 (Host ports 5111-5122)..."
+if [ "$ENABLE_PROF" = true ]; then
+  echo "   Prof enabled on port 5123"
+fi
+
 docker run -d \
   --name allyabase-base1 \
+  -e ENABLE_PROF=$ENABLE_PROF \
   -p 5111:3000 \
   -p 5112:2999 \
   -p 5113:3002 \
@@ -211,10 +236,14 @@ docker run -d \
   -p 5120:7277 \
   -p 5121:7243 \
   -p 5122:3011 \
+  $PROF_PORTS \
   allyabase-flexible
 
 # Wait for Base 1 services (check host ports)
 BASE1_PORTS=(5111 5112 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122)
+if [ "$ENABLE_PROF" = true ]; then
+  BASE1_PORTS+=(5123)
+fi
 if ! wait_for_base "Base 1" "${BASE1_PORTS[@]}"; then
   echo "❌ Base 1 startup failed"
   exit 1
@@ -223,10 +252,21 @@ fi
 echo "✅ Base 1 started successfully!"
 echo ""
 
+# Update prof ports for Base 2
+PROF_PORTS_BASE2=""
+if [ "$ENABLE_PROF" = true ]; then
+  PROF_PORTS_BASE2="-p 5223:3008"
+fi
+
 # Start Base 2 (Host ports 5211-5222 → Standard Docker internal ports)
 echo "🏗️  Starting Base 2 (Host ports 5211-5222)..."
+if [ "$ENABLE_PROF" = true ]; then
+  echo "   Prof enabled on port 5223"
+fi
+
 docker run -d \
   --name allyabase-base2 \
+  -e ENABLE_PROF=$ENABLE_PROF \
   -p 5211:3000 \
   -p 5212:2999 \
   -p 5213:3002 \
@@ -239,10 +279,14 @@ docker run -d \
   -p 5220:7277 \
   -p 5221:7243 \
   -p 5222:3011 \
+  $PROF_PORTS_BASE2 \
   allyabase-flexible
 
 # Wait for Base 2 services (check host ports)
 BASE2_PORTS=(5211 5212 5213 5214 5215 5216 5217 5218 5219 5220 5221 5222)
+if [ "$ENABLE_PROF" = true ]; then
+  BASE2_PORTS+=(5223)
+fi
 if ! wait_for_base "Base 2" "${BASE2_PORTS[@]}"; then
   echo "❌ Base 2 startup failed"
   exit 1
@@ -251,10 +295,21 @@ fi
 echo "✅ Base 2 started successfully!"
 echo ""
 
+# Update prof ports for Base 3
+PROF_PORTS_BASE3=""
+if [ "$ENABLE_PROF" = true ]; then
+  PROF_PORTS_BASE3="-p 5323:3008"
+fi
+
 # Start Base 3 (Host ports 5311-5322 → Standard Docker internal ports)
 echo "🏗️  Starting Base 3 (Host ports 5311-5322)..."
+if [ "$ENABLE_PROF" = true ]; then
+  echo "   Prof enabled on port 5323"
+fi
+
 docker run -d \
   --name allyabase-base3 \
+  -e ENABLE_PROF=$ENABLE_PROF \
   -p 5311:3000 \
   -p 5312:2999 \
   -p 5313:3002 \
@@ -267,10 +322,14 @@ docker run -d \
   -p 5320:7277 \
   -p 5321:7243 \
   -p 5322:3011 \
+  $PROF_PORTS_BASE3 \
   allyabase-flexible
 
 # Wait for Base 3 services (check host ports)
 BASE3_PORTS=(5311 5312 5313 5314 5315 5316 5317 5318 5319 5320 5321 5322)
+if [ "$ENABLE_PROF" = true ]; then
+  BASE3_PORTS+=(5323)
+fi
 if ! wait_for_base "Base 3" "${BASE3_PORTS[@]}"; then
   echo "❌ Base 3 startup failed"
   exit 1
@@ -297,6 +356,9 @@ echo "  minnie: http://localhost:5119 → docker:2525"
 echo "  aretha: http://localhost:5120 → docker:7277"
 echo "  sanora: http://localhost:5121 → docker:7243"
 echo "  covenant: http://localhost:5122 → docker:3011"
+if [ "$ENABLE_PROF" = true ]; then
+  echo "  prof: http://localhost:5123 → docker:3008"
+fi
 echo ""
 echo "Base 2:"
 echo "  julia: http://localhost:5211 → docker:3000"
@@ -311,6 +373,9 @@ echo "  minnie: http://localhost:5219 → docker:2525"
 echo "  aretha: http://localhost:5220 → docker:7277"
 echo "  sanora: http://localhost:5221 → docker:7243"
 echo "  covenant: http://localhost:5222 → docker:3011"
+if [ "$ENABLE_PROF" = true ]; then
+  echo "  prof: http://localhost:5223 → docker:3008"
+fi
 echo ""
 echo "Base 3:"
 echo "  julia: http://localhost:5311 → docker:3000"
@@ -325,6 +390,9 @@ echo "  minnie: http://localhost:5319 → docker:2525"
 echo "  aretha: http://localhost:5320 → docker:7277"
 echo "  sanora: http://localhost:5321 → docker:7243"
 echo "  covenant: http://localhost:5322 → docker:3011"
+if [ "$ENABLE_PROF" = true ]; then
+  echo "  prof: http://localhost:5323 → docker:3008"
+fi
 echo ""
 echo "🛠️  Management Commands:"
 echo "  View logs: docker logs <container-name>"
