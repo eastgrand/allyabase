@@ -109,19 +109,21 @@ const getServiceURLs = (env, baseNum) => {
       covenant: 'http://localhost:3011',
       julia: 'http://localhost:3000',
       continuebee: 'http://localhost:2999',
-      fount: 'http://localhost:3002'
+      fount: 'http://localhost:3002',
+      advancement: 'http://localhost:3456'
     };
   } else if (env === 'test') {
     const portBase = 5000 + (parseInt(baseNum) * 100);
     return {
       dolores: `http://localhost:${portBase + 18}`,
-      prof: `http://localhost:${portBase + 18}`, // Prof is actually dolores port in test
+      prof: `http://localhost:${portBase + 23}`, // Prof service on port 5123 for Base 1
       sanora: `http://localhost:${portBase + 21}`,
       bdo: `http://localhost:${portBase + 14}`,
       covenant: `http://localhost:${portBase + 22}`,
       julia: `http://localhost:${portBase + 11}`,
       continuebee: `http://localhost:${portBase + 12}`,
-      fount: `http://localhost:${portBase + 17}`
+      fount: `http://localhost:${portBase + 17}`,
+      advancement: 'http://localhost:3456' // The Advancement test server runs on fixed port
     };
   } else {
     throw new Error(`Unknown environment: ${env}`);
@@ -607,12 +609,14 @@ class ProfSeeder {
         signature,
         profileData: {
           ...profileData,
+          tags: ['author'], // Add author tag so profiles appear in author filtering
           additional_fields: {
             idothis: profileData.idothis
           }
         }
       });
 
+console.log('got this response from prof', response);
       return response;
     } catch (error) {
       console.error(`Failed to create profile for ${profileData.name}:`, error.message);
@@ -983,16 +987,88 @@ class BDOSeeder {
   }
 }
 
+class AdvancementSeeder {
+  constructor(baseURL) {
+    this.baseURL = baseURL;
+    this.testData = [];
+  }
+
+  async seedTestData() {
+    console.log('🚀 Seeding The Advancement test server...');
+
+    try {
+      // Health check The Advancement test server
+      const healthResponse = await get(`${this.baseURL}/api/health`);
+      console.log(`  ✅ The Advancement test server is healthy: ${healthResponse.service}`);
+
+      // Get site owner info to verify API
+      const siteOwnerResponse = await get(`${this.baseURL}/api/site-owner`);
+      console.log(`  ✅ Site owner verified: ${siteOwnerResponse.data.name}`);
+
+      // Get available bases
+      const basesResponse = await get(`${this.baseURL}/api/bases`);
+      const baseCount = Object.keys(basesResponse.data).length;
+      console.log(`  ✅ Available bases: ${baseCount} bases configured`);
+
+      // Test teleportation from base1
+      const teleportResponse = await get(`${this.baseURL}/api/teleport/base1?pubKey=test_pubkey`);
+      const productCount = teleportResponse.data.products.length;
+      const menuCount = teleportResponse.data.menuCatalogs.length;
+      console.log(`  ✅ Teleportation working: ${productCount} products, ${menuCount} menu catalogs`);
+
+      // Test nineum balance endpoint
+      const balanceResponse = await get(`${this.baseURL}/api/nineum-balance`);
+      console.log(`  ✅ Nineum balance: ${balanceResponse.data.nineumCount} nineum`);
+
+      this.testData.push({
+        service: 'advancement-test-server',
+        health: healthResponse,
+        siteOwner: siteOwnerResponse.data,
+        bases: baseCount,
+        products: productCount,
+        menuCatalogs: menuCount,
+        nineumBalance: balanceResponse.data.nineumCount
+      });
+
+      console.log(`📊 The Advancement seeding complete: All endpoints verified\n`);
+    } catch (error) {
+      console.error('❌ The Advancement seeding failed:', error.message);
+    }
+
+    return this.testData;
+  }
+}
+
 // Health check function
 const checkServiceHealth = async (serviceName, url) => {
   try {
-    const healthUrl = `${url}/health`;
-    await fetch(healthUrl, { timeout: 5000 });
+    // Different services have different health endpoints or root endpoints
+    let healthUrl = url;
+    if (serviceName === 'Advancement') {
+      healthUrl = `${url}/api/health`;
+    } else {
+      // For most Planet Nine services, just check root endpoint
+      healthUrl = url;
+    }
+
+    const response = await fetch(healthUrl, { timeout: 5000 });
+
+    // If we get any response (even 404), the service is running
     console.log(`  ✅ ${serviceName}: ${url}`);
     return true;
   } catch (error) {
-    console.log(`  ❌ ${serviceName}: ${url} - ${error.message}`);
-    return false;
+    // Connection refused means service is not running or not enabled
+    if (error.code === 'ECONNREFUSED' || error.message.includes('ECONNREFUSED')) {
+      console.log(`  ❌ ${serviceName}: ${url} - Service not available`);
+      return false;
+    } else if (error.message.includes('not responding')) {
+      console.log(`  ❌ ${serviceName}: ${url} - Service not responding`);
+      return false;
+    } else {
+      // Other errors (like timeouts, socket hangs) but service might still be running
+      console.log(`  ⚠️  ${serviceName}: ${url} - Service issues detected`);
+      return false;
+    }
   }
 };
 
@@ -1005,8 +1081,18 @@ const seedEcosystem = async () => {
     checkServiceHealth('Sanora', SERVICES.sanora),
     checkServiceHealth('Dolores', SERVICES.dolores),
     checkServiceHealth('Covenant', SERVICES.covenant),
-    checkServiceHealth('BDO', SERVICES.bdo)
+    checkServiceHealth('BDO', SERVICES.bdo),
+    checkServiceHealth('Advancement', SERVICES.advancement)
   ]);
+
+  const isServiceHealthy = {
+    prof: healthChecks[0],
+    sanora: healthChecks[1],
+    dolores: healthChecks[2],
+    covenant: healthChecks[3],
+    bdo: healthChecks[4],
+    advancement: healthChecks[5]
+  };
 
   const healthyServices = healthChecks.filter(Boolean).length;
   console.log(`\n📊 ${healthyServices}/${healthChecks.length} services healthy\n`);
@@ -1019,26 +1105,68 @@ const seedEcosystem = async () => {
   console.log('🌱 Starting ecosystem seeding...\n');
 
   try {
-    // Seed all services in parallel
-    const seeders = [
-      new ProfSeeder(SERVICES.prof).seedProfiles(),
-      new SanoraSeeder(SERVICES.sanora).seedProducts(),
-      new SanoraSeeder(SERVICES.sanora).seedBlogPosts(),
-      new DoloresSeeder(SERVICES.dolores).seedPosts(),
-      new CovenantSeeder(SERVICES.covenant).seedContracts(),
-      new BDOSeeder(SERVICES.bdo).seedBaseDiscovery()
-    ];
+    // Seed all services in parallel (only healthy services)
+    const seeders = [];
+
+    if (isServiceHealthy.prof) {
+      seeders.push(new ProfSeeder(SERVICES.prof).seedProfiles());
+    } else {
+      console.log('⚠️  Prof service not healthy, skipping profile seeding');
+    }
+
+    if (isServiceHealthy.sanora) {
+      seeders.push(new SanoraSeeder(SERVICES.sanora).seedProducts());
+      seeders.push(new SanoraSeeder(SERVICES.sanora).seedBlogPosts());
+    } else {
+      console.log('⚠️  Sanora service not healthy, skipping product/blog seeding');
+    }
+
+    if (isServiceHealthy.dolores) {
+      seeders.push(new DoloresSeeder(SERVICES.dolores).seedPosts());
+    } else {
+      console.log('⚠️  Dolores service not healthy, skipping post seeding');
+    }
+
+    if (isServiceHealthy.covenant) {
+      seeders.push(new CovenantSeeder(SERVICES.covenant).seedContracts());
+    } else {
+      console.log('⚠️  Covenant service not healthy, skipping contract seeding');
+    }
+
+    if (isServiceHealthy.bdo) {
+      seeders.push(new BDOSeeder(SERVICES.bdo).seedBaseDiscovery());
+    } else {
+      console.log('⚠️  BDO service not healthy, skipping base discovery seeding');
+    }
+
+    if (isServiceHealthy.advancement) {
+      seeders.push(new AdvancementSeeder(SERVICES.advancement).seedTestData());
+    } else {
+      console.log('⚠️  The Advancement service not healthy, skipping test data seeding');
+    }
 
     const results = await Promise.allSettled(seeders);
     
     let successCount = 0;
+
+    // Build service names array based on what was actually seeded
+    const serviceNames = [];
+    if (isServiceHealthy.prof) serviceNames.push('Prof');
+    if (isServiceHealthy.sanora) {
+      serviceNames.push('Sanora Products');
+      serviceNames.push('Sanora Blogs');
+    }
+    if (isServiceHealthy.dolores) serviceNames.push('Dolores');
+    if (isServiceHealthy.covenant) serviceNames.push('Covenant');
+    if (isServiceHealthy.bdo) serviceNames.push('BDO');
+    if (isServiceHealthy.advancement) serviceNames.push('The Advancement');
+
     results.forEach((result, index) => {
-      const services = ['Prof', 'Sanora Products', 'Sanora Blogs', 'Dolores', 'Covenant', 'BDO'];
       if (result.status === 'fulfilled') {
         successCount++;
-        console.log(`✅ ${services[index]} seeding completed`);
+        console.log(`✅ ${serviceNames[index]} seeding completed`);
       } else {
-        console.log(`❌ ${services[index]} seeding failed:`, result.reason?.message || 'Unknown error');
+        console.log(`❌ ${serviceNames[index]} seeding failed:`, result.reason?.message || 'Unknown error');
       }
     });
 
@@ -1050,6 +1178,13 @@ const seedEcosystem = async () => {
       console.log(`   BDO: ${SERVICES.bdo}`);
       console.log(`   Sanora: ${SERVICES.sanora}`);
       console.log(`   Covenant: ${SERVICES.covenant}`);
+      console.log(`   The Advancement: ${SERVICES.advancement}`);
+    } else if (ENVIRONMENT === 'local') {
+      console.log(`\n🔗 Local Environment URLs:`);
+      console.log(`   BDO: ${SERVICES.bdo}`);
+      console.log(`   Sanora: ${SERVICES.sanora}`);
+      console.log(`   Covenant: ${SERVICES.covenant}`);
+      console.log(`   The Advancement: ${SERVICES.advancement}`);
     }
 
   } catch (error) {

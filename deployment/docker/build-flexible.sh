@@ -2,9 +2,13 @@
 
 # Build the flexible allyabase Docker image
 echo "Building flexible allyabase Docker image..."
-docker build -f Dockerfile-flexible -t allyabase-flexible .
 
-echo "Flexible allyabase image built successfully!"
+if docker build -f Dockerfile-flexible -t allyabase-flexible .; then
+    echo "✅ Flexible allyabase image built successfully!"
+else
+    echo "❌ Failed to build flexible allyabase image!"
+    exit 1
+fi
 echo ""
 echo "Usage examples:"
 echo "  Base 1 (40xx ports): docker run -e PORT_OFFSET=1000 -p 4000-4011:4000-4011 -p 4525:4525 -p 8277:8277 -p 8243:8243 allyabase-flexible"

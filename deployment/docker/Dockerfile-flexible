@@ -17,8 +17,8 @@ RUN git clone https://www.github.com/planet-nine-app/pref.git pref
 RUN git clone https://www.github.com/planet-nine-app/sanora.git sanora
 RUN git clone https://www.github.com/planet-nine-app/covenant.git covenant
 
-# Clone prof (optional service)
-COPY prof prof
+# Clone prof (optional service) - clone from GitHub if available, skip if not
+RUN git clone https://www.github.com/planet-nine-app/prof.git prof || echo "Prof service not available, skipping..."
 
 # Expose all possible ports for 3 bases (40xx, 50xx, 60xx ranges)
 # Base 1 (40xx)
@@ -72,14 +72,18 @@ RUN npm install
 WORKDIR /usr/src/app/covenant/src/server/node
 RUN npm install
 
-WORKDIR /usr/src/app/prof/src/server/node
-RUN npm install
+# Install prof dependencies if prof was cloned successfully
+RUN if [ -d "/usr/src/app/prof/src/server/node" ]; then \
+        cd /usr/src/app/prof/src/server/node && npm install; \
+    else \
+        echo "Prof not available, skipping npm install"; \
+    fi
 
 WORKDIR /usr/src/app
 
 # Copy scripts for flexible port management
-COPY allyabase/deployment/docker/start-with-ports.sh /usr/src/app/
-COPY allyabase/deployment/docker/update-service-ports.sh /usr/src/app/
+COPY start-with-ports.sh /usr/src/app/
+COPY update-service-ports.sh /usr/src/app/
 RUN chmod +x /usr/src/app/start-with-ports.sh
 RUN chmod +x /usr/src/app/update-service-ports.sh
 

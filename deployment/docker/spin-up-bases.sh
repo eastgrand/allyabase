@@ -38,6 +38,10 @@ for arg in "$@"; do
       ENABLE_PROF=true
       shift
       ;;
+    --enable-advancement)
+      ENABLE_ADVANCEMENT=true
+      shift
+      ;;
     -h|--help)
       echo "Planet Nine Ecosystem - Base Startup Script"
       echo "Usage: $0 [OPTIONS]"
@@ -49,17 +53,18 @@ for arg in "$@"; do
       echo "  --seed               Seed the environment with sample data"
       echo "  --seed-base=BASE     Which base to seed (1, 2, or 3, default: 1)"
       echo "  --enable-prof        Enable prof service (profile management)"
+      echo "  --enable-advancement Enable The Advancement test server"
       echo "  -h, --help           Show this help message"
       echo ""
       echo "Examples:"
       echo "  $0 --clean --build --env=test --seed"
       echo "  $0 --env=local --seed --seed-base=2"
-      echo "  $0 --clean --build --enable-prof"
+      echo "  $0 --clean --build --enable-prof --enable-advancement"
       exit 0
       ;;
     *)
       echo "Unknown option: $arg"
-      echo "Usage: $0 [--clean] [--build] [--env=local|test] [--seed] [--seed-base=1|2|3] [--enable-prof]"
+      echo "Usage: $0 [--clean] [--build] [--env=local|test] [--seed] [--seed-base=1|2|3] [--enable-prof] [--enable-advancement]"
       echo "Use --help for detailed options"
       exit 1
       ;;
@@ -93,12 +98,17 @@ if [ "$ENABLE_PROF" = true ]; then
 else
   echo "Prof Service: Disabled"
 fi
+if [ "$ENABLE_ADVANCEMENT" = true ]; then
+  echo "The Advancement Test Server: Enabled"
+else
+  echo "The Advancement Test Server: Disabled"
+fi
 echo ""
 
 # Clean up existing containers if requested
 if [ "$CLEAN" = true ]; then
   echo "🧹 Cleaning up existing containers..."
-  
+
   for base in allyabase-base1 allyabase-base2 allyabase-base3; do
     if docker ps -a --format 'table {{.Names}}' | grep -q "^$base$"; then
       echo "  Stopping and removing $base..."
@@ -106,6 +116,13 @@ if [ "$CLEAN" = true ]; then
       docker rm $base >/dev/null 2>&1 || true
     fi
   done
+
+  # Clean up The Advancement test server if it exists
+  if docker ps -a --format 'table {{.Names}}' | grep -q "^advancement-test-server$"; then
+    echo "  Stopping and removing advancement-test-server..."
+    docker stop advancement-test-server >/dev/null 2>&1 || true
+    docker rm advancement-test-server >/dev/null 2>&1 || true
+  fi
   
   echo "✅ Cleanup completed"
   echo ""
@@ -114,7 +131,10 @@ fi
 # Build Docker image if requested (only for test environment)
 if [ "$BUILD" = true ] && [ "$ENVIRONMENT" = "test" ]; then
   echo "🔨 Building flexible allyabase Docker image..."
-  docker build -f Dockerfile-flexible -t allyabase-flexible .
+  # Build from planet-nine root directory so COPY paths work correctly
+  cd ../../../
+  docker build -f allyabase/deployment/docker/Dockerfile-flexible -t allyabase-flexible .
+  cd allyabase/deployment/docker
   echo "✅ Docker image built successfully"
   echo ""
 elif [ "$BUILD" = true ] && [ "$ENVIRONMENT" = "local" ]; then
@@ -202,6 +222,11 @@ if [ "$ENVIRONMENT" = "local" ]; then
     echo "  julia: http://localhost:3000"
     echo "  continuebee: http://localhost:2999"
     echo "  fount: http://localhost:3002"
+    if [ "$ENABLE_ADVANCEMENT" = true ]; then
+      echo "  advancement-test: http://localhost:3456 (enabled)"
+    else
+      echo "  advancement-test: http://localhost:3456 (disabled - use --enable-advancement)"
+    fi
     echo ""
     echo "💡 Use --seed flag to populate with sample data"
   fi
@@ -338,6 +363,46 @@ fi
 echo "✅ Base 3 started successfully!"
 echo ""
 
+# Start The Advancement test server if enabled
+if [ "$ENABLE_ADVANCEMENT" = true ]; then
+  echo "🚀 Starting The Advancement test server..."
+
+  cd ../../the-advancement/test-server
+
+  # Check if package.json exists
+  if [ ! -f "package.json" ]; then
+    echo "❌ The Advancement test server not found at ../../the-advancement/test-server"
+    echo "   Skipping The Advancement test server startup"
+    cd ../../allyabase/deployment/docker
+  else
+    # Install dependencies if node_modules doesn't exist
+    if [ ! -d "node_modules" ]; then
+      echo "  📦 Installing dependencies..."
+      npm install >/dev/null 2>&1
+    fi
+
+    # Start the server in background
+    echo "  🔧 Starting server on port 3456..."
+    nohup npm start > advancement-test-server.log 2>&1 &
+    ADVANCEMENT_PID=$!
+
+    # Wait a moment for startup
+    sleep 3
+
+    # Check if it's running
+    if ps -p $ADVANCEMENT_PID > /dev/null 2>&1; then
+      echo "  ✅ The Advancement test server started (PID: $ADVANCEMENT_PID)"
+      echo "  📋 Test server: http://localhost:3456"
+    else
+      echo "  ❌ The Advancement test server failed to start"
+      echo "  📋 Check advancement-test-server.log for details"
+    fi
+
+    cd ../../allyabase/deployment/docker
+  fi
+  echo ""
+fi
+
 # Final status report
 echo "🎉 All 3 allyabase instances are running!"
 echo ""
@@ -394,10 +459,21 @@ if [ "$ENABLE_PROF" = true ]; then
   echo "  prof: http://localhost:5323 → docker:3008"
 fi
 echo ""
+if [ "$ENABLE_ADVANCEMENT" = true ]; then
+  echo "The Advancement Test Server:"
+  echo "  test-server: http://localhost:3456 (native)"
+  echo ""
+fi
 echo "🛠️  Management Commands:"
 echo "  View logs: docker logs <container-name>"
+if [ "$ENABLE_ADVANCEMENT" = true ]; then
+  echo "  View advancement logs: cat ../../the-advancement/test-server/advancement-test-server.log"
+fi
 echo "  Stop all: docker stop allyabase-base1 allyabase-base2 allyabase-base3"
 echo "  Remove all: docker rm allyabase-base1 allyabase-base2 allyabase-base3"
+if [ "$ENABLE_ADVANCEMENT" = true ]; then
+  echo "  Stop advancement: pkill -f 'node server.js'"
+fi
 echo "  Restart: ./spin-up-bases.sh --clean --build"
 
 # Handle seeding for test environment
