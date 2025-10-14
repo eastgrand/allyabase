@@ -102,11 +102,12 @@ node seed-ecosystem.js test 3
 - Each includes: name, email, bio, skills, website, location, "I do this" specialty
 - Supports both IDothis professional discovery and MyBase networking
 
-### Products (Sanora Service)  
+### Products (Sanora Service)
 - **9 digital products** for Ninefy marketplace
 - Categories: courses, templates, toolkits, ebooks, frameworks, workshops
 - Examples: "React Mastery Course", "UI Design System Template", "Python Data Analysis Toolkit"
 - Realistic pricing ($19-$199), tags, and descriptions
+- **🪄 NEW**: Products created via `enchant-product` MAGIC spell (200 MP) - creates both product AND shareable BDO with emoji shortcode!
 
 ### Blog Posts (Sanora Service)
 - **9 technical blog posts** for Rhapsold blogging platform
@@ -214,6 +215,93 @@ seed-ecosystem.js
 - Social posts reference the same professionals
 - Products align with user specializations
 - Contracts reflect realistic professional service scenarios
+
+## 🪄 MAGIC Protocol Integration (January 2025)
+
+The seeding system now uses Sanora's MAGIC protocol for creating products with associated BDOs (Base Data Objects) in a single action.
+
+### Enchant-Product Spell
+
+**What it does**: Creates both a Sanora product AND a shareable BDO together
+**Cost**: 200 MP (Mana Points)
+**Location**: `/sanora/src/server/node/src/magic/magic.js`
+
+### How it Works in Seeding
+
+**Before** (Direct Product Upload):
+```javascript
+const product = await this.createProduct(user, productData);
+```
+
+**Now** (Spell-Based with BDO):
+```javascript
+const result = await this.castEnchantProductSpell(user, productData);
+// Creates:
+// 1. Product in Sanora
+// 2. Public BDO with auto-generated SVG
+// 3. Emoji shortcode for easy sharing
+```
+
+### Spell Casting Flow
+
+1. **Create Sanora user** (if needed)
+2. **Build spell payload** with product components:
+   - title, description, price, tags, category
+   - contentType, productId, metadata
+3. **Cast spell** via POST to `/magic/spell/enchant-product`
+4. **Get results** with both product UUID and BDO emoji shortcode
+
+### Example Result
+
+```javascript
+{
+  success: true,
+  product: {
+    uuid: "user-uuid",
+    title: "React Mastery Course",
+    productId: "react-mastery-course",
+    price: 9900
+  },
+  bdo: {
+    uuid: "bdo-uuid",
+    pubKey: "02a1b2c3d4e5f6a7...",
+    emojiShortcode: "🌍🔑💎🌟💎🎨🐉📌"
+  }
+}
+```
+
+### Benefits for Seeding
+
+- **Automatic BDOs**: All seeded products get shareable BDOs for free
+- **Cross-Base Discovery**: BDOs are public and discoverable across bases
+- **Auto-Generated SVGs**: Professional product cards created automatically
+- **Emoji Shortcodes**: Easy-to-share identifiers for all products
+- **Production Pattern**: Same spell available in Ninefy for user uploads
+
+### Configuration
+
+The `SanoraSeeder` class in `seed-ecosystem.js` uses the spell by default for all products:
+
+```javascript
+async seedProducts() {
+  for (const productData of sampleProducts) {
+    // Cast enchant-product spell (200 MP) to create product + BDO
+    const result = await this.castEnchantProductSpell(user, productData);
+    if (result && result.success) {
+      console.log(`✅ Created product + BDO: ${productData.title}`);
+      if (result.bdo && result.bdo.emojiShortcode) {
+        console.log(`   Emoji: ${result.bdo.emojiShortcode}`);
+      }
+    }
+  }
+}
+```
+
+### Documentation
+
+- **Sanora README**: Full spell documentation at `/sanora/README.md`
+- **Ninefy CLAUDE.md**: User-facing spell integration at `/the-nullary/ninefy/CLAUDE.md`
+- **Seed Script**: Implementation at `/allyabase/deployment/docker/seed-ecosystem.js` (lines 299-371)
 
 ## Integration with Nullary Apps
 

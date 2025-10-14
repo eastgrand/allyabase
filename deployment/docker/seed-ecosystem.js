@@ -21,72 +21,64 @@ import fetch from 'node-fetch';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import { generateMusicBDO, exampleMusicTracks } from './examples/music/music-bdo.js';
+import { generateRoomProduct, generateRoomSVG, exampleRooms } from './examples/rooms/room-bdo.js';
+import { generateProfiles } from './examples/profiles/profile-generator.js';
+import { generateSampleProducts, generateBlogPosts } from './examples/products/product-generator.js';
+import { generateSampleContracts } from './examples/contracts/contract-generator.js';
+import { generateSocialPosts } from './examples/social/social-generator.js';
 
-// Set up deterministic test key storage for Docker environment
+// Set up in-memory key storage for seed script
+const keyStorage = new Map();
 const testUsers = new Map();
 
-// Helper function to create deterministic test users without relying on sessionless storage
+// Track current user keys for sessionless signing
+let currentUserKeys = null;
+
+// Simple in-memory saveKeys/getKeys for sessionless (seed script only)
+const saveKeys = (keys) => {
+  currentUserKeys = keys;
+  keyStorage.set('current', keys);
+};
+
+const getKeys = () => {
+  return currentUserKeys;
+};
+
+// Helper function to create test users using sessionless
 const createTestUser = async (seed) => {
   // Check if we already created this user
   if (testUsers.has(seed)) {
     return testUsers.get(seed);
   }
-  
-  // Create deterministic keys from seed
-  const hash = crypto.createHash('sha256').update(seed).digest('hex');
-  const privateKey = hash.substring(0, 64);
-  
-  // Create deterministic public key using secp256k1
-  try {
-    // Import secp256k1 directly
-    const { secp256k1 } = await import('ethereum-cryptography/secp256k1');
-    const { bytesToHex } = await import('ethereum-cryptography/utils.js');
-    
-    const pubKey = bytesToHex(secp256k1.getPublicKey(privateKey));
-    const uuid = sessionless.generateUUID();
-    
-    const user = {
-      uuid,
-      pubKey,
-      privateKey
-    };
-    
-    testUsers.set(seed, user);
-    return user;
-    
-  } catch (error) {
-    console.log(`⚠️  Using simple fallback key generation for ${seed}`);
-    // Simple fallback
-    const uuid = crypto.createHash('sha256').update(seed + 'uuid').digest('hex').substring(0, 32);
-    const pubKey = crypto.createHash('sha256').update(seed + 'pubkey').digest('hex');
-    
-    const user = {
-      uuid,
-      pubKey,
-      privateKey
-    };
-    
-    testUsers.set(seed, user);
-    return user;
+
+  // Use sessionless to generate keys with our storage callbacks
+  // generateKeys is async and returns the keys
+  const keys = await sessionless.generateKeys(saveKeys, getKeys);
+  const uuid = sessionless.generateUUID();
+
+  if (!keys || !keys.pubKey || !keys.privateKey) {
+    throw new Error(`Failed to generate keys for ${seed}`);
   }
+
+  const user = {
+    uuid,
+    pubKey: keys.pubKey,
+    privateKey: keys.privateKey
+  };
+
+  testUsers.set(seed, user);
+  console.log(`  🔑 Generated keys for ${seed}: ${keys.pubKey.substring(0, 16)}...`);
+
+  return user;
 };
 
-// Custom sign function that works with our test users
-const signMessage = async (privateKey, message) => {
-  try {
-    const { secp256k1 } = await import('ethereum-cryptography/secp256k1');
-    const { keccak256 } = await import('ethereum-cryptography/keccak.js');
-    const { utf8ToBytes } = await import('ethereum-cryptography/utils.js');
-    
-    const messageHash = keccak256(utf8ToBytes(message));
-    const signatureAsBigInts = secp256k1.sign(messageHash, privateKey);
-    const signature = signatureAsBigInts.toCompactHex();
-    return signature;
-  } catch (error) {
-    console.log(`⚠️  Using fallback signature for message`);
-    // Simple fallback signature
-    return crypto.createHash('sha256').update(privateKey + message).digest('hex');
-  }
+// Sign function using sessionless
+// Note: sessionless.sign() uses getKeys() internally, so we need to set currentUserKeys first
+const signMessage = async (privateKey, message, pubKey) => {
+  // Set the current keys so sessionless.sign() can access them
+  currentUserKeys = { privateKey, pubKey };
+  return sessionless.sign(message);
 };
 
 // Configuration
@@ -189,401 +181,9 @@ const get = async (url) => {
   }
 };
 
-// Sample data generators
-const generateSampleUsers = () => [
-  {
-    name: 'Alice Developer',
-    email: 'alice@example.com',
-    bio: 'Full-stack developer passionate about web technologies and user experience.',
-    skills: ['JavaScript', 'React', 'Node.js', 'Python'],
-    website: 'https://alice-dev.com',
-    location: 'San Francisco, CA',
-    idothis: 'Full-stack web development'
-  },
-  {
-    name: 'Bob Designer',
-    email: 'bob@example.com',
-    bio: 'UI/UX designer creating beautiful and intuitive user interfaces.',
-    skills: ['Figma', 'Sketch', 'Adobe Creative Suite'],
-    website: 'https://bob-design.com',
-    location: 'New York, NY',
-    idothis: 'UI/UX design and prototyping'
-  },
-  {
-    name: 'Charlie Analytics',
-    email: 'charlie@example.com',
-    bio: 'Data analyst helping businesses make informed decisions through data insights.',
-    skills: ['Python', 'SQL', 'Tableau', 'Machine Learning'],
-    website: 'https://charlie-data.com',
-    location: 'Austin, TX',
-    idothis: 'Data analysis and business intelligence'
-  },
-  {
-    name: 'Diana Marketing',
-    email: 'diana@example.com',
-    bio: 'Digital marketing strategist specializing in content marketing and SEO.',
-    skills: ['Content Strategy', 'SEO', 'Google Analytics', 'Social Media'],
-    website: 'https://diana-marketing.com',
-    location: 'Los Angeles, CA',
-    idothis: 'Digital marketing and content strategy'
-  },
-  {
-    name: 'Eve Security',
-    email: 'eve@example.com',
-    bio: 'Cybersecurity expert protecting digital assets and infrastructure.',
-    skills: ['Penetration Testing', 'Network Security', 'Incident Response'],
-    website: 'https://eve-security.com',
-    location: 'Washington, DC',
-    idothis: 'Cybersecurity consulting and auditing'
-  },
-  {
-    name: 'Frank Project Manager',
-    email: 'frank@example.com',
-    bio: 'Agile project manager coordinating teams to deliver successful software projects.',
-    skills: ['Scrum', 'Kanban', 'Risk Management', 'Team Leadership'],
-    website: 'https://frank-pm.com',
-    location: 'Seattle, WA',
-    idothis: 'Agile project management and team coordination'
-  },
-  {
-    name: 'Grace DevOps',
-    email: 'grace@example.com',
-    bio: 'DevOps engineer automating infrastructure and deployment processes.',
-    skills: ['Docker', 'Kubernetes', 'AWS', 'Terraform', 'CI/CD'],
-    website: 'https://grace-devops.com',
-    location: 'Portland, OR',
-    idothis: 'DevOps engineering and cloud infrastructure'
-  },
-  {
-    name: 'Henry Writer',
-    email: 'henry@example.com',
-    bio: 'Technical writer creating clear documentation and engaging content.',
-    skills: ['Technical Writing', 'Content Creation', 'API Documentation'],
-    website: 'https://henry-writes.com',
-    location: 'Boston, MA',
-    idothis: 'Technical writing and documentation'
-  },
-  {
-    name: 'Iris Consultant',
-    email: 'iris@example.com',
-    bio: 'Business consultant helping startups scale and optimize operations.',
-    skills: ['Strategic Planning', 'Process Optimization', 'Market Analysis'],
-    website: 'https://iris-consulting.com',
-    location: 'Chicago, IL',
-    idothis: 'Business strategy and operations consulting'
-  }
-];
+// Sample data generators have been moved to examples/ directory
+// Now imported at the top of the file
 
-const generateSampleProducts = () => [
-  {
-    title: 'React Mastery Course',
-    description: 'Comprehensive course covering React fundamentals to advanced patterns. Learn hooks, context, testing, and performance optimization.',
-    price: 9900, // $99.00 in cents
-    tags: ['react', 'javascript', 'frontend', 'web-development'],
-    category: 'course',
-    contentType: 'video'
-  },
-  {
-    title: 'UI Design System Template',
-    description: 'Complete Figma template with components, tokens, and documentation for building consistent user interfaces.',
-    price: 4900,
-    tags: ['figma', 'design-system', 'ui', 'templates'],
-    category: 'template',
-    contentType: 'figma'
-  },
-  {
-    title: 'Python Data Analysis Toolkit',
-    description: 'Collection of Python scripts and Jupyter notebooks for data cleaning, visualization, and statistical analysis.',
-    price: 2900,
-    tags: ['python', 'data-analysis', 'jupyter', 'statistics'],
-    category: 'toolkit',
-    contentType: 'code'
-  },
-  {
-    title: 'SEO Audit Checklist',
-    description: 'Comprehensive 50-point checklist for conducting thorough SEO audits of websites and web applications.',
-    price: 1900,
-    tags: ['seo', 'marketing', 'audit', 'checklist'],
-    category: 'ebook',
-    contentType: 'pdf'
-  },
-  {
-    title: 'Cybersecurity Assessment Framework',
-    description: 'Professional framework for conducting security assessments, including templates, checklists, and reporting tools.',
-    price: 14900,
-    tags: ['cybersecurity', 'assessment', 'framework', 'enterprise'],
-    category: 'framework',
-    contentType: 'pdf'
-  },
-  {
-    title: 'Agile Project Planning Templates',
-    description: 'Set of project planning templates for Scrum teams, including sprint planning, retrospectives, and roadmaps.',
-    price: 3900,
-    tags: ['agile', 'scrum', 'project-management', 'templates'],
-    category: 'template',
-    contentType: 'spreadsheet'
-  },
-  {
-    title: 'Docker & Kubernetes Workshop',
-    description: 'Hands-on workshop covering containerization with Docker and orchestration with Kubernetes.',
-    price: 19900,
-    tags: ['docker', 'kubernetes', 'devops', 'containers'],
-    category: 'workshop',
-    contentType: 'video'
-  },
-  {
-    title: 'API Documentation Starter Kit',
-    description: 'Complete starter kit for creating beautiful API documentation with examples, templates, and best practices.',
-    price: 2900,
-    tags: ['api', 'documentation', 'technical-writing', 'templates'],
-    category: 'toolkit',
-    contentType: 'markdown'
-  },
-  {
-    title: 'Startup Growth Strategy Guide',
-    description: 'Comprehensive guide covering growth strategies, metrics, and frameworks for scaling early-stage startups.',
-    price: 7900,
-    tags: ['startup', 'growth', 'strategy', 'business'],
-    category: 'ebook',
-    contentType: 'pdf'
-  }
-];
-
-const generateBlogPosts = () => [
-  {
-    title: 'The Future of Web Development in 2025',
-    description: 'Exploring emerging trends in web development, from AI-powered tools to new frameworks and developer experiences.',
-    url: 'https://example.com/future-web-dev-2025',
-    tags: ['web-development', 'trends', '2025', 'ai'],
-    category: 'blog'
-  },
-  {
-    title: 'Building Accessible UIs: A Complete Guide',
-    description: 'Learn how to create user interfaces that work for everyone, including best practices for accessibility and inclusive design.',
-    url: 'https://example.com/accessible-ui-guide',
-    tags: ['accessibility', 'ui', 'inclusive-design', 'a11y'],
-    category: 'blog'
-  },
-  {
-    title: 'Data Privacy in the Age of AI',
-    description: 'Examining the challenges and opportunities of maintaining data privacy while leveraging artificial intelligence.',
-    url: 'https://example.com/data-privacy-ai',
-    tags: ['data-privacy', 'ai', 'security', 'ethics'],
-    category: 'blog'
-  },
-  {
-    title: 'Remote Team Management Best Practices',
-    description: 'Strategies for effectively managing distributed teams, maintaining culture, and ensuring productivity.',
-    url: 'https://example.com/remote-team-management',
-    tags: ['remote-work', 'team-management', 'productivity', 'culture'],
-    category: 'blog'
-  },
-  {
-    title: 'Understanding Modern CI/CD Pipelines',
-    description: 'A deep dive into continuous integration and deployment practices for modern software development.',
-    url: 'https://example.com/modern-cicd-pipelines',
-    tags: ['ci-cd', 'devops', 'automation', 'software-development'],
-    category: 'blog'
-  },
-  {
-    title: 'Creating Technical Documentation That Developers Love',
-    description: 'Tips and techniques for writing technical documentation that is clear, useful, and maintainable.',
-    url: 'https://example.com/technical-documentation-tips',
-    tags: ['technical-writing', 'documentation', 'developer-experience', 'communication'],
-    category: 'blog'
-  },
-  {
-    title: 'Scaling Startups: Lessons from the Trenches',
-    description: 'Real-world insights and lessons learned from helping startups navigate growth challenges.',
-    url: 'https://example.com/scaling-startups-lessons',
-    tags: ['startup', 'scaling', 'growth', 'lessons-learned'],
-    category: 'blog'
-  },
-  {
-    title: 'The Psychology of User Experience Design',
-    description: 'How psychological principles can inform better UX design decisions and improve user satisfaction.',
-    url: 'https://example.com/psychology-ux-design',
-    tags: ['ux', 'psychology', 'user-behavior', 'design-principles'],
-    category: 'blog'
-  },
-  {
-    title: 'Cybersecurity for Small Businesses',
-    description: 'Essential cybersecurity practices that small businesses can implement without breaking the bank.',
-    url: 'https://example.com/cybersecurity-small-business',
-    tags: ['cybersecurity', 'small-business', 'security-practices', 'budget-friendly'],
-    category: 'blog'
-  }
-];
-
-const generateSocialPosts = () => [
-  {
-    content: '🚀 Just shipped a new feature using React 18\'s concurrent features! The user experience improvements are incredible. Anyone else experimenting with the new APIs?',
-    author: 'Alice Developer',
-    tags: ['react', 'web-development', 'javascript'],
-    type: 'text'
-  },
-  {
-    content: '✨ Finished designing a new design system for our team. Consistency across products has improved dramatically. The power of systematic design! 🎨',
-    author: 'Bob Designer',
-    tags: ['design-system', 'ui-ux', 'design'],
-    type: 'text'
-  },
-  {
-    content: '📊 Analyzed user behavior data and found some surprising insights about mobile vs desktop usage patterns. Data never ceases to amaze me!',
-    author: 'Charlie Analytics',
-    tags: ['data-analysis', 'user-behavior', 'insights'],
-    type: 'text'
-  },
-  {
-    content: '🎯 Latest SEO campaign resulted in 150% increase in organic traffic! Content strategy and technical SEO working hand in hand.',
-    author: 'Diana Marketing',
-    tags: ['seo', 'marketing', 'content-strategy'],
-    type: 'text'
-  },
-  {
-    content: '🔒 Completed a penetration test that revealed critical vulnerabilities. The importance of regular security audits cannot be overstated.',
-    author: 'Eve Security',
-    tags: ['cybersecurity', 'penetration-testing', 'security-audit'],
-    type: 'text'
-  },
-  {
-    content: '⚡ Successfully migrated our entire infrastructure to Kubernetes. The scalability and reliability improvements are game-changing!',
-    author: 'Grace DevOps',
-    tags: ['kubernetes', 'devops', 'infrastructure'],
-    type: 'text'
-  },
-  {
-    content: '📝 Just published comprehensive API documentation that reduced support tickets by 40%. Good docs = happy developers!',
-    author: 'Henry Writer',
-    tags: ['technical-writing', 'api-documentation', 'developer-experience'],
-    type: 'text'
-  },
-  {
-    content: '💡 Helped a startup optimize their operations and reduce costs by 30%. Strategic thinking + execution = results!',
-    author: 'Iris Consultant',
-    tags: ['business-consulting', 'startup', 'optimization'],
-    type: 'text'
-  },
-  {
-    content: '🎉 Team successfully delivered project 2 weeks ahead of schedule using agile methodologies. Clear communication is key!',
-    author: 'Frank Project Manager',
-    tags: ['project-management', 'agile', 'team-success'],
-    type: 'text'
-  }
-];
-
-const generateContracts = () => [
-  {
-    title: 'Website Development Agreement',
-    description: 'Contract for developing a modern e-commerce website with payment integration',
-    participants: 2,
-    steps: [
-      'Requirements gathering and wireframing',
-      'UI/UX design and client approval',
-      'Frontend development',
-      'Backend and payment integration',
-      'Testing and quality assurance',
-      'Deployment and training'
-    ]
-  },
-  {
-    title: 'Digital Marketing Campaign',
-    description: 'Three-month digital marketing campaign for startup launch',
-    participants: 2,
-    steps: [
-      'Market research and competitor analysis',
-      'Content strategy development',
-      'Campaign creation and setup',
-      'Performance monitoring and optimization',
-      'Final reporting and recommendations'
-    ]
-  },
-  {
-    title: 'Security Audit Engagement',
-    description: 'Comprehensive cybersecurity assessment for enterprise client',
-    participants: 3,
-    steps: [
-      'Initial security assessment',
-      'Penetration testing',
-      'Vulnerability analysis',
-      'Report generation',
-      'Remediation guidance',
-      'Follow-up verification'
-    ]
-  },
-  {
-    title: 'DevOps Infrastructure Setup',
-    description: 'Cloud infrastructure setup with CI/CD pipeline implementation',
-    participants: 2,
-    steps: [
-      'Requirements analysis',
-      'Infrastructure planning',
-      'CI/CD pipeline setup',
-      'Monitoring implementation',
-      'Documentation and training'
-    ]
-  },
-  {
-    title: 'Business Strategy Consulting',
-    description: 'Strategic planning engagement for scaling technology startup',
-    participants: 2,
-    steps: [
-      'Business model analysis',
-      'Market opportunity assessment',
-      'Growth strategy development',
-      'Implementation roadmap',
-      'Success metrics definition'
-    ]
-  },
-  {
-    title: 'API Documentation Project',
-    description: 'Complete API documentation overhaul for developer platform',
-    participants: 2,
-    steps: [
-      'API inventory and analysis',
-      'Documentation structure planning',
-      'Content creation and examples',
-      'Review and feedback integration',
-      'Publication and developer onboarding'
-    ]
-  },
-  {
-    title: 'Data Analytics Dashboard',
-    description: 'Custom analytics dashboard development for business intelligence',
-    participants: 2,
-    steps: [
-      'Data requirements gathering',
-      'Dashboard design and mockups',
-      'Data pipeline development',
-      'Visualization implementation',
-      'User training and handoff'
-    ]
-  },
-  {
-    title: 'UX Research and Design',
-    description: 'User experience research and redesign for mobile application',
-    participants: 2,
-    steps: [
-      'User research and interviews',
-      'Usability testing',
-      'Design concept development',
-      'Prototype creation',
-      'Final design delivery'
-    ]
-  },
-  {
-    title: 'Project Management Consulting',
-    description: 'Agile transformation and project management process improvement',
-    participants: 2,
-    steps: [
-      'Current process assessment',
-      'Agile framework selection',
-      'Team training and onboarding',
-      'Process implementation',
-      'Performance measurement and optimization'
-    ]
-  }
-];
 
 // Service interaction classes
 class ProfSeeder {
@@ -600,7 +200,7 @@ class ProfSeeder {
     try {
       const timestamp = new Date().getTime();
       const hash = sessionless.generateUUID();
-      const signature = await signMessage(user.privateKey, user.uuid + timestamp);
+      const signature = await signMessage(user.privateKey, user.uuid + timestamp, user.pubKey);
 
       const response = await post(`${this.baseURL}/user/${user.uuid}/profile`, {
         uuid: user.uuid,
@@ -609,14 +209,13 @@ class ProfSeeder {
         signature,
         profileData: {
           ...profileData,
-          tags: ['author'], // Add author tag so profiles appear in author filtering
+          tags: profileData.tags || ['author'], // Use profile's tags for filtering
           additional_fields: {
             idothis: profileData.idothis
           }
         }
       });
 
-console.log('got this response from prof', response);
       return response;
     } catch (error) {
       console.error(`Failed to create profile for ${profileData.name}:`, error.message);
@@ -626,23 +225,23 @@ console.log('got this response from prof', response);
 
   async seedProfiles() {
     console.log('👥 Seeding Prof service with user profiles...');
-    
-    const sampleUsers = generateSampleUsers();
-    
-    for (const userData of sampleUsers) {
+
+    const profiles = generateProfiles();
+
+    for (const userData of profiles) {
       try {
         const user = await this.createUser(`prof-user-${userData.name}`);
         const profile = await this.createProfile(user, userData);
-        
+
         if (profile) {
           this.users.push({ ...user, profile: userData });
-          console.log(`  ✅ Created profile: ${userData.name}`);
+          console.log(`  ✅ Created profile: ${userData.name} (${userData.tags.join(', ')})`);
         }
       } catch (error) {
         console.error(`  ❌ Failed to create profile for ${userData.name}:`, error.message);
       }
     }
-    
+
     console.log(`📊 Prof seeding complete: ${this.users.length} profiles created\n`);
     return this.users;
   }
@@ -658,7 +257,7 @@ class SanoraSeeder {
   async createUser(seed) {
     const keys = await createTestUser(seed);
     const timestamp = new Date().getTime();
-    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey);
+    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey, keys.pubKey);
 
     try {
       const response = await put(`${this.baseURL}/user/create`, {
@@ -682,7 +281,7 @@ class SanoraSeeder {
     try {
       const timestamp = new Date().getTime();
       const message = timestamp + user.uuid + productData.title + productData.description + productData.price;
-      const signature = await signMessage(user.privateKey, message);
+      const signature = await signMessage(user.privateKey, message, user.pubKey);
 
       const response = await put(`${this.baseURL}/user/${user.uuid}/product/${encodeURIComponent(productData.title)}`, {
         ...productData,
@@ -698,8 +297,8 @@ class SanoraSeeder {
   }
 
   async seedProducts() {
-    console.log('🛍️ Seeding Sanora service with products...');
-    
+    console.log('🛍️ Seeding Sanora service with products via enchant-product spell...');
+
     try {
       const user = await this.createUser('sanora-products-user');
       if (!user) {
@@ -707,26 +306,73 @@ class SanoraSeeder {
       }
 
       const sampleProducts = generateSampleProducts();
-      
+
       for (const productData of sampleProducts) {
-        const product = await this.createProduct(user, productData);
-        if (product) {
-          this.products.push(product);
-          console.log(`  ✅ Created product: ${productData.title}`);
+        // Cast enchant-product spell (200 MP) to create product + BDO
+        const result = await this.castEnchantProductSpell(user, productData);
+        if (result && result.success) {
+          this.products.push(result.product);
+          console.log(`  ✅ Created product + BDO: ${productData.title}`);
+          if (result.bdo && result.bdo.emojiShortcode) {
+            console.log(`     Emoji: ${result.bdo.emojiShortcode}`);
+          }
+        } else {
+          console.error(`  ⚠️  Failed to enchant product: ${productData.title}`);
         }
       }
-      
-      console.log(`📊 Sanora product seeding complete: ${this.products.length} products created\n`);
+
+      console.log(`📊 Sanora product seeding complete: ${this.products.length} products + BDOs created\n`);
     } catch (error) {
       console.error('❌ Sanora seeding failed:', error.message);
     }
-    
+
     return this.products;
+  }
+
+  async castEnchantProductSpell(user, productData) {
+    try {
+      // 1. Get gateway for enchant-product spell (requires 200 MP)
+      const gatewayTimestamp = new Date().getTime();
+      const gatewayMessage = gatewayTimestamp + user.uuid;
+      const gatewaySignature = await signMessage(user.privateKey, gatewayMessage, user.pubKey);
+
+      const gateway = {
+        timestamp: gatewayTimestamp.toString(),
+        uuid: user.uuid,
+        signature: gatewaySignature,
+        minimumCost: 200, // enchant-product costs 200 MP
+        ordinal: 0
+      };
+
+      // 2. Cast the spell with product components
+      const spell = {
+        casterUUID: user.uuid,
+        gateway: gateway,
+        components: {
+          title: productData.title,
+          description: productData.description,
+          price: productData.price,
+          tags: productData.tags,
+          category: productData.category,
+          contentType: productData.contentType,
+          productId: productData.productId,
+          metadata: productData.metadata || {}
+          // svgContent is optional - spell will auto-generate if not provided
+        }
+      };
+
+      // 3. POST to MAGIC endpoint
+      const response = await post(`${this.baseURL}/magic/spell/enchant-product`, spell);
+      return response;
+    } catch (error) {
+      console.error(`Failed to cast enchant-product spell:`, error.message);
+      return null;
+    }
   }
 
   async seedBlogPosts() {
     console.log('📝 Seeding Sanora service with blog posts...');
-    
+
     try {
       const user = await this.createUser('sanora-blogs-user');
       if (!user) {
@@ -734,7 +380,7 @@ class SanoraSeeder {
       }
 
       const blogPosts = generateBlogPosts();
-      
+
       for (const postData of blogPosts) {
         const blogPost = await this.createProduct(user, {
           ...postData,
@@ -742,19 +388,50 @@ class SanoraSeeder {
           tags: postData.tags || [],
           contentType: 'external'
         });
-        
+
         if (blogPost) {
           this.blogPosts.push(blogPost);
           console.log(`  ✅ Created blog post: ${postData.title}`);
         }
       }
-      
+
       console.log(`📊 Sanora blog seeding complete: ${this.blogPosts.length} blog posts created\n`);
     } catch (error) {
       console.error('❌ Sanora blog seeding failed:', error.message);
     }
-    
+
     return this.blogPosts;
+  }
+
+  async seedRooms() {
+    console.log('🏠 Seeding Sanora service with room listings for Roomz...');
+
+    try {
+      const user = await this.createUser('sanora-roomz-user');
+      if (!user) {
+        throw new Error('Failed to create Sanora user for rooms');
+      }
+
+      const rooms = [];
+
+      for (const roomData of exampleRooms) {
+        const roomProduct = generateRoomProduct(roomData);
+        const room = await this.createProduct(user, roomProduct);
+
+        if (room) {
+          rooms.push(room);
+          console.log(`  ✅ Created room: ${roomData.name}`);
+          console.log(`     ${roomData.beds} bed, ${roomData.baths} bath • ${roomData.size} sq ft`);
+          console.log(`     $${(roomData.monthlyRent / 100).toFixed(2)}/mo`);
+        }
+      }
+
+      console.log(`📊 Sanora room seeding complete: ${rooms.length} rooms created\n`);
+      return rooms;
+    } catch (error) {
+      console.error('❌ Sanora room seeding failed:', error.message);
+      return [];
+    }
   }
 }
 
@@ -767,7 +444,7 @@ class DoloresSeeder {
   async createUser(seed) {
     const keys = await createTestUser(seed);
     const timestamp = new Date().getTime();
-    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey);
+    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey, keys.pubKey);
 
     try {
       const response = await put(`${this.baseURL}/user/create`, {
@@ -835,7 +512,7 @@ class CovenantSeeder {
     try {
       const timestamp = new Date().getTime();
       const message = timestamp + user.uuid;
-      const signature = await signMessage(user.privateKey, message);
+      const signature = await signMessage(user.privateKey, message, user.pubKey);
 
       // Create participant UUIDs
       const participants = [];
@@ -904,7 +581,7 @@ class BDOSeeder {
     const keys = await createTestUser(seed);
     const timestamp = new Date().getTime();
     const hash = sessionless.generateUUID();
-    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey + hash);
+    const signature = await signMessage(keys.privateKey, timestamp + keys.pubKey + hash, keys.pubKey);
 
     try {
       const response = await put(`${this.baseURL}/user/create`, {
@@ -915,8 +592,14 @@ class BDOSeeder {
         bdo: { bases: [], discoveryData: {} }
       });
 
+      // BDO API might return full response object or just UUID string
+      const uuid = typeof response === 'string' ? response :
+                   response?.uuid || response?.data?.uuid || keys.uuid;
+
+      console.log(`  ✅ BDO user created with UUID: ${uuid}`);
+
       return {
-        uuid: response,
+        uuid: uuid,
         pubKey: keys.pubKey,
         privateKey: keys.privateKey,
         hash
@@ -966,7 +649,7 @@ class BDOSeeder {
 
       // Save bases to BDO
       const timestamp = new Date().getTime();
-      const signature = await signMessage(user.privateKey, timestamp + user.uuid + user.hash);
+      const signature = await signMessage(user.privateKey, timestamp + user.uuid + user.hash, user.pubKey);
 
       await put(`${this.baseURL}/user/${user.uuid}/bases`, {
         timestamp: timestamp.toString(),
@@ -984,6 +667,514 @@ class BDOSeeder {
     }
     
     return this.bases;
+  }
+
+  // Simple emojicoding for encoding pubKey (kept for backwards compatibility)
+  simpleEncodeHex(hexString) {
+    const BASE64_TO_EMOJI = {
+      'A': '😀', 'B': '😃', 'C': '😄', 'D': '😁', 'E': '😆', 'F': '😅', 'G': '😂', 'H': '😊',
+      'I': '😉', 'J': '😍', 'K': '😘', 'L': '😋', 'M': '😎', 'N': '😐', 'O': '😑', 'P': '😔',
+      'Q': '❤️', 'R': '💛', 'S': '💚', 'T': '💙', 'U': '💜', 'V': '💔', 'W': '💕', 'X': '💖',
+      'Y': '👍', 'Z': '👎', 'a': '👌', 'b': '✌️', 'c': '👈', 'd': '👉', 'e': '👆', 'f': '👇',
+      'g': '☀️', 'h': '🌙', 'i': '⭐', 'j': '⚡', 'k': '☁️', 'l': '❄️', 'm': '🔥', 'n': '💧',
+      'o': '🐶', 'p': '🐱', 'q': '🐭', 'r': '🐰', 's': '🐻', 't': '🐯', 'u': '🐸', 'v': '🐧',
+      'w': '💎', 'x': '🔑', 'y': '🎁', 'z': '🎉', '0': '🏠', '1': '🚗', '2': '📱', '3': '⚽',
+      '4': '🍎', '5': '🍊', '6': '🍌', '7': '🍕', '8': '🍔', '9': '🍰', '+': '☕', '/': '🍺',
+      '=': '🌿'
+    };
+
+    const binaryString = hexString.match(/.{2}/g).map(hex =>
+      String.fromCharCode(parseInt(hex, 16))
+    ).join('');
+
+    const base64 = Buffer.from(binaryString, 'binary').toString('base64');
+    const emoji = base64.split('').map(char => BASE64_TO_EMOJI[char] || char).join('');
+
+    return '✨' + emoji + '✨';
+  }
+
+  // Fetch the real emojicode from BDO service
+  async getEmojicodeForPubKey(pubKey) {
+    try {
+      const response = await get(`${this.baseURL}/pubkey/${pubKey}/emojicode`);
+      return response.emojicode;
+    } catch (error) {
+      console.error(`  ⚠️  Failed to fetch emojicode for pubKey: ${error.message}`);
+      // Fallback to local encoding if BDO service doesn't have it yet
+      return this.simpleEncodeHex(pubKey.toLowerCase());
+    }
+  }
+
+  async seedProductBDO(productId, productTitle, productPrice) {
+    console.log(`🛍️ Seeding product BDO with SVG content for: ${productTitle}...`);
+
+    try {
+      const user = await this.createUser(`product-bdo-user-${productId}`);
+      if (!user) {
+        throw new Error(`Failed to create product BDO user for ${productId}`);
+      }
+
+      // Create product BDO with SVG - includes productId and base UUID in spell-components
+      const productBDOData = {
+        title: productTitle,
+        type: "product",
+        productId: productId,
+        price: productPrice,
+        svgContent: `<svg width="320" height="60" viewBox="0 0 320 60" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="320" height="60" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1" rx="8"/>
+  <rect spell="share" x="10" y="10" width="90" height="40" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="6">
+    <title>Share this product</title>
+  </rect>
+  <text spell="share" x="55" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">📤 SHARE</text>
+  <rect spell="add-to-cart" spell-components="productId:${productId};baseUuid:${user.uuid}" x="115" y="10" width="90" height="40" fill="#27ae60" stroke="#219a52" stroke-width="2" rx="6">
+    <title>Add to cart</title>
+  </rect>
+  <text spell="add-to-cart" x="160" y="32" text-anchor="middle" fill="white" font-size="11" font-weight="bold">🛒 ADD TO CART</text>
+  <rect spell="magic" x="220" y="10" width="90" height="40" fill="#e91e63" stroke="#c2185b" stroke-width="2" rx="6">
+    <title>Cast product magic</title>
+  </rect>
+  <text spell="magic" x="265" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🪄 MAGIC</text>
+</svg>`,
+        description: `Interactive product actions for ${productTitle}`
+      };
+
+      // Create the BDO with the product data
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + hash + user.pubKey;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: productBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+
+      // Get emoji shortcode from response (or fallback to fetching it)
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Product BDO created successfully`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  📦 Product ID: ${productId}`);
+      console.log(`  💰 Price: $${(productPrice / 100).toFixed(2)}`);
+
+      // Track for final summary
+      emojicodedReferences.push({
+        type: 'Product',
+        title: productTitle,
+        productId,
+        price: `$${(productPrice / 100).toFixed(2)}`,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        bdo: productBDOData,
+        productId
+      };
+    } catch (error) {
+      console.error(`❌ Product BDO seeding failed for ${productId}:`, error.message);
+      console.error('   Stack:', error.stack);
+      return null;
+    }
+  }
+
+  async seedContractSigningBDO(contractId, contractTitle, participantPubKeys) {
+    console.log(`📜 Seeding contract signing UI BDO for: ${contractTitle}...`);
+
+    try {
+      const user = await this.createUser(`contract-signing-ui-${contractId}`);
+      user.pubKey = user.pubKey.toLowerCase();
+      if (!user) {
+        throw new Error('Failed to create contract signing UI user');
+      }
+
+      console.log(`  🔍 Contract signing UI user created:`, {
+        uuid: user.uuid,
+        pubKey: user.pubKey,
+        contractId
+      });
+
+      // Create contract signing UI BDO with participants array
+      const contractSigningBDOData = {
+        title: `Contract Signing: ${contractTitle}`,
+        type: "contract-signing-ui",
+        contractId: contractId,
+        contractUuid: user.uuid, // The UUID used to access the contract in Covenant
+        participants: participantPubKeys, // Array of pubKeys authorized to sign
+        svgContent: `<svg width="320" height="60" viewBox="0 0 320 60" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="320" height="60" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1" rx="8"/>
+  <rect spell="sign" spell-components="contractUuid:${user.uuid};contractId:${contractId}" x="10" y="10" width="90" height="40" fill="#27ae60" stroke="#219a52" stroke-width="2" rx="6">
+    <title>Sign this contract</title>
+  </rect>
+  <text spell="sign" spell-components="contractUuid:${user.uuid};contractId:${contractId}" x="55" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">✍️ SIGN</text>
+  <rect spell="decline" spell-components="contractUuid:${user.uuid};contractId:${contractId}" x="115" y="10" width="90" height="40" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="6">
+    <title>Decline this contract</title>
+  </rect>
+  <text spell="decline" spell-components="contractUuid:${user.uuid};contractId:${contractId}" x="160" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">❌ DECLINE</text>
+  <rect spell="magic" x="220" y="10" width="90" height="40" fill="#e91e63" stroke="#c2185b" stroke-width="2" rx="6">
+    <title>Cast contract magic</title>
+  </rect>
+  <text spell="magic" x="265" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🪄 MAGIC</text>
+</svg>`,
+        description: `Signing interface for contract: ${contractTitle}`,
+        createdAt: new Date().toISOString()
+      };
+
+      // Create the BDO with the contract signing UI data
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: contractSigningBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+
+      // Get emoji shortcode from response (or fallback to fetching it)
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Contract signing UI BDO created successfully`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  📝 Contract: ${contractTitle}`);
+      console.log(`  👥 Participants: ${participantPubKeys.length} authorized signers`);
+
+      // Track for final summary
+      emojicodedReferences.push({
+        type: 'Contract Signing UI',
+        title: contractTitle,
+        contractId,
+        participants: participantPubKeys.length,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        bdo: contractSigningBDOData,
+        contractId
+      };
+    } catch (error) {
+      console.error(`❌ Contract signing UI BDO seeding failed for ${contractId}:`, error.message);
+      console.error('   Stack:', error.stack);
+      return null;
+    }
+  }
+
+  async seedRecipeBDO() {
+    console.log('🍪 Seeding recipe BDO with SVG content...');
+
+    try {
+      const user = await this.createUser('recipe-bdo-user');
+      user.pubKey = user.pubKey.toLowerCase();
+      if (!user) {
+        throw new Error('Failed to create recipe BDO user');
+      }
+
+      console.log(`  🔍 Recipe BDO user created:`, {
+        uuid: user.uuid,
+        pubKey: user.pubKey
+      });
+
+      // Create complete recipe BDO with SVG
+      const recipeBDOData = {
+        title: "Grandma's Secret Chocolate Chip Cookies Recipe",
+        type: "recipe",
+        svgContent: `<svg width="320" height="60" viewBox="0 0 320 60" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="320" height="60" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1" rx="8"/>
+  <rect spell="share" x="10" y="10" width="90" height="40" fill="#27ae60" stroke="#219a52" stroke-width="2" rx="6">
+    <title>Share this recipe</title>
+  </rect>
+  <text spell="share" x="55" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">📤 SHARE</text>
+  <rect spell="collect" x="115" y="10" width="90" height="40" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="6">
+    <title>Save to your collection</title>
+  </rect>
+  <text spell="collect" x="160" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">💾 SAVE</text>
+  <rect spell="magic" x="220" y="10" width="90" height="40" fill="#e91e63" stroke="#c2185b" stroke-width="2" rx="6">
+    <title>Cast kitchen magic</title>
+  </rect>
+  <text spell="magic" x="265" y="32" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🪄 MAGIC</text>
+</svg>`,
+        description: "A family recipe passed down through generations, featuring the perfect balance of crispy edges and chewy centers.",
+        author: {
+          name: "Sarah Mitchell",
+          bio: "Home baker and food blogger sharing family recipes",
+          location: "Portland, Oregon"
+        },
+        ingredients: [
+          { item: "all-purpose flour", amount: "2¼ cups" },
+          { item: "unsalted butter, softened", amount: "1 cup (2 sticks)" },
+          { item: "granulated sugar", amount: "¾ cup" },
+          { item: "packed brown sugar", amount: "¾ cup" },
+          { item: "large eggs", amount: "2" },
+          { item: "pure vanilla extract", amount: "2 teaspoons" },
+          { item: "baking soda", amount: "1 teaspoon" },
+          { item: "salt", amount: "1 teaspoon" },
+          { item: "semi-sweet chocolate chips", amount: "2 cups" }
+        ],
+        instructions: [
+          "Preheat your oven to 375°F (190°C). Line two baking sheets with parchment paper.",
+          "In a medium bowl, whisk together flour, baking soda, and salt. Set aside.",
+          "In a large bowl, cream together the softened butter, granulated sugar, and brown sugar until light and fluffy (about 3-4 minutes with an electric mixer).",
+          "Beat in eggs one at a time, then add vanilla extract. Mix until well combined.",
+          "Gradually blend in the flour mixture until just combined. Don't overmix! Fold in chocolate chips gently.",
+          "Drop rounded tablespoons of dough onto prepared baking sheets, spacing them about 2 inches apart.",
+          "Bake for 9-11 minutes, or until edges are golden brown but centers still look slightly underdone. Cool on baking sheet for 5 minutes before transferring to wire rack."
+        ],
+        tags: ["cookies", "chocolate-chip", "dessert", "baking", "family-recipe", "comfort-food"]
+      };
+
+      // Create the BDO with the recipe data
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: recipeBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+      console.log('bdoResponse is ', bdoResponse);
+
+      // Get emoji shortcode from response (or fallback to fetching it)
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Recipe BDO created successfully`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  ☮️  bdoPayloadPubKey: ${bdoPayload.pubKey}`);
+      console.log(`  📝 Title: ${recipeBDOData.title}`);
+      console.log(`  ✅ SVG content: ${recipeBDOData.svgContent ? 'Present' : 'Missing'}`);
+
+      // Try to update recipe-blog.html with the new emoji shortcode
+      const possiblePaths = [
+        path.join(process.cwd(), '../../the-advancement/test-server/public/recipe-blog.html'),
+        path.join(process.cwd(), '../../../the-advancement/test-server/public/recipe-blog.html'),
+        path.join(process.cwd(), 'the-advancement/test-server/public/recipe-blog.html'),
+        '/Users/zachbabb/Work/planet-nine/the-advancement/test-server/public/recipe-blog.html'
+      ];
+
+      let htmlUpdated = false;
+      for (const htmlPath of possiblePaths) {
+        try {
+          if (fs.existsSync(htmlPath)) {
+            console.log(`  📄 Found recipe-blog.html at: ${htmlPath}`);
+
+            let htmlContent = fs.readFileSync(htmlPath, 'utf8');
+
+            // Replace the emojicoded display content (between the div tags)
+            // Look for the pattern: <div class="emojicoded-display">...</div>
+            const emojicodedPattern = /(<div class="emojicoded-display">)([\s\S]*?)(<\/div>)/;
+
+            if (emojicodedPattern.test(htmlContent)) {
+              htmlContent = htmlContent.replace(
+                emojicodedPattern,
+                `$1\n                    ${emojiShortcode}\n                $3`
+              );
+
+              fs.writeFileSync(htmlPath, htmlContent, 'utf8');
+              console.log(`  ✅ Updated recipe-blog.html with new emoji shortcode`);
+              htmlUpdated = true;
+              break;
+            } else {
+              console.log(`  ⚠️  Could not find emojicoded-display div in ${htmlPath}`);
+            }
+          }
+        } catch (error) {
+          console.log(`  ⚠️  Could not update ${htmlPath}: ${error.message}`);
+        }
+      }
+
+      if (!htmlUpdated) {
+        console.log(`\n  ⚠️  Could not find recipe-blog.html to update automatically`);
+        console.log(`  📋 Manually update recipe-blog.html with this emoji shortcode:`);
+        console.log(`     ${emojiShortcode}\n`);
+      }
+
+      // Track for final summary
+      emojicodedReferences.push({
+        type: 'Recipe',
+        title: recipeBDOData.title,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid,
+        htmlUpdated
+      });
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        bdo: recipeBDOData,
+        htmlUpdated
+      };
+    } catch (error) {
+      console.error('❌ Recipe BDO seeding failed:', error.message);
+      console.error('   Stack:', error.stack);
+      return null;
+    }
+  }
+
+  async seedMusicBDO(trackData) {
+    console.log(`🎵 Seeding music BDO for: ${trackData.title}...`);
+
+    try {
+      const user = await this.createUser(`music-bdo-user-${trackData.title.replace(/\s+/g, '-').toLowerCase()}`);
+      if (!user) {
+        throw new Error('Failed to create music BDO user');
+      }
+
+      const musicBDOData = generateMusicBDO(trackData);
+
+      // Create the BDO (similar pattern to seedRecipeBDO)
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: musicBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+
+      // Get emoji shortcode from response (or fallback to fetching it)
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Music BDO created successfully`);
+      console.log(`  🎵 Track: ${trackData.title} by ${trackData.artist}`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  🎧 Platform: ${musicBDOData.metadata.platform}`);
+
+      emojicodedReferences.push({
+        type: 'Music',
+        title: trackData.title,
+        artist: trackData.artist,
+        platform: musicBDOData.metadata.platform,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return { uuid: bdoResponse.uuid || user.uuid, pubKey: user.pubKey, emojiShortcode };
+    } catch (error) {
+      console.error(`❌ Music BDO seeding failed:`, error.message);
+      return null;
+    }
+  }
+
+  async seedRoomBDO(roomData) {
+    console.log(`🏠 Seeding room BDO for: ${roomData.name}...`);
+
+    try {
+      const user = await this.createUser(`room-bdo-user-${roomData.name.replace(/\s+/g, '-').toLowerCase()}`);
+      if (!user) {
+        throw new Error('Failed to create room BDO user');
+      }
+
+      // Generate SVG content for the room
+      const svgContent = generateRoomSVG(roomData);
+
+      const roomBDOData = {
+        title: roomData.name,
+        type: "room",
+        contentType: "room",
+        category: "rental",
+        svgContent: svgContent,
+        metadata: {
+          beds: roomData.beds,
+          baths: roomData.baths,
+          size: roomData.size,
+          monthlyRent: roomData.monthlyRent,
+          deposit: roomData.deposit,
+          dateAvailable: roomData.dateAvailable,
+          roomPic: roomData.roomPic,
+          amenities: roomData.amenities,
+          address: roomData.address,
+          neighborhood: roomData.neighborhood,
+          rentFormatted: `$${(roomData.monthlyRent / 100).toFixed(2)}/mo`,
+          depositFormatted: `$${(roomData.deposit / 100).toFixed(2)}`
+        },
+        description: roomData.description || `${roomData.beds} bed, ${roomData.baths} bath apartment in ${roomData.neighborhood}`
+      };
+
+      // Create the BDO
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: roomBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+
+      // Get emoji shortcode from response (or fallback to fetching it)
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Room BDO created successfully`);
+      console.log(`  🏠 Room: ${roomData.name}`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  💰 Rent: $${(roomData.monthlyRent / 100).toFixed(2)}/mo`);
+
+      emojicodedReferences.push({
+        type: 'Room',
+        title: roomData.name,
+        beds: roomData.beds,
+        baths: roomData.baths,
+        size: roomData.size,
+        rent: `$${(roomData.monthlyRent / 100).toFixed(2)}/mo`,
+        neighborhood: roomData.neighborhood,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return { uuid: bdoResponse.uuid || user.uuid, pubKey: user.pubKey, emojiShortcode };
+    } catch (error) {
+      console.error(`❌ Room BDO seeding failed:`, error.message);
+      return null;
+    }
   }
 }
 
@@ -1066,16 +1257,20 @@ const checkServiceHealth = async (serviceName, url) => {
       return false;
     } else {
       // Other errors (like timeouts, socket hangs) but service might still be running
-      console.log(`  ⚠️  ${serviceName}: ${url} - Service issues detected`);
-      return false;
+      // Let's try to seed anyway since the service might be functional
+      console.log(`  ⚠️  ${serviceName}: ${url} - Service detected (will attempt seeding)`);
+      return true;
     }
   }
 };
 
+// Track emojicoded references for final output
+const emojicodedReferences = [];
+
 // Main seeding function
 const seedEcosystem = async () => {
   console.log('🏥 Health checking services...');
-  
+
   const healthChecks = await Promise.all([
     checkServiceHealth('Prof', SERVICES.prof),
     checkServiceHealth('Sanora', SERVICES.sanora),
@@ -1117,8 +1312,9 @@ const seedEcosystem = async () => {
     if (isServiceHealthy.sanora) {
       seeders.push(new SanoraSeeder(SERVICES.sanora).seedProducts());
       seeders.push(new SanoraSeeder(SERVICES.sanora).seedBlogPosts());
+      seeders.push(new SanoraSeeder(SERVICES.sanora).seedRooms());
     } else {
-      console.log('⚠️  Sanora service not healthy, skipping product/blog seeding');
+      console.log('⚠️  Sanora service not healthy, skipping product/blog/room seeding');
     }
 
     if (isServiceHealthy.dolores) {
@@ -1134,9 +1330,33 @@ const seedEcosystem = async () => {
     }
 
     if (isServiceHealthy.bdo) {
-      seeders.push(new BDOSeeder(SERVICES.bdo).seedBaseDiscovery());
+      const bdoSeeder = new BDOSeeder(SERVICES.bdo);
+      seeders.push(bdoSeeder.seedBaseDiscovery());
+      seeders.push(bdoSeeder.seedRecipeBDO());
+      seeders.push(bdoSeeder.seedProductBDO('peace-love-redistribution-tshirt', 'Peace Love and Redistribution T-Shirt', 2900));
+
+      // Seed music BDOs from example tracks
+      for (const track of exampleMusicTracks) {
+        seeders.push(bdoSeeder.seedMusicBDO(track));
+      }
+
+      // Seed room BDOs from example rooms
+      for (const room of exampleRooms) {
+        seeders.push(bdoSeeder.seedRoomBDO(room));
+      }
+
+      // Create contract signing UI with test participant pubKeys
+      const testParticipants = [
+        '02a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2',
+        '03b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3'
+      ];
+      seeders.push(bdoSeeder.seedContractSigningBDO(
+        'website-dev-001',
+        'Website Development Agreement',
+        testParticipants
+      ));
     } else {
-      console.log('⚠️  BDO service not healthy, skipping base discovery seeding');
+      console.log('⚠️  BDO service not healthy, skipping BDO seeding');
     }
 
     if (isServiceHealthy.advancement) {
@@ -1155,6 +1375,7 @@ const seedEcosystem = async () => {
     if (isServiceHealthy.sanora) {
       serviceNames.push('Sanora Products');
       serviceNames.push('Sanora Blogs');
+      serviceNames.push('Sanora Rooms');
     }
     if (isServiceHealthy.dolores) serviceNames.push('Dolores');
     if (isServiceHealthy.covenant) serviceNames.push('Covenant');
@@ -1172,9 +1393,43 @@ const seedEcosystem = async () => {
 
     console.log(`\n🎉 Ecosystem seeding complete!`);
     console.log(`📊 ${successCount}/${results.length} services seeded successfully`);
-    
+
+    // Print emojicoded references summary
+    if (emojicodedReferences.length > 0) {
+      console.log(`\n✨ EMOJICODED BDO REFERENCES ✨`);
+      console.log(`${'='.repeat(80)}\n`);
+
+      for (const ref of emojicodedReferences) {
+        console.log(`📦 ${ref.type}: ${ref.title}`);
+        if (ref.productId) {
+          console.log(`   Product ID: ${ref.productId}`);
+          console.log(`   Price: ${ref.price}`);
+        }
+        if (ref.contractId) {
+          console.log(`   Contract ID: ${ref.contractId}`);
+          console.log(`   Participants: ${ref.participants} authorized signers`);
+        }
+        if (ref.artist) {
+          console.log(`   Artist: ${ref.artist}`);
+          console.log(`   Platform: ${ref.platform}`);
+        }
+        if (ref.beds !== undefined) {
+          console.log(`   Specs: ${ref.beds} bed, ${ref.baths} bath • ${ref.size} sq ft`);
+          console.log(`   Rent: ${ref.rent}`);
+          console.log(`   Location: ${ref.neighborhood}`);
+        }
+        console.log(`   UUID: ${ref.uuid}`);
+        console.log(`   PubKey: ${ref.pubKey}`);
+        console.log(`   \n   🎨 Emoji Shortcode:\n   ${ref.emojiShortcode}\n`);
+        if (ref.htmlUpdated !== undefined) {
+          console.log(`   ${ref.htmlUpdated ? '✅' : '⚠️'} HTML updated: ${ref.htmlUpdated ? 'Yes' : 'No'}\n`);
+        }
+        console.log(`${'-'.repeat(80)}\n`);
+      }
+    }
+
     if (ENVIRONMENT === 'test') {
-      console.log(`\n🔗 Test Base ${BASE_NUMBER} URLs:`);
+      console.log(`🔗 Test Base ${BASE_NUMBER} URLs:`);
       console.log(`   BDO: ${SERVICES.bdo}`);
       console.log(`   Sanora: ${SERVICES.sanora}`);
       console.log(`   Covenant: ${SERVICES.covenant}`);
