@@ -16,7 +16,7 @@ PORT_OFFSET=${1:-0}
 # Base 1: 3000 + 1000 = 4000, Base 2: 3000 + 2000 = 5000, etc.
 
 JULIA_PORT=$((3000 + PORT_OFFSET))
-CONTINUEBEE_PORT=$((2999 + PORT_OFFSET))  
+CONTINUEBEE_PORT=$((2999 + PORT_OFFSET))
 JOAN_PORT=$((3004 + PORT_OFFSET))
 PREF_PORT=$((3002 + PORT_OFFSET))
 BDO_PORT=$((3003 + PORT_OFFSET))
@@ -28,6 +28,7 @@ DOLORES_PORT=$((3007 + PORT_OFFSET))
 MINNIE_PORT=$((2525 + PORT_OFFSET))
 COVENANT_PORT=$((3011 + PORT_OFFSET))
 PROF_PORT=$((3008 + PORT_OFFSET))
+WIKI_PORT=$((3333 + PORT_OFFSET))
 
 echo "Starting allyabase with port offset: $PORT_OFFSET"
 echo "Services will run on:"
@@ -43,6 +44,7 @@ echo "  sanora: $SANORA_PORT"
 echo "  dolores: $DOLORES_PORT"
 echo "  minnie: $MINNIE_PORT"
 echo "  covenant: $COVENANT_PORT"
+echo "  wiki: $WIKI_PORT (federated wiki with sessionless security)"
 if [ "$ENABLE_PROF" = "true" ]; then
   echo "  prof: $PROF_PORT (optional - enabled)"
 else
@@ -172,5 +174,9 @@ cat >> ecosystem.config.js << EOL
   ]
 }
 EOL
+
+# Start federated wiki with sessionless security plugin in background
+echo "Starting federated wiki on port $WIKI_PORT with sessionless security..."
+wiki --security wiki-security-sessionless --port $WIKI_PORT > /var/log/wiki.log 2>&1 &
 
 pm2-runtime start ecosystem.config.js

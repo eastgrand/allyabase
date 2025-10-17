@@ -40,31 +40,51 @@ Because if no one is ever going to bother to make a printer that works, we can a
 
 ### Overview
 
-allyabase is a collection of seven miniservices.
+allyabase is a collection of **twelve core miniservices** plus one **optional service** for handling personally identifiable information (PII).
 Each miniservice provides at most two main functions.
 Those functions will be discussed in brief here, with links to their API documentation.
 
+#### Core Services (12)
+
 [Addie][addie]: The accountant of the miniservices. Handles splitting up transactions, and signing people up for processors.
 
-[Artha][aretha]: Lets you allocate a group of nineum from Fount for use in limited run products (think things like tickets, or media rentals).
+[Aretha][aretha]: Lets you allocate a group of nineum from Fount for use in limited run products (think things like tickets, or media rentals).
 
-[BDO][bdo]: Sometimes you just need to store a Big Dumb Object
+[BDO][bdo]: Sometimes you just need to store a Big Dumb Object. Provides persistent storage with public/private access control, short codes, and emojicodes for easy sharing.
 
 [Continuebee][continuebee]: Saves and checks client state to verify local state matches expected state.
 
-[Dolores][dolores]: Saves short-form videos, and provides a tag-based categorization system for them
+[Covenant][covenant]: Magical contract management with cryptographic security, automatic SVG visualization generation, and distributed BDO storage.
 
-[Fount][fount]: Ok, so there's this thing called [MAGIC][magic], and you don't really need to know about it, but it allows you to do the whole linking people together for transactions (both with money and not money). And along with this you can do some other rewards.
+[Dolores][dolores]: Saves short-form videos, and provides a tag-based categorization system for them.
+
+[Fount][fount]: Ok, so there's this thing called [MAGIC][magic], and you don't really need to know about it, but it allows you to do the whole linking people together for transactions (both with money and not money). And along with this you can do some other rewards. Also handles nineum management and experience granting.
 
 [Joan][joan]: Account recovery without having to do a bunch of stuff.
 
-[Julia][julia]: Peer to peer associations for messaging, and coming soon for intra client assciating.
+[Julia][julia]: Peer to peer associations for messaging, and coming soon for intra client associating.
 
-[Minnie][minnie]: A magic box for emails.
+[Minnie][minnie]: A magic box for emails. SMTP server for email handling.
 
 [Pref][pref]: Stored preferences (or any key/value pair really). Also allows for global preferences across clients.
 
-[Sanora][sanora]: Super lightweight product hosting like gumroad or big cartel
+[Sanora][sanora]: Super lightweight product hosting like gumroad or big cartel. Handles digital products, marketplace functionality, and MAGIC protocol integration for product creation.
+
+#### Optional Service (1)
+
+[Prof][prof]: **Profile management with PII isolation.** Unlike the core services, Prof operates independently to maintain strict separation of personally identifiable information (name, email, custom fields) for enhanced privacy and security. Optional because not all allyabase deployments require PII storage.
+
+#### Why is Prof Optional?
+
+Prof is the only optional service because it handles **personally identifiable information (PII)** like names, email addresses, and profile images. The core philosophy of allyabase is privacy-first design where:
+
+- **No PII in core services**: The 12 core services operate entirely with cryptographic public keys as user identifiers
+- **Separation of concerns**: PII storage is completely isolated from the rest of the ecosystem
+- **User choice**: Many deployments (especially privacy-focused ones) may not need or want PII at all
+- **Compliance flexibility**: Separating PII makes it easier to comply with data protection regulations
+- **Independent operation**: Prof can be hosted separately, on different infrastructure, or not at all
+
+If your allyabase deployment doesn't need user profiles with personal information (for example, if you're building purely anonymous or pseudonymous applications), you can run a complete Planet Nine base with just the 12 core services.
 
 ### Tech Stack
 
@@ -88,8 +108,6 @@ This is a work in progress.
 ### Roadmap
 
 allyabase is meant to be _interoperable_ with any service that utilizes public key cryptography using the secp256k1 curve, so it's well within reason that things may be built adjacent to allyabase, which aren't officially part of allyabase, and this roadmap should neither be considered restrictive nor exhaustive.
-
-* prof: pref, but for profiles
 
 * locus: geo data
 
@@ -136,11 +154,14 @@ This project would not be possible without the support and contributions of the 
 [aretha]: https://www.github.com/planet-nine-app/aretha
 [bdo]: https://www.github.com/planet-nine-app/bdo
 [continuebee]: https://www.github.com/planet-nine-app/continuebee
+[covenant]: https://www.github.com/planet-nine-app/covenant
 [dolores]: https://www.github.com/planet-nine-app/dolores
 [fount]: https://www.github.com/planet-nine-app/fount
 [joan]: https://www.github.com/planet-nine-app/joan
 [julia]: https://www.github.com/planet-nine-app/julia
+[minnie]: https://www.github.com/planet-nine-app/minnie
 [pref]: https://www.github.com/planet-nine-app/pref
+[prof]: https://www.github.com/planet-nine-app/prof
 [sanora]: https://www.github.com/planet-nine-app/sanora-dot-club
 [juliachat]: https://www.github.com/planet-nine-app/JuliaChat
 [osf]: https://opensourceforce.net

@@ -10,6 +10,8 @@ BUILD=false
 ENVIRONMENT="test"
 SEED=false
 SEED_BASE="1"
+ENABLE_PROF=false
+ENABLE_ADVANCEMENT=false
 
 # Parse command line arguments
 for arg in "$@"; do
@@ -222,6 +224,7 @@ if [ "$ENVIRONMENT" = "local" ]; then
     echo "  julia: http://localhost:3000"
     echo "  continuebee: http://localhost:2999"
     echo "  fount: http://localhost:3002"
+    echo "  wiki: http://localhost:3333"
     if [ "$ENABLE_ADVANCEMENT" = true ]; then
       echo "  advancement-test: http://localhost:3456 (enabled)"
     else
@@ -240,11 +243,12 @@ if [ "$ENABLE_PROF" = true ]; then
   PROF_PORTS="-p 5123:3008"
 fi
 
-# Start Base 1 (Host ports 5111-5122 → Standard Docker internal ports)
-echo "🏗️  Starting Base 1 (Host ports 5111-5122)..."
+# Start Base 1 (Host ports 5111-5124 → Standard Docker internal ports)
+echo "🏗️  Starting Base 1 (Host ports 5111-5124)..."
 if [ "$ENABLE_PROF" = true ]; then
   echo "   Prof enabled on port 5123"
 fi
+echo "   Wiki enabled on port 5124"
 
 docker run -d \
   --name allyabase-base1 \
@@ -261,11 +265,12 @@ docker run -d \
   -p 5120:7277 \
   -p 5121:7243 \
   -p 5122:3011 \
+  -p 5124:3333 \
   $PROF_PORTS \
   allyabase-flexible
 
 # Wait for Base 1 services (check host ports)
-BASE1_PORTS=(5111 5112 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122)
+BASE1_PORTS=(5111 5112 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122 5124)
 if [ "$ENABLE_PROF" = true ]; then
   BASE1_PORTS+=(5123)
 fi
@@ -283,11 +288,12 @@ if [ "$ENABLE_PROF" = true ]; then
   PROF_PORTS_BASE2="-p 5223:3008"
 fi
 
-# Start Base 2 (Host ports 5211-5222 → Standard Docker internal ports)
-echo "🏗️  Starting Base 2 (Host ports 5211-5222)..."
+# Start Base 2 (Host ports 5211-5224 → Standard Docker internal ports)
+echo "🏗️  Starting Base 2 (Host ports 5211-5224)..."
 if [ "$ENABLE_PROF" = true ]; then
   echo "   Prof enabled on port 5223"
 fi
+echo "   Wiki enabled on port 5224"
 
 docker run -d \
   --name allyabase-base2 \
@@ -304,11 +310,12 @@ docker run -d \
   -p 5220:7277 \
   -p 5221:7243 \
   -p 5222:3011 \
+  -p 5224:3333 \
   $PROF_PORTS_BASE2 \
   allyabase-flexible
 
 # Wait for Base 2 services (check host ports)
-BASE2_PORTS=(5211 5212 5213 5214 5215 5216 5217 5218 5219 5220 5221 5222)
+BASE2_PORTS=(5211 5212 5213 5214 5215 5216 5217 5218 5219 5220 5221 5222 5224)
 if [ "$ENABLE_PROF" = true ]; then
   BASE2_PORTS+=(5223)
 fi
@@ -326,11 +333,12 @@ if [ "$ENABLE_PROF" = true ]; then
   PROF_PORTS_BASE3="-p 5323:3008"
 fi
 
-# Start Base 3 (Host ports 5311-5322 → Standard Docker internal ports)
-echo "🏗️  Starting Base 3 (Host ports 5311-5322)..."
+# Start Base 3 (Host ports 5311-5324 → Standard Docker internal ports)
+echo "🏗️  Starting Base 3 (Host ports 5311-5324)..."
 if [ "$ENABLE_PROF" = true ]; then
   echo "   Prof enabled on port 5323"
 fi
+echo "   Wiki enabled on port 5324"
 
 docker run -d \
   --name allyabase-base3 \
@@ -347,11 +355,12 @@ docker run -d \
   -p 5320:7277 \
   -p 5321:7243 \
   -p 5322:3011 \
+  -p 5324:3333 \
   $PROF_PORTS_BASE3 \
   allyabase-flexible
 
 # Wait for Base 3 services (check host ports)
-BASE3_PORTS=(5311 5312 5313 5314 5315 5316 5317 5318 5319 5320 5321 5322)
+BASE3_PORTS=(5311 5312 5313 5314 5315 5316 5317 5318 5319 5320 5321 5322 5324)
 if [ "$ENABLE_PROF" = true ]; then
   BASE3_PORTS+=(5323)
 fi
@@ -410,7 +419,7 @@ echo "📋 Service Port Mapping (Host → Docker):"
 echo ""
 echo "Base 1:"
 echo "  julia: http://localhost:5111 → docker:3000"
-echo "  continuebee: http://localhost:5112 → docker:2999" 
+echo "  continuebee: http://localhost:5112 → docker:2999"
 echo "  pref: http://localhost:5113 → docker:3002"
 echo "  bdo: http://localhost:5114 → docker:3003"
 echo "  joan: http://localhost:5115 → docker:3004"
@@ -424,6 +433,7 @@ echo "  covenant: http://localhost:5122 → docker:3011"
 if [ "$ENABLE_PROF" = true ]; then
   echo "  prof: http://localhost:5123 → docker:3008"
 fi
+echo "  wiki: http://localhost:5124 → docker:3333"
 echo ""
 echo "Base 2:"
 echo "  julia: http://localhost:5211 → docker:3000"
@@ -441,6 +451,7 @@ echo "  covenant: http://localhost:5222 → docker:3011"
 if [ "$ENABLE_PROF" = true ]; then
   echo "  prof: http://localhost:5223 → docker:3008"
 fi
+echo "  wiki: http://localhost:5224 → docker:3333"
 echo ""
 echo "Base 3:"
 echo "  julia: http://localhost:5311 → docker:3000"
@@ -458,6 +469,7 @@ echo "  covenant: http://localhost:5322 → docker:3011"
 if [ "$ENABLE_PROF" = true ]; then
   echo "  prof: http://localhost:5323 → docker:3008"
 fi
+echo "  wiki: http://localhost:5324 → docker:3333"
 echo ""
 if [ "$ENABLE_ADVANCEMENT" = true ]; then
   echo "The Advancement Test Server:"

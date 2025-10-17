@@ -22,19 +22,20 @@ RUN git clone https://www.github.com/planet-nine-app/prof.git prof || echo "Prof
 
 # Expose all possible ports for 3 bases (40xx, 50xx, 60xx ranges)
 # Base 1 (40xx)
-EXPOSE 4000 4001 4002 4003 4004 4005 4006 4007 4008 4011
+EXPOSE 4000 4001 4002 4003 4004 4005 4006 4007 4008 4011 4333
 EXPOSE 4525 6277 6243
-# Base 2 (50xx) 
-EXPOSE 5000 5001 5002 5003 5004 5005 5006 5007 5008 5011
+# Base 2 (50xx)
+EXPOSE 5000 5001 5002 5003 5004 5005 5006 5007 5008 5011 5333
 EXPOSE 5525 8277 8243
 # Base 3 (60xx)
-EXPOSE 6000 6001 6002 6003 6004 6005 6006 6007 6008 6011
+EXPOSE 6000 6001 6002 6003 6004 6005 6006 6007 6008 6011 6333
 EXPOSE 6525 10277 10243
-# Default ports (including prof on 3008)
-EXPOSE 2525 2999 3000 3001 3002 3003 3004 3005 3006 3007 3008 3011 7243 7277
+# Default ports (including prof on 3008, wiki on 3333)
+EXPOSE 2525 2999 3000 3001 3002 3003 3004 3005 3006 3007 3008 3011 3333 7243 7277
 
 RUN npm install -g pm2
 RUN npm install -g wiki
+RUN npm install -g wiki-security-sessionless
 
 WORKDIR /usr/src/app/julia/src/server/node
 RUN npm install

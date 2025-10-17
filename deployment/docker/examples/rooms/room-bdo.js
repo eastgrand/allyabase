@@ -94,7 +94,76 @@ export function generateRoomProduct(roomData) {
 }
 
 /**
- * Generates SVG content for a room BDO
+ * Generates horizontal SVG content for a room BDO (optimized for AdvanceKey)
+ * @param {Object} roomData - Room details (same as generateRoomProduct)
+ * @returns {string} Horizontal SVG content for AdvanceKey display
+ */
+export function generateRoomHorizontalSVG(roomData) {
+  const {
+    name,
+    dateAvailable,
+    beds,
+    baths,
+    size,
+    monthlyRent,
+    deposit,
+    neighborhood = ''
+  } = roomData;
+
+  const availableDate = new Date(dateAvailable);
+  const formattedDate = availableDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric'
+  });
+
+  const rentFormatted = `$${(monthlyRent / 100).toFixed(0)}`;
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 120" width="350" height="120">
+  <defs>
+    <style>
+      .card-bg { fill: #1a1a2e; }
+      .title-text { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; font-weight: 700; fill: white; }
+      .spec-text { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; fill: #a8b2d1; }
+      .price-text { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 20px; font-weight: 700; fill: #4ade80; }
+      .location-text { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; fill: #94a3b8; }
+      .button-text { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; font-weight: 600; fill: white; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="card-bg" width="350" height="120" rx="8"/>
+
+  <!-- Header -->
+  <text class="title-text" x="12" y="22">🏠 ${name}</text>
+  ${neighborhood ? `<text class="location-text" x="12" y="36">📍 ${neighborhood}</text>` : ''}
+
+  <!-- Specs Row -->
+  <g transform="translate(12, ${neighborhood ? 52 : 45})">
+    <text class="spec-text" x="0" y="0">🛏️ ${beds} bed${beds !== 1 ? 's' : ''}</text>
+    <text class="spec-text" x="70" y="0">🚿 ${baths} bath${baths !== 1 ? 's' : ''}</text>
+    <text class="spec-text" x="140" y="0">📐 ${size} sq ft</text>
+  </g>
+
+  <!-- Price and Availability -->
+  <g transform="translate(12, ${neighborhood ? 75 : 68})">
+    <text class="price-text" x="0" y="0">${rentFormatted}/mo</text>
+    <text class="spec-text" x="0" y="16">📅 Available ${formattedDate}</text>
+  </g>
+
+  <!-- Save Button -->
+  <rect spell="saveToStacks" spell-components="roomData:${encodeURIComponent(JSON.stringify(roomData))}"
+        x="220" y="75" width="115" height="32" rx="6"
+        fill="#6366f1" stroke="#4f46e5" stroke-width="2" cursor="pointer">
+    <title>Save to Stacks</title>
+  </rect>
+  <text spell="saveToStacks" spell-components="roomData:${encodeURIComponent(JSON.stringify(roomData))}"
+        class="button-text" x="277.5" y="95" text-anchor="middle">💾 SAVE</text>
+</svg>`;
+}
+
+/**
+ * Generates SVG content for a room BDO (vertical layout for full display)
  * @param {Object} roomData - Room details (same as generateRoomProduct)
  * @returns {string} SVG content for the room listing
  */
@@ -240,8 +309,8 @@ export const exampleRooms = [
     beds: 1,
     baths: 1,
     size: 650,
-    monthlyRent: 145000, // $1450/month
-    deposit: 145000, // $1450 deposit
+    monthlyRent: 55000, // $550/month
+    deposit: 55000, // $550 deposit
     roomPic: 'room1.png',
     description: 'Beautiful studio apartment in the heart of downtown with modern finishes and natural light.',
     amenities: ['In-unit laundry', 'Dishwasher', 'Hardwood floors', 'High-speed internet', 'Pet-friendly'],
@@ -254,8 +323,8 @@ export const exampleRooms = [
     beds: 2,
     baths: 1.5,
     size: 950,
-    monthlyRent: 195000, // $1950/month
-    deposit: 195000, // $1950 deposit
+    monthlyRent: 65000, // $650/month
+    deposit: 65000, // $650 deposit
     roomPic: 'room2.png',
     description: 'Bright 2-bedroom apartment just steps from the metro station. Perfect for commuters!',
     amenities: ['Central AC', 'Balcony', 'Parking space', 'Storage unit', 'Gym access'],
@@ -268,8 +337,8 @@ export const exampleRooms = [
     beds: 3,
     baths: 2,
     size: 1400,
-    monthlyRent: 295000, // $2950/month
-    deposit: 295000, // $2950 deposit
+    monthlyRent: 70000, // $700/month
+    deposit: 70000, // $700 deposit
     roomPic: 'room3.png',
     description: 'Stunning penthouse with panoramic city views, chef\'s kitchen, and modern amenities throughout.',
     amenities: [
