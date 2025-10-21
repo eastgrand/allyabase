@@ -28,6 +28,7 @@ import { generateSampleProducts, generateBlogPosts } from './examples/products/p
 import { generateSampleContracts } from './examples/contracts/contract-generator.js';
 import { generateSocialPosts } from './examples/social/social-generator.js';
 import { events as exampleEvents, generateEventSVG } from './examples/events/events.js';
+import { popupPosts, generatePopupTwoButtonSVG, generateLocationViewSVG } from './examples/popups/popups.js';
 
 // Set up in-memory key storage for seed script
 const keyStorage = new Map();
@@ -1368,6 +1369,150 @@ class BDOSeeder {
       return null;
     }
   }
+
+  async seedPopupLocationViewBDO(popupData, popupBDOPubKey) {
+    console.log(`📍 Seeding location view BDO for: ${popupData.name}...`);
+
+    try {
+      const user = await this.createUser(`location-view-bdo-${popupData.id}`);
+      if (!user) {
+        throw new Error('Failed to create location view BDO user');
+      }
+
+      // Generate SVG using the one-button template for going back
+      const svgContent = generateLocationViewSVG(popupData, popupBDOPubKey);
+
+      const locationBDOData = {
+        title: `Location: ${popupData.name}`,
+        type: "popup-location",
+        popupId: popupData.id,
+        svgContent: svgContent,
+        locationData: {
+          name: popupData.name,
+          address: popupData.location,
+          coordinates: popupData.coordinates
+        },
+        description: `Location details for ${popupData.name}`
+      };
+
+      // Create the BDO
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: locationBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Location view BDO created successfully`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode
+      };
+    } catch (error) {
+      console.error(`❌ Location view BDO seeding failed:`, error.message);
+      return null;
+    }
+  }
+
+  async seedPopupBDO(popupData) {
+    console.log(`🎪 Seeding popup post BDO for: ${popupData.name}...`);
+
+    try {
+      // First create the popup BDO user
+      const user = await this.createUser(`popup-bdo-${popupData.id}`);
+      if (!user) {
+        throw new Error('Failed to create popup BDO user');
+      }
+
+      // Create location view BDO (needs popup pubkey for back navigation)
+      const locationView = await this.seedPopupLocationViewBDO(popupData, user.pubKey);
+      if (!locationView) {
+        throw new Error('Failed to create location view BDO');
+      }
+
+      // Now generate the two-button SVG with magicard to location view
+      const svgContent = generatePopupTwoButtonSVG(popupData, locationView.pubKey, user.pubKey);
+
+      const popupBDOData = {
+        title: popupData.name,
+        type: "popup-post",
+        popupId: popupData.id,
+        svgContent: svgContent,
+        popupData: {
+          name: popupData.name,
+          description: popupData.description,
+          location: popupData.location,
+          dateTimes: popupData.dateTimes,
+          coordinates: popupData.coordinates,
+          category: popupData.category,
+          tags: popupData.tags
+        },
+        locationViewPubKey: locationView.pubKey,
+        description: popupData.description
+      };
+
+      // Create the BDO
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: popupBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Popup post BDO created successfully`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  📍 Location View PubKey: ${locationView.pubKey}`);
+      console.log(`  📅 Date: ${new Date(popupData.dateTimes[0].startDateTime).toLocaleDateString()}`);
+
+      emojicodedReferences.push({
+        type: 'Popup Post',
+        title: popupData.name,
+        location: popupData.location,
+        date: new Date(popupData.dateTimes[0].startDateTime).toLocaleDateString(),
+        category: popupData.category,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        locationViewPubKey: locationView.pubKey,
+        locationEmojiShortcode: locationView.emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        locationView
+      };
+    } catch (error) {
+      console.error(`❌ Popup post BDO seeding failed:`, error.message);
+      return null;
+    }
+  }
 }
 
 class AdvancementSeeder {
@@ -1575,6 +1720,11 @@ const seedEcosystem = async () => {
         'Website Development Agreement',
         testParticipants
       ));
+
+      // Seed popup post BDOs with two-button SaVaGe templates
+      for (const popup of popupPosts) {
+        seeders.push(bdoSeeder.seedPopupBDO(popup));
+      }
     } else {
       console.log('⚠️  BDO service not healthy, skipping BDO seeding');
     }
@@ -1638,12 +1788,19 @@ const seedEcosystem = async () => {
           console.log(`   Rent: ${ref.rent}`);
           console.log(`   Location: ${ref.neighborhood}`);
         }
-        if (ref.date !== undefined) {
+        if (ref.date !== undefined && ref.ticketPrice !== undefined) {
           console.log(`   Date: ${ref.date}`);
           console.log(`   Location: ${ref.location}`);
           console.log(`   Ticket Price: ${ref.ticketPrice}`);
           console.log(`   Capacity: ${ref.capacity} tickets`);
           console.log(`   Ticket Flavor: ${ref.ticketFlavor}`);
+        }
+        if (ref.locationViewPubKey) {
+          console.log(`   Date: ${ref.date}`);
+          console.log(`   Location: ${ref.location}`);
+          console.log(`   Category: ${ref.category}`);
+          console.log(`   📍 Location View PubKey: ${ref.locationViewPubKey}`);
+          console.log(`   🎨 Location Emoji: ${ref.locationEmojiShortcode}`);
         }
         console.log(`   UUID: ${ref.uuid}`);
         console.log(`   PubKey: ${ref.pubKey}`);
