@@ -102,8 +102,8 @@ const getServiceURLs = (env, baseNum) => {
       covenant: 'http://localhost:3011',
       julia: 'http://localhost:3000',
       continuebee: 'http://localhost:2999',
-      fount: 'http://localhost:3002',
-      aretha: 'http://localhost:3010',
+      fount: 'http://localhost:3006',  // Fixed: was 3002, should be 3006
+      aretha: 'http://localhost:7277', // Fixed: was 3010, should be 7277
       advancement: 'http://localhost:3456'
     };
   } else if (env === 'test') {
