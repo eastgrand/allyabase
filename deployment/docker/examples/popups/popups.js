@@ -219,7 +219,7 @@ export function generatePopupTwoButtonSVG(popup, locationBDOPubKey, popupBDOPubK
     height="80"
     rx="12"
     spell="magicard"
-    spell-component="${locationBDOPubKey}"
+    spell-components='{"bdoPubKey":"${locationBDOPubKey}"}'
   />
   <text class="button-text" x="107.5" y="140">📍 View Location</text>
 
@@ -233,7 +233,7 @@ export function generatePopupTwoButtonSVG(popup, locationBDOPubKey, popupBDOPubK
     height="80"
     rx="12"
     spell="save"
-    spell-component="${popupBDOPubKey}"
+    spell-components='{"bdoPubKey":"${popupBDOPubKey}","collection":"events"}'
   />
   <text class="button-text" x="292.5" y="140">💾 Save</text>
 </svg>`;
@@ -253,7 +253,21 @@ export function generateLocationViewSVG(popup, popupBDOPubKey) {
   const venueName = locationParts[0].trim();
   const address = locationParts.slice(1).join(',').trim();
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+  // Create OpenStreetMap embed URL with bounding box
+  let mapsUrl = '';
+  if (popup.coordinates) {
+    const lat = popup.coordinates.latitude;
+    const lon = popup.coordinates.longitude;
+    // Calculate bounding box (roughly 0.01 degrees = ~1km at this latitude)
+    const delta = 0.008;
+    const bbox = `${lon - delta},${lat - delta},${lon + delta},${lat + delta}`;
+    mapsUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}`;
+  } else {
+    // Fallback: OpenStreetMap search doesn't support direct embedding, use coordinates view
+    mapsUrl = 'https://www.openstreetmap.org/export/embed.html?bbox=-122.68,45.51,-122.67,45.53&layer=mapnik';
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" width="400" height="450">
   <defs>
     <!-- Gradient for back button -->
     <linearGradient id="backButtonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -316,7 +330,7 @@ export function generateLocationViewSVG(popup, popupBDOPubKey) {
   </style>
 
   <!-- Background -->
-  <rect x="0" y="0" width="400" height="200" fill="#1a0033" rx="12"/>
+  <rect x="0" y="0" width="400" height="450" fill="#1a0033" rx="12"/>
 
   <!-- Location icon -->
   <text x="200" y="35" text-anchor="middle" font-size="30">📍</text>
@@ -326,18 +340,31 @@ export function generateLocationViewSVG(popup, popupBDOPubKey) {
   <text class="location-text" x="200" y="85">${address}</text>
   ${popup.coordinates ? `<text class="coords-text" x="200" y="100">${popup.coordinates.latitude.toFixed(4)}, ${popup.coordinates.longitude.toFixed(4)}</text>` : ''}
 
+  <!-- OpenStreetMap Iframe (using foreignObject) -->
+  <foreignObject x="20" y="120" width="360" height="250">
+    <iframe
+      xmlns="http://www.w3.org/1999/xhtml"
+      src="${mapsUrl}"
+      width="360"
+      height="250"
+      style="border: 2px solid #8b5cf6; border-radius: 8px;"
+      frameborder="0"
+      scrolling="no">
+    </iframe>
+  </foreignObject>
+
   <!-- Single centered back button (SaVaGe one-button template style) -->
   <rect
     class="back-button"
     id="button1"
     x="50"
-    y="130"
+    y="385"
     width="300"
     height="50"
     rx="12"
     spell="magicard"
-    spell-component="${popupBDOPubKey}"
+    spell-components='{"bdoPubKey":"${popupBDOPubKey}"}'
   />
-  <text class="button-text" x="200" y="155">← Back to Event</text>
+  <text class="button-text" x="200" y="410">← Back to Event</text>
 </svg>`;
 }

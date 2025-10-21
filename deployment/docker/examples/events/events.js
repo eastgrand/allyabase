@@ -141,11 +141,12 @@ export const events = [
 /**
  * Generate SVG card with purchase buttons for an event
  * @param {Object} event - Event object
+ * @param {string} eventBDOPubKey - PubKey of this event's BDO (optional, for save button)
  * @returns {string} SVG string
  */
-export function generateEventSVG(event) {
+export function generateEventSVG(event, eventBDOPubKey = '') {
   const ticketButtons = event.tickets.map((ticket, index) => {
-    const yPosition = 100 + (index * 120);
+    const yPosition = 140 + (index * 120); // Increased yPosition to make room for save button
 
     // Format price based on type (MP or cash)
     const priceType = ticket.priceType || event.priceType || 'cash';
@@ -174,7 +175,7 @@ export function generateEventSVG(event) {
     `;
   }).join('\n');
 
-  const totalHeight = 120 + (event.tickets.length * 120);
+  const totalHeight = 160 + (event.tickets.length * 120); // Increased totalHeight for save button
 
   return `<svg width="400" height="${totalHeight}" viewBox="0 0 400 ${totalHeight}" xmlns="http://www.w3.org/2000/svg">
     <!-- Background -->
@@ -190,6 +191,16 @@ export function generateEventSVG(event) {
     <text x="200" y="80" text-anchor="middle" fill="#94a3b8" font-size="12">
       ${event.location}
     </text>
+
+    <!-- Save Event Button -->
+    <g spell="save" spell-components='{"bdoPubKey":"${eventBDOPubKey}","collection":"events"}'>
+      <rect x="140" y="95" width="120" height="35" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2" cursor="pointer">
+        <title>Save to Events Collection</title>
+      </rect>
+      <text x="200" y="117" text-anchor="middle" fill="white" font-size="14" font-weight="bold" pointer-events="none">
+        💾 Save Event
+      </text>
+    </g>
 
     ${ticketButtons}
   </svg>`;

@@ -63,6 +63,16 @@ export function generateMusicBDO({
     </div>
   </foreignObject>
 
+  <!-- Save button (bottom right) -->
+  <g spell="save" spell-components='{"bdoPubKey":"","collection":"music"}'>
+    <rect x="${width - 140}" y="${height - 50}" width="120" height="35" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2" cursor="pointer">
+      <title>Save to Music Collection</title>
+    </rect>
+    <text x="${width - 80}" y="${height - 28}" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle" pointer-events="none">
+      💾 Save
+    </text>
+  </g>
+
   <!-- Bottom bar with metadata -->
   <rect y="${height - 30}" width="${width}" height="30" fill="rgba(0,0,0,0.3)"/>
   <text x="${width / 2}" y="${height - 10}" font-family="Arial, sans-serif" font-size="12" fill="#666" text-anchor="middle">

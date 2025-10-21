@@ -152,12 +152,12 @@ export function generateRoomHorizontalSVG(roomData) {
   </g>
 
   <!-- Save Button -->
-  <rect spell="saveToStacks" spell-components="roomData:${encodeURIComponent(JSON.stringify(roomData))}"
+  <rect spell="save" spell-components='{"bdoPubKey":"","collection":"stacks","roomData":${JSON.stringify(roomData)}}'
         x="220" y="75" width="115" height="32" rx="6"
         fill="#6366f1" stroke="#4f46e5" stroke-width="2" cursor="pointer">
     <title>Save to Stacks</title>
   </rect>
-  <text spell="saveToStacks" spell-components="roomData:${encodeURIComponent(JSON.stringify(roomData))}"
+  <text spell="save" spell-components='{"bdoPubKey":"","collection":"stacks","roomData":${JSON.stringify(roomData)}}'
         class="button-text" x="277.5" y="95" text-anchor="middle">💾 SAVE</text>
 </svg>`;
 }

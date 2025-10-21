@@ -29,6 +29,8 @@ import { generateSampleContracts } from './examples/contracts/contract-generator
 import { generateSocialPosts } from './examples/social/social-generator.js';
 import { events as exampleEvents, generateEventSVG } from './examples/events/events.js';
 import { popupPosts, generatePopupTwoButtonSVG, generateLocationViewSVG } from './examples/popups/popups.js';
+import { literaryPosts, generateBookTwoButtonSVG, generateLiteraryOneButtonSVG } from './examples/literary/literary.js';
+import { idothisPosts, generateIdothisBookNowSVG } from './examples/idothis/idothis.js';
 
 // Set up in-memory key storage for seed script
 const keyStorage = new Map();
@@ -1513,6 +1515,207 @@ class BDOSeeder {
       return null;
     }
   }
+
+  async seedLiteraryBDO(literaryData) {
+    console.log(`📚 Seeding literary BDO for: ${literaryData.title}...`);
+
+    try {
+      const user = await this.createUser(`literary-bdo-${literaryData.id}`);
+      if (!user) {
+        throw new Error('Failed to create literary BDO user');
+      }
+
+      // Determine which SVG template to use based on price and type
+      const isPaidBook = literaryData.type === 'book' && literaryData.price > 0;
+      const svgContent = isPaidBook
+        ? generateBookTwoButtonSVG(literaryData, user.pubKey)
+        : generateLiteraryOneButtonSVG(literaryData, user.pubKey);
+
+      const literaryBDOData = {
+        title: literaryData.title,
+        type: literaryData.type, // 'book' or 'article'
+        contentType: literaryData.type,
+        svgContent: svgContent,
+        literaryData: {
+          title: literaryData.title,
+          author: literaryData.author,
+          description: literaryData.description,
+          type: literaryData.type,
+          category: literaryData.category,
+          tags: literaryData.tags
+        },
+        metadata: literaryData.metadata,
+        description: literaryData.description
+      };
+
+      // Add book-specific fields
+      if (literaryData.type === 'book') {
+        literaryBDOData.literaryData.price = literaryData.price;
+        literaryBDOData.literaryData.isbn = literaryData.isbn;
+        literaryBDOData.literaryData.publisher = literaryData.publisher;
+        literaryBDOData.literaryData.publishDate = literaryData.publishDate;
+        literaryBDOData.literaryData.pages = literaryData.pages;
+        literaryBDOData.literaryData.purchaseUrl = literaryData.purchaseUrl;
+      }
+
+      // Add article-specific fields
+      if (literaryData.type === 'article') {
+        literaryBDOData.literaryData.externalUrl = literaryData.externalUrl;
+        literaryBDOData.literaryData.publishDate = literaryData.publishDate;
+      }
+
+      // Create the BDO
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: literaryBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      const priceDisplay = literaryData.price > 0
+        ? `$${(literaryData.price / 100).toFixed(2)}`
+        : (literaryData.type === 'article' ? 'Free (Article)' : 'Free');
+
+      console.log(`  ✅ Literary BDO created successfully`);
+      console.log(`  📖 Type: ${literaryData.type}`);
+      console.log(`  ✍️  Author: ${literaryData.author}`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  💰 Price: ${priceDisplay}`);
+
+      emojicodedReferences.push({
+        type: literaryData.type === 'book' ? 'Book' : 'Article',
+        title: literaryData.title,
+        author: literaryData.author,
+        price: priceDisplay,
+        category: literaryData.category,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode
+      };
+    } catch (error) {
+      console.error(`❌ Literary BDO seeding failed:`, error.message);
+      return null;
+    }
+  }
+
+  async seedIdothisBDO(providerData) {
+    console.log(`💼 Seeding IDothis.biz BDO for: ${providerData.providerName}...`);
+
+    try {
+      const user = await this.createUser(`idothis-bdo-${providerData.id}`);
+      if (!user) {
+        throw new Error('Failed to create IDothis BDO user');
+      }
+
+      // Generate SVG with "Book Now" button
+      const svgContent = generateIdothisBookNowSVG(providerData, user.pubKey);
+
+      const idothisBDOData = {
+        title: providerData.providerName,
+        type: "service-provider",
+        contentType: "idothis-service",
+        svgContent: svgContent,
+        providerData: {
+          providerName: providerData.providerName,
+          contactName: providerData.contactName,
+          description: providerData.description,
+          serviceType: providerData.serviceType,
+          hourlyRate: providerData.hourlyRate,
+          services: providerData.services,
+          availability: providerData.availability,
+          serviceArea: providerData.serviceArea,
+          yearsExperience: providerData.yearsExperience,
+          phone: providerData.phone,
+          email: providerData.email,
+          category: providerData.category,
+          tags: providerData.tags
+        },
+        metadata: providerData.metadata,
+        description: providerData.description
+      };
+
+      // Add certification/licensing info
+      if (providerData.licensed !== undefined) {
+        idothisBDOData.providerData.licensed = providerData.licensed;
+      }
+      if (providerData.insured !== undefined) {
+        idothisBDOData.providerData.insured = providerData.insured;
+      }
+      if (providerData.certified !== undefined) {
+        idothisBDOData.providerData.certified = providerData.certified;
+      }
+      if (providerData.backgroundCheck !== undefined) {
+        idothisBDOData.providerData.backgroundCheck = providerData.backgroundCheck;
+      }
+
+      // Create the BDO
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: idothisBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      const rateDisplay = `$${(providerData.hourlyRate / 100).toFixed(2)}/hr`;
+
+      console.log(`  ✅ IDothis.biz BDO created successfully`);
+      console.log(`  👔 Service: ${providerData.serviceType}`);
+      console.log(`  👤 Provider: ${providerData.contactName}`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  💰 Rate: ${rateDisplay}`);
+      console.log(`  ⭐ Rating: ${providerData.metadata.rating} (${providerData.metadata.reviewCount} reviews)`);
+
+      emojicodedReferences.push({
+        type: 'Service Provider',
+        title: providerData.providerName,
+        serviceType: providerData.serviceType,
+        provider: providerData.contactName,
+        rate: rateDisplay,
+        rating: `${providerData.metadata.rating} ⭐ (${providerData.metadata.reviewCount} reviews)`,
+        category: providerData.category,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode
+      };
+    } catch (error) {
+      console.error(`❌ IDothis.biz BDO seeding failed:`, error.message);
+      return null;
+    }
+  }
 }
 
 class AdvancementSeeder {
@@ -1725,6 +1928,16 @@ const seedEcosystem = async () => {
       for (const popup of popupPosts) {
         seeders.push(bdoSeeder.seedPopupBDO(popup));
       }
+
+      // Seed literary BDOs (books and articles)
+      for (const literary of literaryPosts) {
+        seeders.push(bdoSeeder.seedLiteraryBDO(literary));
+      }
+
+      // Seed IDothis.biz BDOs (service providers)
+      for (const provider of idothisPosts) {
+        seeders.push(bdoSeeder.seedIdothisBDO(provider));
+      }
     } else {
       console.log('⚠️  BDO service not healthy, skipping BDO seeding');
     }
@@ -1824,6 +2037,21 @@ const seedEcosystem = async () => {
       console.log(`   Sanora: ${SERVICES.sanora}`);
       console.log(`   Covenant: ${SERVICES.covenant}`);
       console.log(`   The Advancement: ${SERVICES.advancement}`);
+    }
+
+    // Save emojicoded references to file for carrierBag test
+    if (emojicodedReferences.length > 0) {
+      const outputPath = path.join(process.cwd(), 'seed-output.json');
+      const outputData = {
+        environment: ENVIRONMENT,
+        baseNumber: BASE_NUMBER,
+        seedDate: new Date().toISOString(),
+        emojicodedReferences: emojicodedReferences,
+        services: SERVICES
+      };
+      fs.writeFileSync(outputPath, JSON.stringify(outputData, null, 2), 'utf8');
+      console.log(`\n📁 Seed output saved to: ${outputPath}`);
+      console.log(`   Run carrierBag test: node test-carrier-bag.js ${ENVIRONMENT} ${BASE_NUMBER}\n`);
     }
 
   } catch (error) {

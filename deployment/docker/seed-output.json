@@ -1,0 +1,250 @@
+{
+  "environment": "test",
+  "baseNumber": "1",
+  "seedDate": "2025-10-21T23:11:27.624Z",
+  "emojicodedReferences": [
+    {
+      "type": "Recipe",
+      "title": "Grandma's Secret Chocolate Chip Cookies Recipe",
+      "pubKey": "02884f62445c6aeda17212d4fac2654e89e53c694095e448dac851f5da63186f65",
+      "emojiShortcode": "🌍🔑💎🔨🐚🕘🔔🎲",
+      "uuid": "9d960ce0-3a47-416b-b63e-7eef8402d649",
+      "htmlUpdated": true
+    },
+    {
+      "type": "Music",
+      "title": "Coffee Shop Jazz",
+      "artist": "Smooth Trio",
+      "platform": "mirlo",
+      "pubKey": "0310f7138e43d4052c5d9893c8e95e23df3a0237c21251e1a1772fc599aeb7a8d4",
+      "emojiShortcode": "🌍🔑💎📐🎸🐙🐞🐝",
+      "uuid": "533db819-1be7-47c5-8563-3cee259e35ec"
+    },
+    {
+      "type": "Music",
+      "title": "Night Drive",
+      "artist": "Retro Wave Collective",
+      "platform": "mirlo",
+      "pubKey": "02b47023a68566aa775bbaeb01d5ef60674e21fe1b7055f751908e114849e27237",
+      "emojiShortcode": "🌍🔑💎🔔🕖😅🕑🚅",
+      "uuid": "abc407ab-abcc-4915-9a9b-45cdfacf75b5"
+    },
+    {
+      "type": "Product",
+      "title": "Peace Love and Redistribution T-Shirt",
+      "productId": "peace-love-redistribution-tshirt",
+      "price": "$29.00",
+      "pubKey": "029085cf1e6ebb0b535ba55e1314aa5adb12784b49f867261a924336b059ba2865",
+      "emojiShortcode": "🌍🔑💎🔨🔔🗿🐢🌊",
+      "uuid": "a374c891-d9df-433e-8f1b-cd125787ac08"
+    },
+    {
+      "type": "Room",
+      "title": "Cozy Downtown Studio",
+      "beds": 1,
+      "baths": 1,
+      "size": 650,
+      "rent": "$550.00/mo",
+      "neighborhood": "Downtown",
+      "pubKey": "02b8e11a3e111966d7281a2da56a8654df9dd104be8393b02d784d53d04b7e0cb3",
+      "emojiShortcode": "🌍🔑💎🎪🐙🕑🐻🎯",
+      "uuid": "1edebf07-8934-44aa-8b04-97ca366ca850"
+    },
+    {
+      "type": "Music",
+      "title": "Digital Dreams",
+      "artist": "The Synthesizers",
+      "platform": "mirlo",
+      "pubKey": "02f79521be20e7b4cb5df4e66f4acdf6842207e53e096039e0129615e2eae5ce37",
+      "emojiShortcode": "🌍🔑💎🕓📧🔔😅🕙",
+      "uuid": "2c621447-b1ed-4581-a23d-8f0927de57e8"
+    },
+    {
+      "type": "Contract Signing UI",
+      "title": "Website Development Agreement",
+      "contractId": "website-dev-001",
+      "participants": 2,
+      "pubKey": "035b853e6c5fe281bf0ae3899a7f5ff66be1fd39d3faf7c3f6a1d7de7634641390",
+      "emojiShortcode": "🌍🔑💎🎺📦🐝🌙🕑",
+      "uuid": "4925b66f-ab0e-473d-8b78-713f6481c608"
+    },
+    {
+      "type": "Room",
+      "title": "Luxury 3BR Penthouse",
+      "beds": 3,
+      "baths": 2,
+      "size": 1400,
+      "rent": "$700.00/mo",
+      "neighborhood": "Uptown",
+      "pubKey": "0321c8faae9ecc7b826d7e4a9c3ab98e4bd0742245dd4b2f3e4820e88c5af25b93",
+      "emojiShortcode": "🌍🔑💎📬📚🕙📦📝",
+      "uuid": "0002673c-6633-4b77-b2a0-42d54c9edf73"
+    },
+    {
+      "type": "Book",
+      "title": "Code as Poetry: The Art of Elegant Programming",
+      "author": "Elena Rodriguez",
+      "price": "Free",
+      "category": "programming",
+      "pubKey": "023be18fa3a4a7aa6eb353aac8e68bea57db974c5d831ca0aa9d6736a998a01ae8",
+      "emojiShortcode": "🌍🔑💎🕑🌊🎺📘🗡",
+      "uuid": "1e93e8bc-4ff5-4a73-9d12-a43d6e76e733"
+    },
+    {
+      "type": "Room",
+      "title": "Spacious 2BR Near Transit",
+      "beds": 2,
+      "baths": 1.5,
+      "size": 950,
+      "rent": "$650.00/mo",
+      "neighborhood": "Midtown",
+      "pubKey": "031fefabf0dab80c88df8c6f71c05908a7d27d3d0560c5418d4d5895b0b966fd83",
+      "emojiShortcode": "🌍🔑💎🕕📡🕔🔪🔫",
+      "uuid": "062c7ce0-73b0-41d3-b60d-59233d7b4589"
+    },
+    {
+      "type": "Book",
+      "title": "The Quiet Revolution: Finding Peace in a Noisy World",
+      "author": "Marcus Williams",
+      "price": "$24.99",
+      "category": "self-help",
+      "pubKey": "024dbcd2a932fe51403984a73a622cbdf8b7cd9064bd0445a61e974c74a8c6093c",
+      "emojiShortcode": "🌍🔑💎🏔🎹🌍🕕👒",
+      "uuid": "5d6749c1-b837-4839-aeab-dd268e2b884d"
+    },
+    {
+      "type": "Book",
+      "title": "The Digital Garden: Cultivating Creativity in the Information Age",
+      "author": "Sarah Chen",
+      "price": "$19.99",
+      "category": "technology",
+      "pubKey": "029d101ef6b1a4b447195514904bd547cda76076b3056ce65ee2c70ecd1dbf600d",
+      "emojiShortcode": "🌍🔑💎📚🎭💀🐙🏰",
+      "uuid": "7b30813e-c376-4841-b1cf-0530d8bb303c"
+    },
+    {
+      "type": "Service Provider",
+      "title": "Mike's Plumbing Services",
+      "serviceType": "plumbing",
+      "provider": "Mike Rodriguez",
+      "rate": "$85.00/hr",
+      "rating": "4.9 ⭐ (247 reviews)",
+      "category": "home-services",
+      "pubKey": "0397614f8ad66ef1321c412234e4874329a31e3693db8843ba4d27fa906a41c0f6",
+      "emojiShortcode": "🌍🔑💎🕐🕕🕘🕖😃",
+      "uuid": "e3d752a2-a4c3-4628-9b0e-3e2e554d6018"
+    },
+    {
+      "type": "Article",
+      "title": "If I Write Another Word",
+      "author": "From Medium/Illumination",
+      "price": "Free (Article)",
+      "category": "writing",
+      "pubKey": "02b95bc3daa098c455a5f453e862273ee4819b9f61f1c9c09b8c3965ded61c6f8a",
+      "emojiShortcode": "🌍🔑💎🔪👓🌍📢📝",
+      "uuid": "7b1fcd93-28a5-4734-b0f0-c0aa8c1d1363"
+    },
+    {
+      "type": "Service Provider",
+      "title": "Sarah's Childcare",
+      "serviceType": "childcare",
+      "provider": "Sarah Chen",
+      "rate": "$25.00/hr",
+      "rating": "5 ⭐ (89 reviews)",
+      "category": "childcare",
+      "pubKey": "023fe7f6839a3399d44aab3a34b96e3ef6e6e64f69332106861d1e63b4d6357904",
+      "emojiShortcode": "🌍🔑💎🚃🏆💡🚂🕙",
+      "uuid": "a3a1c19c-53ce-4e36-b205-1a08f7b0717c"
+    },
+    {
+      "type": "Popup Post",
+      "title": "Pearl District Art Walk",
+      "location": "Pearl District Art Hub, 1000 NW Lovejoy St, Portland, OR 97209",
+      "date": "11/22/2025",
+      "category": "art-culture",
+      "pubKey": "03687f36522f7d004c116da1dca6c3d9b620f1bce2ff9edf90a74b636d39d728a7",
+      "emojiShortcode": "🌍🔑💎🔱🕓📚📝🕕",
+      "locationViewPubKey": "0329c1630881a0fb22c993d12bb460d9eb541eb939e7a86741cb49ad111c56afc7",
+      "locationEmojiShortcode": "🌍🔑💎📙📨🕑🌟🚄",
+      "uuid": "8ea93d55-0aab-4bc3-bca0-f8a7f1c8fe5c"
+    },
+    {
+      "type": "Popup Post",
+      "title": "Coffee & Code Meetup",
+      "location": "Stumptown Coffee Roasters, 128 SW 3rd Ave, Portland, OR 97204",
+      "date": "11/15/2025",
+      "category": "tech-meetup",
+      "pubKey": "03c2c141e2833bcb93b41075f254c06a1bc09df5caeae9c3800504b329aa3c0980",
+      "emojiShortcode": "🌍🔑💎📢🕙😅🔫🚀",
+      "locationViewPubKey": "02535675241cb446095443923f7cf8ccf6b889c50d501435f1718bd4a0f068a065",
+      "locationEmojiShortcode": "🌍🔑💎🌊🌙🎭🏺🐉",
+      "uuid": "a2942df0-5da6-4089-81e0-38c819ad888b"
+    },
+    {
+      "type": "Popup Post",
+      "title": "Food Cart Festival",
+      "location": "Cartlandia Food Cart Pod, SE 82nd Ave & Foster Rd, Portland, OR 97266",
+      "date": "12/3/2025",
+      "category": "food-drink",
+      "pubKey": "039f0791d533a764e6587e55d1ef679664fd548dbfd1f7a4a01135fa601f36d305",
+      "emojiShortcode": "🌍🔑💎🕓💎🏆🐚🌙",
+      "locationViewPubKey": "03b5c9dbc65fe54320f4ccaca018043be56ea75aebeb7db14bdb25c4f7e3c9baa0",
+      "locationEmojiShortcode": "🌍🔑💎📚🏆💼🎻😃",
+      "uuid": "2f7eec2b-2f62-421d-8ce2-14fec607ec24"
+    },
+    {
+      "type": "Event",
+      "title": "El Popupito",
+      "date": "Aug 15, 2025, 12:00 PM",
+      "location": "Secret Location, Portland, OR (revealed upon ticket purchase)",
+      "ticketPrice": "$75.00",
+      "capacity": 50,
+      "ticketFlavor": "AB01CD02EF03",
+      "pubKey": "037e3dff45e5b4d1d665abaa33ac50c0b8abe72715d274597e0d451420ba889837",
+      "emojiShortcode": "🌍🔑💎🕔🔱🎯🎻🏹",
+      "uuid": "053c768e-58da-48fc-a4bc-c9967b8e541b",
+      "arethaUUID": "2c7079c0-d128-4a74-b248-0cbac692d11c",
+      "ticketsAllocated": 50
+    },
+    {
+      "type": "Event",
+      "title": "Starlight Symphony Under the Stars",
+      "date": "Jul 22, 2025, 1:00 PM",
+      "location": "Pioneer Courthouse Square, Portland, OR",
+      "ticketPrice": "$35.00",
+      "capacity": 1000,
+      "ticketFlavor": "CD01EF02GH03",
+      "pubKey": "0254abcb6072d27296f78f938accd7d0207f4cb1f51d1df3c08b50762cc7e05280",
+      "emojiShortcode": "🌍🔑💎📗📡🔪😆🕗",
+      "uuid": "b4d1b1e9-8058-496e-8667-ac12e5b75117",
+      "arethaUUID": "7f041914-ee3c-4723-bf9d-6d1ded709b54",
+      "ticketsAllocated": 1000
+    },
+    {
+      "type": "Event",
+      "title": "Digital Realm Quest Tournament",
+      "date": "Sep 5, 2025, 11:00 AM",
+      "location": "Virtual - Planet Nine Metaverse",
+      "ticketPrice": "500 MP",
+      "capacity": 260,
+      "ticketFlavor": "EF01GH02IJ03",
+      "pubKey": "03af3e1703840b615a467b4224da43ba9ccb5f03d265ca7bfeb4f2c712b5578c63",
+      "emojiShortcode": "🌍🔑💎🐉📦🐺📙😄",
+      "uuid": "13f15450-291b-4a1d-8c98-9dc7e437ebed",
+      "arethaUUID": "d2398a54-7315-4d5a-be88-50a2dd159a15",
+      "ticketsAllocated": 260
+    }
+  ],
+  "services": {
+    "dolores": "http://localhost:5118",
+    "prof": "http://localhost:5123",
+    "sanora": "http://localhost:5121",
+    "bdo": "http://localhost:5114",
+    "covenant": "http://localhost:5122",
+    "julia": "http://localhost:5111",
+    "continuebee": "http://localhost:5112",
+    "fount": "http://localhost:5117",
+    "aretha": "http://localhost:5120",
+    "advancement": "http://localhost:3456"
+  }
+}
