@@ -12,11 +12,16 @@ services=(
     'aretha'
     'bdo'
     'continuebee'
+    'covenant'
+    'dolores'
     'fount'
     'joan'
     'julia'
+    'minnie'
     'pref'
+    'prof'
     'sanora'
+    'wiki'
 )
 
 setup_services() {

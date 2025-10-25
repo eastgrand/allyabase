@@ -237,6 +237,37 @@ if [ "$ENVIRONMENT" = "local" ]; then
   exit 0
 fi
 
+# Check for Addie API keys configuration
+ADDIE_ENV_VARS=""
+ADDIE_KEYS_FILE="../../addie-keys.env"
+
+if [ -f "$ADDIE_KEYS_FILE" ]; then
+  echo "🔑 Found Addie API keys configuration"
+
+  # Source the file to load variables
+  source "$ADDIE_KEYS_FILE"
+
+  # Build environment variable arguments for Docker
+  if [ -n "$OPENAI_API_KEY" ]; then
+    ADDIE_ENV_VARS="$ADDIE_ENV_VARS -e OPENAI_API_KEY=$OPENAI_API_KEY"
+    echo "   ✅ OpenAI API key configured"
+  fi
+
+  if [ -n "$ANTHROPIC_API_KEY" ]; then
+    ADDIE_ENV_VARS="$ADDIE_ENV_VARS -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY"
+    echo "   ✅ Anthropic API key configured"
+  fi
+
+  if [ -z "$ADDIE_ENV_VARS" ]; then
+    echo "   ⚠️  addie-keys.env found but no API keys configured"
+  fi
+  echo ""
+else
+  echo "ℹ️  No Addie API keys found (optional)"
+  echo "   Create addie-keys.env from template to enable AI features"
+  echo ""
+fi
+
 # Build prof port arguments
 PROF_PORTS=""
 if [ "$ENABLE_PROF" = true ]; then
@@ -253,6 +284,7 @@ echo "   Wiki enabled on port 5124"
 docker run -d \
   --name allyabase-base1 \
   -e ENABLE_PROF=$ENABLE_PROF \
+  $ADDIE_ENV_VARS \
   -p 5111:3000 \
   -p 5112:2999 \
   -p 5113:3002 \
@@ -298,6 +330,7 @@ echo "   Wiki enabled on port 5224"
 docker run -d \
   --name allyabase-base2 \
   -e ENABLE_PROF=$ENABLE_PROF \
+  $ADDIE_ENV_VARS \
   -p 5211:3000 \
   -p 5212:2999 \
   -p 5213:3002 \
@@ -343,6 +376,7 @@ echo "   Wiki enabled on port 5324"
 docker run -d \
   --name allyabase-base3 \
   -e ENABLE_PROF=$ENABLE_PROF \
+  $ADDIE_ENV_VARS \
   -p 5311:3000 \
   -p 5312:2999 \
   -p 5313:3002 \

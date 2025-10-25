@@ -22,6 +22,7 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { generateMusicBDO, exampleMusicTracks } from './examples/music/music-bdo.js';
+import { generateCanimusFeedBDO, sockpuppetCanimusFeed } from './examples/music/canimus-feed-bdo.js';
 import { generateRoomProduct, generateRoomSVG, generateRoomHorizontalSVG, exampleRooms } from './examples/rooms/room-bdo.js';
 import { generateProfiles } from './examples/profiles/profile-generator.js';
 import { generateSampleProducts, generateBlogPosts } from './examples/products/product-generator.js';
@@ -1114,6 +1115,60 @@ class BDOSeeder {
     }
   }
 
+  async seedCanimusFeedBDO(feedData) {
+    console.log(`📼 Seeding Canimus feed BDO: ${feedData.feedTitle}...`);
+
+    try {
+      const user = await this.createUser(`canimus-feed-bdo-${feedData.feedTitle.replace(/\s+/g, '-').toLowerCase()}`);
+      if (!user) {
+        throw new Error('Failed to create Canimus feed BDO user');
+      }
+
+      const canimusBDOData = generateCanimusFeedBDO(feedData);
+
+      // Create the BDO
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: canimusBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+
+      // Get emoji shortcode from response (or fallback to fetching it)
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      console.log(`  ✅ Canimus feed BDO created successfully`);
+      console.log(`  📼 Feed: ${feedData.feedTitle} by ${feedData.artist}`);
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  🔗 Feed URL: ${feedData.feedUrl}`);
+
+      emojicodedReferences.push({
+        type: 'Canimus Feed',
+        title: feedData.feedTitle,
+        artist: feedData.artist,
+        feedUrl: feedData.feedUrl,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return { uuid: bdoResponse.uuid || user.uuid, pubKey: user.pubKey, emojiShortcode };
+    } catch (error) {
+      console.error(`❌ Canimus feed BDO seeding failed:`, error.message);
+      return null;
+    }
+  }
+
   async seedRoomBDO(roomData) {
     console.log(`🏠 Seeding room BDO for: ${roomData.name}...`);
 
@@ -1879,6 +1934,9 @@ const seedEcosystem = async () => {
       for (const track of exampleMusicTracks) {
         seeders.push(bdoSeeder.seedMusicBDO(track));
       }
+
+      // Seed Canimus feed BDO (Sockpuppet mix tape)
+      seeders.push(bdoSeeder.seedCanimusFeedBDO(sockpuppetCanimusFeed));
 
       // Seed room BDOs from example rooms
       for (const room of exampleRooms) {

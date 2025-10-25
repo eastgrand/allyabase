@@ -70,9 +70,20 @@ async function seedSpellbook() {
             linkup: {
                 cost: 400,
                 destinations: [
-                    { 
-                        stopName: 'fount', 
-                        stopURL: fountUrl + 'magic/spell/' 
+                    {
+                        stopName: 'fount',
+                        stopURL: fountUrl + 'magic/spell/'
+                    }
+                ],
+                resolver: 'fount',
+                mp: true
+            },
+            save: {
+                cost: 100,
+                destinations: [
+                    {
+                        stopName: 'fount',
+                        stopURL: fountUrl + 'magic/spell/'
                     }
                 ],
                 resolver: 'fount',
@@ -106,8 +117,9 @@ async function seedSpellbook() {
         console.log('\n🎉 Spellbook seeding completed successfully!');
         console.log('\n📋 Summary:');
         console.log(`   • Spellbook Name: ${spellbook.spellbookName}`);
-        console.log(`   • Available Spells: spellTest, joinup, linkup`);
-        console.log(`   • All spells have mp=true and cost=400`);
+        console.log(`   • Available Spells: spellTest, joinup, linkup, save`);
+        console.log(`   • All spells have mp=true`);
+        console.log(`   • Spell costs: spellTest/joinup/linkup=400, save=100`);
         console.log(`   • Resolver: fount`);
         console.log(`   • BDO UUID: ${userUuid}`);
         console.log(`   • Retrieval URL: ${bdoUrl}user/${userUuid}/bdo`);
