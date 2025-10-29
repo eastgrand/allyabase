@@ -177,6 +177,117 @@ export const foodBanksPosts = [
     ],
     founded: '1986',
     tags: ['food-bank', 'texas', 'hunger-relief', 'charity', 'network']
+  },
+  {
+    id: 'puerto-rico-food-bank-005',
+    uuid: sessionless.generateUUID(),
+    type: 'food-bank',
+    category: 'hunger-relief',
+    name: 'Banco de Alimentos de Puerto Rico',
+    subtitle: 'Food Bank of Puerto Rico',
+    description: 'The Food Bank of Puerto Rico works to ensure no one in Puerto Rico goes without food. Through community partnerships and support programs, they distribute food and create a more just future for all Puerto Ricans.',
+    mission: 'To ensure that no one in Puerto Rico goes without eating',
+    website: 'https://alimentospr.org/en/',
+    donationUrl: 'https://alimentospr.org/en/donate/',
+    location: {
+      state: 'Puerto Rico',
+      region: 'Island-wide',
+      headquarters: 'San Juan, PR'
+    },
+    colors: {
+      primary: '#00A5E0',
+      accent: '#FF6B35'
+    },
+    services: [
+      'Food distribution programs',
+      'Community partnerships',
+      'Disaster relief and recovery',
+      'Partner agency network',
+      'Hunger advocacy',
+      'Emergency food assistance'
+    ],
+    impact: [
+      'Serving communities across Puerto Rico',
+      'Building partnerships for food security',
+      'Responding to natural disasters',
+      'Working toward a hunger-free future'
+    ],
+    founded: '2001',
+    tags: ['food-bank', 'puerto-rico', 'hunger-relief', 'charity', 'disaster-relief']
+  },
+  {
+    id: 'three-square-nevada-006',
+    uuid: sessionless.generateUUID(),
+    type: 'food-bank',
+    category: 'hunger-relief',
+    name: 'Three Square Food Bank',
+    subtitle: 'Southern Nevada\'s Only Food Bank',
+    description: 'Three Square is the only food bank serving Southern Nevada. As a member of Feeding America, they provide wholesome food to hungry people while passionately pursuing a hunger-free community through programs like SNAP assistance and TEFAP.',
+    mission: 'To provide wholesome food to hungry people, while passionately pursuing a hunger-free community',
+    website: 'https://www.threesquare.org',
+    donationUrl: 'https://www.threesquare.org/donate',
+    location: {
+      state: 'Nevada',
+      region: 'Southern Nevada',
+      headquarters: 'Las Vegas, NV'
+    },
+    colors: {
+      primary: '#D4AF37',
+      accent: '#E74C3C'
+    },
+    services: [
+      'Food distribution programs',
+      'SNAP application assistance',
+      'TEFAP emergency food program',
+      'Mobile food pantries',
+      'School feeding programs',
+      'Senior nutrition programs'
+    ],
+    impact: [
+      'Only food bank serving Southern Nevada',
+      'Member of Feeding America network',
+      '$1 provides 6 meals to neighbors in need',
+      'Serving Las Vegas and surrounding communities'
+    ],
+    founded: '2007',
+    tags: ['food-bank', 'nevada', 'las-vegas', 'hunger-relief', 'charity']
+  },
+  {
+    id: 'central-pa-food-bank-007',
+    uuid: sessionless.generateUUID(),
+    type: 'food-bank',
+    category: 'hunger-relief',
+    name: 'Central Pennsylvania Food Bank',
+    subtitle: 'Feeding 27 Counties in Central PA',
+    description: 'Central Pennsylvania Food Bank serves 27 counties across Central Pennsylvania, providing meals to children, families, and seniors facing hunger. Through a network of partner agencies and programs, they work to eliminate food insecurity in their region.',
+    mission: 'To provide meals to children, families, and seniors facing hunger in Central Pennsylvania',
+    website: 'https://www.centralpafoodbank.org',
+    donationUrl: 'https://www.centralpafoodbank.org/donate',
+    location: {
+      state: 'Pennsylvania',
+      region: '27 counties in Central PA',
+      headquarters: 'Harrisburg, PA'
+    },
+    colors: {
+      primary: '#1E5A8E',
+      accent: '#67B346'
+    },
+    services: [
+      'Food distribution network',
+      'Child nutrition programs',
+      'Senior food assistance',
+      'Mobile food pantries',
+      'Partner agency support',
+      'Volunteer opportunities'
+    ],
+    impact: [
+      'Serving 27 counties in Central Pennsylvania',
+      'Providing meals to children and families',
+      'Supporting seniors facing hunger',
+      'Network of community partner agencies'
+    ],
+    founded: '1982',
+    tags: ['food-bank', 'pennsylvania', 'hunger-relief', 'charity', 'harrisburg']
   }
 ];
 
