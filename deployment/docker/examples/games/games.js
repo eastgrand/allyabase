@@ -311,6 +311,11 @@ export const gamesPosts = [
  * @returns {string} SVG string
  */
 export function generateGameSVG(game, gameBDOPubKey) {
+  // Skip FTP games - they use generateFTPSVG instead
+  if (game.type === 'ftp') {
+    return null;
+  }
+
   const priceDisplay = `$${(game.price / 100).toFixed(2)}`;
   const icon = game.type === 'board-game' ? '🎲' : '🎮';
   const playerInfo = game.type === 'board-game'
@@ -453,6 +458,11 @@ export function generateGameSVG(game, gameBDOPubKey) {
  * @returns {string} SVG string
  */
 export function generateFTPSVG(ftp, ftpBDOPubKey) {
+  // Only handle FTP type games
+  if (ftp.type !== 'ftp') {
+    return null;
+  }
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" width="400" height="280">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
