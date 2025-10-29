@@ -16,6 +16,7 @@ export const oracularPosts = [
     type: 'tarot',
     category: 'major-arcana',
     name: 'The Tower',
+    subtitle: 'Sudden Change & Revelation',
     number: 'XVI',
     description: 'A dramatic card depicting a tall tower struck by lightning, with figures falling from its heights. The Tower represents sudden upheaval, revelation, and the breaking down of false structures.',
     uprightMeaning: {
@@ -54,6 +55,7 @@ export const oracularPosts = [
     type: 'tarot',
     category: 'minor-arcana',
     name: 'Ace of Cups',
+    subtitle: 'New Emotional Beginnings',
     suit: 'Cups',
     number: 'I',
     description: 'A hand emerging from a cloud holds a golden chalice overflowing with water. The Ace of Cups represents new emotional beginnings, love, compassion, and spiritual abundance.',
@@ -93,6 +95,7 @@ export const oracularPosts = [
     type: 'astrology',
     category: 'natal-chart',
     name: 'Birth Chart Reading',
+    subtitle: 'Your Cosmic Blueprint',
     chartType: 'Natal Chart',
     description: 'A comprehensive astrological birth chart analysis revealing your cosmic blueprint. This chart maps the exact positions of planets at your moment of birth, offering deep insights into your personality, life path, and potential.',
     chartDetails: {
@@ -148,6 +151,7 @@ export const oracularPosts = [
     type: 'astrology',
     category: 'transit',
     name: 'Current Planetary Transits',
+    subtitle: 'Cosmic Weather Report',
     chartType: 'Transit Reading',
     description: 'An analysis of current planetary movements and how they affect your natal chart. Understanding transits helps you navigate opportunities and challenges with cosmic awareness.',
     transitDate: 'December 2024',

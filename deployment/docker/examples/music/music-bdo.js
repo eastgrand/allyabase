@@ -1,159 +1,211 @@
 /**
- * Music BDO Example
- * Generates a BDO containing an embedded music player (Mirlo, Bandcamp, etc.)
- * that can be shared via emojicode in AdvanceKey/AdvanceShare
+ * Music BDO Examples for Test Environment
+ *
+ * These music posts demonstrate:
+ * - Embedded music players (Mirlo, Bandcamp, etc.)
+ * - Save spell for adding to carrierBag "music" collection
+ * - Visual music player cards
  */
 
-export function generateMusicBDO({
-  embedUrl,
-  title = 'Untitled Track',
-  artist = 'Unknown Artist',
-  artworkUrl = '',
-  width = 800,
-  height = 400,
-  backgroundColor = '#1a1a1a',
-  textColor = '#ffffff'
-}) {
-  // Calculate dimensions
-  const artworkSize = height - 40;
-  const playerX = artworkUrl ? artworkSize + 20 : 20;
-  const playerWidth = width - playerX - 20;
+import sessionless from 'sessionless-node';
 
-  // Escape XML special characters
-  const escapeXml = (unsafe) => {
-    if (!unsafe) return '';
-    return unsafe
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
-  };
+export const exampleMusicTracks = [
+  {
+    id: 'music-digital-dreams-001',
+    uuid: sessionless.generateUUID(),
+    type: 'music-track',
+    title: 'Digital Dreams',
+    artist: 'The Synthesizers',
+    platform: 'mirlo',
+    embedUrl: 'https://mirlo.space/widget/track/12216',
+    artworkUrl: 'https://via.placeholder.com/300x300/667eea/ffffff?text=Digital+Dreams',
+    genre: 'Electronic',
+    duration: '4:32',
+    releaseYear: '2024',
+    description: 'A dreamy electronic journey through digital soundscapes.',
+    tags: ['electronic', 'synthwave', 'ambient', 'mirlo'],
+    colors: {
+      primary: '#667eea',
+      secondary: '#764ba2',
+      accent: '#f093fb'
+    }
+  },
+  {
+    id: 'music-night-drive-002',
+    uuid: sessionless.generateUUID(),
+    type: 'music-track',
+    title: 'Night Drive',
+    artist: 'Retro Wave Collective',
+    platform: 'mirlo',
+    embedUrl: 'https://mirlo.space/widget/track/12216',
+    artworkUrl: 'https://via.placeholder.com/300x300/f093fb/ffffff?text=Night+Drive',
+    genre: 'Synthwave',
+    duration: '5:18',
+    releaseYear: '2024',
+    description: 'Cruise through neon-lit streets with retro synthwave vibes.',
+    tags: ['synthwave', 'retro', '80s', 'mirlo'],
+    colors: {
+      primary: '#f093fb',
+      secondary: '#f5576c',
+      accent: '#4facfe'
+    }
+  },
+  {
+    id: 'music-coffee-shop-jazz-003',
+    uuid: sessionless.generateUUID(),
+    type: 'music-track',
+    title: 'Coffee Shop Jazz',
+    artist: 'Smooth Trio',
+    platform: 'bandcamp',
+    embedUrl: 'https://bandcamp.com/EmbeddedPlayer/track=12345',
+    artworkUrl: 'https://via.placeholder.com/300x300/4facfe/ffffff?text=Coffee+Shop',
+    genre: 'Jazz',
+    duration: '6:45',
+    releaseYear: '2023',
+    description: 'Relax with smooth jazz perfect for your morning coffee.',
+    tags: ['jazz', 'smooth', 'relaxing', 'bandcamp'],
+    colors: {
+      primary: '#4facfe',
+      secondary: '#00f2fe',
+      accent: '#43e97b'
+    }
+  }
+];
 
-  const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <!-- Dark background -->
-  <rect width="${width}" height="${height}" fill="${backgroundColor}" rx="12"/>
+/**
+ * Generate SVG for music player using Mirlo
+ * Single button with save spell to music collection
+ *
+ * @param {Object} track - Music track object
+ * @param {string} trackBDOPubKey - PubKey of this track's BDO
+ * @returns {string} SVG string
+ */
+export function generateMusicBDO(track, trackBDOPubKey) {
+  const { primary, secondary, accent } = track.colors;
 
-  <!-- Track artwork (if provided) -->
-  ${artworkUrl ? `
-  <image href="${artworkUrl}" x="20" y="20" width="${artworkSize}" height="${artworkSize}" preserveAspectRatio="xMidYMid slice">
-    <rect width="${artworkSize}" height="${artworkSize}" fill="#333" rx="8"/>
-  </image>
-  ` : ''}
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="400" height="360">
+  <defs>
+    <linearGradient id="bgGrad-${track.id}" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:${primary};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:${secondary};stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="saveGrad-${track.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:${primary};stop-opacity:1" />
+      <stop offset="50%" style="stop-color:${accent};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:${secondary};stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="saveGlow-${track.id}" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="0" result="offsetblur"/>
+      <feFlood flood-color="${accent}" flood-opacity="0.8"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .track-title {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      fill: white;
+      text-anchor: middle;
+    }
+    .track-artist {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      fill: rgba(255,255,255,0.8);
+      text-anchor: middle;
+    }
+    .track-info {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11px;
+      fill: rgba(255,255,255,0.7);
+      text-anchor: middle;
+    }
+    .platform-badge {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 9px;
+      font-weight: bold;
+      fill: ${accent};
+      text-anchor: middle;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .save-button {
+      fill: url(#saveGrad-${track.id});
+      stroke: ${accent};
+      stroke-width: 2;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .save-button:hover {
+      filter: url(#saveGlow-${track.id});
+    }
+    .button-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      fill: white;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="400" height="360" fill="url(#bgGrad-${track.id})" rx="12"/>
+
+  <!-- Album artwork placeholder -->
+  <rect x="50" y="30" width="300" height="150" fill="rgba(0,0,0,0.3)" rx="8"/>
+  <text x="200" y="105" text-anchor="middle" font-size="60" opacity="0.6">🎵</text>
 
   <!-- Track info -->
-  <text x="${playerX}" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="${textColor}">
-    ${escapeXml(title)}
-  </text>
-  <text x="${playerX}" y="70" font-family="Arial, sans-serif" font-size="18" fill="#999">
-    ${escapeXml(artist)}
-  </text>
+  <text class="track-title" x="200" y="210">${track.title}</text>
+  <text class="track-artist" x="200" y="230">by ${track.artist}</text>
+  <text class="track-info" x="200" y="250">${track.genre} • ${track.duration} • ${track.releaseYear}</text>
+  <text class="platform-badge" x="200" y="270">${track.platform}</text>
 
-  <!-- Embedded music player using foreignObject -->
-  <foreignObject x="${playerX}" y="90" width="${playerWidth}" height="${height - 110}">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;">
-      <iframe
-        src="${escapeXml(embedUrl)}"
-        style="border: 0; width: 100%; height: 100%; border-radius: 8px;"
-        allow="autoplay; fullscreen"
-        allowfullscreen
-        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-      ></iframe>
-    </div>
-  </foreignObject>
+  <!-- Note about embedding -->
+  <text class="track-info" x="200" y="290" font-style="italic">🎧 Playable on ${track.platform.charAt(0).toUpperCase() + track.platform.slice(1)}</text>
 
-  <!-- Save button (bottom right) -->
-  <g spell="save" spell-components='{"bdoPubKey":"","collection":"music"}'>
-    <rect x="${width - 140}" y="${height - 50}" width="120" height="35" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2" cursor="pointer">
-      <title>Save to Music Collection</title>
-    </rect>
-    <text x="${width - 80}" y="${height - 28}" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle" pointer-events="none">
-      💾 Save
-    </text>
-  </g>
-
-  <!-- Bottom bar with metadata -->
-  <rect y="${height - 30}" width="${width}" height="30" fill="rgba(0,0,0,0.3)"/>
-  <text x="${width / 2}" y="${height - 10}" font-family="Arial, sans-serif" font-size="12" fill="#666" text-anchor="middle">
-    🎵 Shared via Planet Nine BDO Emojicode
-  </text>
+  <!-- Single centered save button -->
+  <rect
+    class="save-button"
+    id="button1"
+    x="50"
+    y="305"
+    width="300"
+    height="50"
+    rx="12"
+    spell="save"
+    spell-components='{"bdoPubKey":"${trackBDOPubKey}","collection":"music"}'
+  />
+  <text class="button-text" x="200" y="330">💾 Save to Music</text>
 </svg>`;
-
-  // Detect platform from URL
-  let platform = 'unknown';
-  if (embedUrl.includes('mirlo.space')) platform = 'mirlo';
-  else if (embedUrl.includes('bandcamp.com')) platform = 'bandcamp';
-  else if (embedUrl.includes('soundcloud.com')) platform = 'soundcloud';
-  else if (embedUrl.includes('spotify.com')) platform = 'spotify';
-
-  return {
-    title: `Music: ${title}`,
-    type: 'music-player',
-    svgContent,
-    metadata: {
-      title,
-      artist,
-      embedUrl,
-      artworkUrl,
-      platform,
-      createdAt: Date.now(),
-      version: '1.0.0'
-    },
-    description: `${title} by ${artist} - Playable music via Planet Nine`
-  };
 }
 
 /**
  * Helper for Mirlo tracks
+ * @param {Object} track - Music track object
+ * @param {string} trackBDOPubKey - PubKey of this track's BDO
+ * @returns {string} SVG string
  */
-export function generateMirloBDO(trackId, title, artist, options = {}) {
-  return generateMusicBDO({
-    embedUrl: `https://mirlo.space/widget/track/${trackId}`,
-    title,
-    artist,
-    ...options
-  });
+export function generateMirloBDO(track, trackBDOPubKey) {
+  return generateMusicBDO(track, trackBDOPubKey);
 }
 
 /**
  * Helper for Bandcamp tracks
+ * @param {Object} track - Music track object
+ * @param {string} trackBDOPubKey - PubKey of this track's BDO
+ * @returns {string} SVG string
  */
-export function generateBandcampBDO(trackId, title, artist, options = {}) {
-  return generateMusicBDO({
-    embedUrl: `https://bandcamp.com/EmbeddedPlayer/track=${trackId}`,
-    title,
-    artist,
-    ...options
-  });
+export function generateBandcampBDO(track, trackBDOPubKey) {
+  return generateMusicBDO(track, trackBDOPubKey);
 }
-
-/**
- * Example music tracks for seeding
- */
-export const exampleMusicTracks = [
-  {
-    embedUrl: 'https://mirlo.space/widget/track/12216',
-    title: 'Digital Dreams',
-    artist: 'The Synthesizers',
-    artworkUrl: 'https://via.placeholder.com/300x300/667eea/ffffff?text=Digital+Dreams',
-    width: 800,
-    height: 400
-  },
-  {
-    embedUrl: 'https://mirlo.space/widget/track/12216', // Using same as example
-    title: 'Night Drive',
-    artist: 'Retro Wave Collective',
-    artworkUrl: 'https://via.placeholder.com/300x300/f093fb/ffffff?text=Night+Drive',
-    width: 800,
-    height: 400
-  },
-  {
-    embedUrl: 'https://mirlo.space/widget/track/12216', // Using same as example
-    title: 'Coffee Shop Jazz',
-    artist: 'Smooth Trio',
-    artworkUrl: 'https://via.placeholder.com/300x300/4facfe/ffffff?text=Coffee+Shop',
-    width: 800,
-    height: 400
-  }
-];

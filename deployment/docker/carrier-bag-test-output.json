@@ -3,9 +3,9 @@
     {
       "title": "Grandma's Secret Chocolate Chip Cookies Recipe",
       "type": "recipe",
-      "emojicode": "🌍🔑💎🔨🐚🕘🔔🎲",
-      "bdoPubKey": "02884f62445c6aeda17212d4fac2654e89e53c694095e448dac851f5da63186f65",
-      "savedAt": "2025-10-21T23:11:34.697Z",
+      "emojicode": "💚🌍🔑💎💣📮📚🙂💡",
+      "bdoPubKey": "02577c4e5c4cccb02c453c668b2d7de28a481d242d627a3cd5c23f53084f3cea71",
+      "savedAt": "2025-10-29T04:21:56.384Z",
       "description": "A family recipe passed down through generations, featuring the perfect balance of crispy edges and chewy centers."
     }
   ],
@@ -13,11 +13,24 @@
   "gallery": [],
   "bookshelf": [
     {
+      "title": "If I Write Another Word",
+      "type": "article",
+      "emojicode": "💚🌍🔑💎🕕🚀📧📑🏰",
+      "bdoPubKey": "027d7b835c5ec31253a26ad18aa4fd1034dcbdb77a5e1280ee7bd3cf55d1e6620f",
+      "savedAt": "2025-10-29T04:21:56.387Z",
+      "description": "A thoughtful piece about the creative process, writing, and the struggle to find the perfect words. Sometimes the best thing to do is to keep writing, even when you think you have nothing left to say.",
+      "metadata": {
+        "platform": "Medium",
+        "readTime": "5 min",
+        "publication": "Illumination"
+      }
+    },
+    {
       "title": "Code as Poetry: The Art of Elegant Programming",
       "type": "book",
-      "emojicode": "🌍🔑💎🕑🌊🎺📘🗡",
-      "bdoPubKey": "023be18fa3a4a7aa6eb353aac8e68bea57db974c5d831ca0aa9d6736a998a01ae8",
-      "savedAt": "2025-10-21T23:11:34.719Z",
+      "emojicode": "💚🌍🔑💎📚🔩🚂🕖🕙",
+      "bdoPubKey": "033fec54d819cabff3e6639a68c61a3c22b3f8fedf3c74f5d2931c05f17c576b74",
+      "savedAt": "2025-10-29T04:21:56.419Z",
       "description": "Programming is more than logic—it's an art form. Explore the aesthetic dimensions of code and learn to write programs that are both functional and beautiful.",
       "metadata": {
         "available": true,
@@ -29,9 +42,9 @@
     {
       "title": "The Quiet Revolution: Finding Peace in a Noisy World",
       "type": "book",
-      "emojicode": "🌍🔑💎🏔🎹🌍🕕👒",
-      "bdoPubKey": "024dbcd2a932fe51403984a73a622cbdf8b7cd9064bd0445a61e974c74a8c6093c",
-      "savedAt": "2025-10-21T23:11:34.724Z",
+      "emojicode": "💚🌍🔑💎🔱📧🕒🔓😀",
+      "bdoPubKey": "024456613db7de9a6edc6bf562a4a36db280d0598c38b586a8225d9b99cc53522f",
+      "savedAt": "2025-10-29T04:21:56.421Z",
       "description": "In a world of constant notifications and endless noise, discover the transformative power of silence and stillness. A practical guide to reclaiming your inner peace.",
       "metadata": {
         "available": true,
@@ -43,28 +56,15 @@
     {
       "title": "The Digital Garden: Cultivating Creativity in the Information Age",
       "type": "book",
-      "emojicode": "🌍🔑💎📚🎭💀🐙🏰",
-      "bdoPubKey": "029d101ef6b1a4b447195514904bd547cda76076b3056ce65ee2c70ecd1dbf600d",
-      "savedAt": "2025-10-21T23:11:34.726Z",
+      "emojicode": "💚🌍🔑💎🕒🚂🌍🙂🎪",
+      "bdoPubKey": "021810463aad5a590209ea926ca9f6f64f5cd626f3aadd6e3587b232b225e9b1b1",
+      "savedAt": "2025-10-29T04:21:56.423Z",
       "description": "A philosophical exploration of how we organize, nurture, and share knowledge in the digital age. Learn to build your own digital garden and cultivate ideas that flourish.",
       "metadata": {
         "available": true,
         "format": "Hardcover & eBook",
         "rating": 4.7,
         "reviews": 342
-      }
-    },
-    {
-      "title": "If I Write Another Word",
-      "type": "article",
-      "emojicode": "🌍🔑💎🔪👓🌍📢📝",
-      "bdoPubKey": "02b95bc3daa098c455a5f453e862273ee4819b9f61f1c9c09b8c3965ded61c6f8a",
-      "savedAt": "2025-10-21T23:11:34.729Z",
-      "description": "A thoughtful piece about the creative process, writing, and the struggle to find the perfect words. Sometimes the best thing to do is to keep writing, even when you think you have nothing left to say.",
-      "metadata": {
-        "platform": "Medium",
-        "readTime": "5 min",
-        "publication": "Illumination"
       }
     }
   ],
@@ -73,45 +73,11 @@
   "metallics": [],
   "music": [
     {
-      "title": "Music: Coffee Shop Jazz",
-      "type": "music-player",
-      "emojicode": "🌍🔑💎📐🎸🐙🐞🐝",
-      "bdoPubKey": "0310f7138e43d4052c5d9893c8e95e23df3a0237c21251e1a1772fc599aeb7a8d4",
-      "savedAt": "2025-10-21T23:11:34.700Z",
-      "description": "Coffee Shop Jazz by Smooth Trio - Playable music via Planet Nine",
-      "metadata": {
-        "title": "Coffee Shop Jazz",
-        "artist": "Smooth Trio",
-        "embedUrl": "https://mirlo.space/widget/track/12216",
-        "artworkUrl": "https://via.placeholder.com/300x300/4facfe/ffffff?text=Coffee+Shop",
-        "platform": "mirlo",
-        "createdAt": 1761088287306,
-        "version": "1.0.0"
-      }
-    },
-    {
-      "title": "Music: Night Drive",
-      "type": "music-player",
-      "emojicode": "🌍🔑💎🔔🕖😅🕑🚅",
-      "bdoPubKey": "02b47023a68566aa775bbaeb01d5ef60674e21fe1b7055f751908e114849e27237",
-      "savedAt": "2025-10-21T23:11:34.703Z",
-      "description": "Night Drive by Retro Wave Collective - Playable music via Planet Nine",
-      "metadata": {
-        "title": "Night Drive",
-        "artist": "Retro Wave Collective",
-        "embedUrl": "https://mirlo.space/widget/track/12216",
-        "artworkUrl": "https://via.placeholder.com/300x300/f093fb/ffffff?text=Night+Drive",
-        "platform": "mirlo",
-        "createdAt": 1761088287332,
-        "version": "1.0.0"
-      }
-    },
-    {
       "title": "Music: Digital Dreams",
       "type": "music-player",
-      "emojicode": "🌍🔑💎🕓📧🔔😅🕙",
-      "bdoPubKey": "02f79521be20e7b4cb5df4e66f4acdf6842207e53e096039e0129615e2eae5ce37",
-      "savedAt": "2025-10-21T23:11:34.711Z",
+      "emojicode": "💚🌍🔑💎🚂🎨🕒📨🔮",
+      "bdoPubKey": "03427dea8af6d41e48e59ff73559e9b59bf4f2834e61bbd6b6b113bd215af00e56",
+      "savedAt": "2025-10-29T04:21:56.397Z",
       "description": "Digital Dreams by The Synthesizers - Playable music via Planet Nine",
       "metadata": {
         "title": "Digital Dreams",
@@ -119,8 +85,58 @@
         "embedUrl": "https://mirlo.space/widget/track/12216",
         "artworkUrl": "https://via.placeholder.com/300x300/667eea/ffffff?text=Digital+Dreams",
         "platform": "mirlo",
-        "createdAt": 1761088287310,
+        "createdAt": 1761711588137,
         "version": "1.0.0"
+      }
+    },
+    {
+      "title": "Music: Coffee Shop Jazz",
+      "type": "music-player",
+      "emojicode": "💚🌍🔑💎🐼📙💫📮💼",
+      "bdoPubKey": "03ae9106c80c0c03d455809beaeb25449fa9071e25142c78390dd0e6fc07025eb5",
+      "savedAt": "2025-10-29T04:21:56.399Z",
+      "description": "Coffee Shop Jazz by Smooth Trio - Playable music via Planet Nine",
+      "metadata": {
+        "title": "Coffee Shop Jazz",
+        "artist": "Smooth Trio",
+        "embedUrl": "https://mirlo.space/widget/track/12216",
+        "artworkUrl": "https://via.placeholder.com/300x300/4facfe/ffffff?text=Coffee+Shop",
+        "platform": "mirlo",
+        "createdAt": 1761711588132,
+        "version": "1.0.0"
+      }
+    },
+    {
+      "title": "Music: Night Drive",
+      "type": "music-player",
+      "emojicode": "💚🌍🔑💎🎹🔩🐼📗🔨",
+      "bdoPubKey": "035568f58a73915288474cd2ba3d40ec845d847e52ba57a8a00e366cf94ed1ba53",
+      "savedAt": "2025-10-29T04:21:56.402Z",
+      "description": "Night Drive by Retro Wave Collective - Playable music via Planet Nine",
+      "metadata": {
+        "title": "Night Drive",
+        "artist": "Retro Wave Collective",
+        "embedUrl": "https://mirlo.space/widget/track/12216",
+        "artworkUrl": "https://via.placeholder.com/300x300/f093fb/ffffff?text=Night+Drive",
+        "platform": "mirlo",
+        "createdAt": 1761711588134,
+        "version": "1.0.0"
+      }
+    },
+    {
+      "title": "Sockpuppet Canimus Feed - Canimus Feed",
+      "type": "canimus-feed",
+      "emojicode": "💚🌍🔑💎📧🗡🌍🎻🕕",
+      "bdoPubKey": "02f4c8dd5052bace6d869183362d2d0da29b6c5bf944bc20b27ad9888fae4b0433",
+      "savedAt": "2025-10-29T04:21:56.406Z",
+      "description": "Sockpuppet Canimus Feed by Sockpuppet - Save this Canimus audio feed to your music collection",
+      "metadata": {
+        "feedUrl": "https://sockpuppet.band/canimus.json",
+        "feedTitle": "Sockpuppet Canimus Feed",
+        "artist": "Sockpuppet",
+        "createdAt": 1761711588173,
+        "version": "1.0.0",
+        "feedType": "canimus"
       }
     }
   ],
@@ -130,107 +146,74 @@
   "games": [],
   "events": [
     {
-      "title": "Pearl District Art Walk",
-      "type": "popup-post",
-      "emojicode": "🌍🔑💎🔱🕓📚📝🕕",
-      "bdoPubKey": "03687f36522f7d004c116da1dca6c3d9b620f1bce2ff9edf90a74b636d39d728a7",
-      "savedAt": "2025-10-21T23:11:34.732Z",
-      "description": "Explore the vibrant Pearl District art scene with guided tours through local galleries. Meet artists, view new exhibitions, and enjoy complimentary wine and appetizers. A perfect evening for art lovers!"
-    },
-    {
       "title": "Coffee & Code Meetup",
       "type": "popup-post",
-      "emojicode": "🌍🔑💎📢🕙😅🔫🚀",
-      "bdoPubKey": "03c2c141e2833bcb93b41075f254c06a1bc09df5caeae9c3800504b329aa3c0980",
-      "savedAt": "2025-10-21T23:11:34.734Z",
+      "emojicode": "💚🌍🔑💎📧🕐🗿🐉👔",
+      "bdoPubKey": "026a80d883837e6bfabb06ce957c37d8acb83fc548dc07025212670c1f10fef0ee",
+      "savedAt": "2025-10-29T04:21:56.425Z",
       "description": "Join us for an informal gathering of developers and tech enthusiasts. Share your projects, discuss the latest in web development, and enjoy great coffee. All skill levels welcome!"
+    },
+    {
+      "title": "Pearl District Art Walk",
+      "type": "popup-post",
+      "emojicode": "💚🌍🔑💎🔩📡😁🔨😂",
+      "bdoPubKey": "02c9bf9d883462db6b2ec2e2b6800d91f32025e63a1b0fb0e356406c595b114ea1",
+      "savedAt": "2025-10-29T04:21:56.426Z",
+      "description": "Explore the vibrant Pearl District art scene with guided tours through local galleries. Meet artists, view new exhibitions, and enjoy complimentary wine and appetizers. A perfect evening for art lovers!"
     },
     {
       "title": "Food Cart Festival",
       "type": "popup-post",
-      "emojicode": "🌍🔑💎🕓💎🏆🐚🌙",
-      "bdoPubKey": "039f0791d533a764e6587e55d1ef679664fd548dbfd1f7a4a01135fa601f36d305",
-      "savedAt": "2025-10-21T23:11:34.735Z",
+      "emojicode": "💚🌍🔑💎🐺🏺🐳👑🌟",
+      "bdoPubKey": "02b27c68d7a2c2dffb32eca56265b6f014eb92e38adadf14fcbaf84263eb7eba0c",
+      "savedAt": "2025-10-29T04:21:56.428Z",
       "description": "Experience Portland's famous food cart culture at its finest! Sample dishes from 20+ award-winning carts featuring cuisines from around the world. Live music, craft beverages, and family-friendly atmosphere."
-    },
-    {
-      "title": "El Popupito",
-      "type": "event",
-      "emojicode": "🌍🔑💎🕔🔱🎯🎻🏹",
-      "bdoPubKey": "037e3dff45e5b4d1d665abaa33ac50c0b8abe72715d274597e0d451420ba889837",
-      "savedAt": "2025-10-21T23:11:34.737Z",
-      "description": "An intimate popup dining experience featuring authentic Mexican street food with a modern twist. Chef Isabella Rodriguez brings her culinary heritage to life in this exclusive one-night event."
-    },
-    {
-      "title": "Starlight Symphony Under the Stars",
-      "type": "event",
-      "emojicode": "🌍🔑💎📗📡🔪😆🕗",
-      "bdoPubKey": "0254abcb6072d27296f78f938accd7d0207f4cb1f51d1df3c08b50762cc7e05280",
-      "savedAt": "2025-10-21T23:11:34.738Z",
-      "description": "Experience classical music like never before in this outdoor concert featuring the Portland Symphony Orchestra. Bring blankets and enjoy an evening of Beethoven, Mozart, and contemporary composers under the summer sky."
-    },
-    {
-      "title": "Digital Realm Quest Tournament",
-      "type": "event",
-      "emojicode": "🌍🔑💎🐉📦🐺📙😄",
-      "bdoPubKey": "03af3e1703840b615a467b4224da43ba9ccb5f03d265ca7bfeb4f2c712b5578c63",
-      "savedAt": "2025-10-21T23:11:34.740Z",
-      "description": "Join fellow Planet Nine explorers in this exclusive virtual gaming tournament. Compete in challenges, earn experience, and win rare nineum prizes. This event exists entirely in the digital realm and is purchased using your accumulated Magic Points."
     }
   ],
   "contracts": [
     {
       "title": "Contract Signing: Website Development Agreement",
       "type": "contract-signing-ui",
-      "emojicode": "🌍🔑💎🎺📦🐝🌙🕑",
-      "bdoPubKey": "035b853e6c5fe281bf0ae3899a7f5ff66be1fd39d3faf7c3f6a1d7de7634641390",
-      "savedAt": "2025-10-21T23:11:34.714Z",
+      "emojicode": "💚🌍🔑💎🚁🌙🐺🎻🌍",
+      "bdoPubKey": "02db3268a560c9a828233bdcd7871b2b73fa2a241def4bea765787f5dc8703af83",
+      "savedAt": "2025-10-29T04:21:56.411Z",
       "description": "Signing interface for contract: Website Development Agreement"
     }
   ],
   "stacks": [
     {
-      "title": "Peace Love and Redistribution T-Shirt",
-      "type": "product",
-      "emojicode": "🌍🔑💎🔨🔔🗿🐢🌊",
-      "bdoPubKey": "029085cf1e6ebb0b535ba55e1314aa5adb12784b49f867261a924336b059ba2865",
-      "savedAt": "2025-10-21T23:11:34.706Z",
-      "description": "Interactive product actions for Peace Love and Redistribution T-Shirt"
+      "title": "Sarah's Childcare",
+      "type": "service-provider",
+      "emojicode": "💚🌍🔑💎🙃💎🎯🌊🏹",
+      "bdoPubKey": "02c62a70f45336e009076250934ba6ab4a35c1f0d4ebc6a6806be8c93fcc5f57b3",
+      "savedAt": "2025-10-29T04:21:56.391Z",
+      "description": "Experienced and certified babysitter with CPR/First Aid training. Patient, creative, and nurturing care for children ages 6 months to 12 years. References available upon request.",
+      "metadata": {
+        "rating": 5,
+        "reviewCount": 89,
+        "responseTime": "< 2 hours",
+        "ageRange": "6 months - 12 years",
+        "specialties": [
+          "Toddlers",
+          "School-age",
+          "Multiple children"
+        ]
+      }
     },
     {
-      "title": "Cozy Downtown Studio",
-      "type": "room",
-      "emojicode": "🌍🔑💎🎪🐙🕑🐻🎯",
-      "bdoPubKey": "02b8e11a3e111966d7281a2da56a8654df9dd104be8393b02d784d53d04b7e0cb3",
-      "savedAt": "2025-10-21T23:11:34.709Z",
-      "description": "Beautiful studio apartment in the heart of downtown with modern finishes and natural light.",
-      "metadata": {
-        "beds": 1,
-        "baths": 1,
-        "size": 650,
-        "monthlyRent": 55000,
-        "deposit": 55000,
-        "dateAvailable": "2025-11-01T00:00:00.000Z",
-        "roomPic": "room1.png",
-        "amenities": [
-          "In-unit laundry",
-          "Dishwasher",
-          "Hardwood floors",
-          "High-speed internet",
-          "Pet-friendly"
-        ],
-        "address": "123 Main Street, Apt 4B",
-        "neighborhood": "Downtown",
-        "rentFormatted": "$550.00/mo",
-        "depositFormatted": "$550.00"
-      }
+      "title": "Peace Love and Redistribution T-Shirt",
+      "type": "product",
+      "emojicode": "💚🌍🔑💎👔🌊🎺💡💀",
+      "bdoPubKey": "03b69bdfdeacc39b255c1efa28e34817ca971d569bb0c3ee011c6c6f302d923608",
+      "savedAt": "2025-10-29T04:21:56.393Z",
+      "description": "Interactive product actions for Peace Love and Redistribution T-Shirt"
     },
     {
       "title": "Luxury 3BR Penthouse",
       "type": "room",
-      "emojicode": "🌍🔑💎📬📚🕙📦📝",
-      "bdoPubKey": "0321c8faae9ecc7b826d7e4a9c3ab98e4bd0742245dd4b2f3e4820e88c5af25b93",
-      "savedAt": "2025-10-21T23:11:34.716Z",
+      "emojicode": "💚🌍🔑💎🏺🎻🎹🐼💫",
+      "bdoPubKey": "0337aaff829640397717dc0524006bb230f37ecb536dbbfb8f0a41c37cf5eaaad6",
+      "savedAt": "2025-10-29T04:21:56.409Z",
       "description": "Stunning penthouse with panoramic city views, chef's kitchen, and modern amenities throughout.",
       "metadata": {
         "beds": 3,
@@ -255,11 +238,25 @@
       }
     },
     {
+      "title": "Mike's Plumbing Services",
+      "type": "service-provider",
+      "emojicode": "💚🌍🔑💎📦👓🔨🔑🕙",
+      "bdoPubKey": "0339be403bd52335a929823fd14b74924bdd51e38b7d4ac471a27d59f0bc81e46c",
+      "savedAt": "2025-10-29T04:21:56.414Z",
+      "description": "Licensed plumber with 15+ years experience. Specializing in emergency repairs, drain cleaning, water heater installation, and bathroom remodels. Available 24/7 for emergencies.",
+      "metadata": {
+        "rating": 4.9,
+        "reviewCount": 247,
+        "responseTime": "< 1 hour",
+        "completedJobs": 1500
+      }
+    },
+    {
       "title": "Spacious 2BR Near Transit",
       "type": "room",
-      "emojicode": "🌍🔑💎🕕📡🕔🔪🔫",
-      "bdoPubKey": "031fefabf0dab80c88df8c6f71c05908a7d27d3d0560c5418d4d5895b0b966fd83",
-      "savedAt": "2025-10-21T23:11:34.722Z",
+      "emojicode": "💚🌍🔑💎🕖📑💫🎭🐉",
+      "bdoPubKey": "029a405271f56399652dd0127478f3605f9177bdc263c3e14810a216419f6ed4a3",
+      "savedAt": "2025-10-29T04:21:56.416Z",
       "description": "Bright 2-bedroom apartment just steps from the metro station. Perfect for commuters!",
       "metadata": {
         "beds": 2,
@@ -283,36 +280,31 @@
       }
     },
     {
-      "title": "Mike's Plumbing Services",
-      "type": "service-provider",
-      "emojicode": "🌍🔑💎🕐🕕🕘🕖😃",
-      "bdoPubKey": "0397614f8ad66ef1321c412234e4874329a31e3693db8843ba4d27fa906a41c0f6",
-      "savedAt": "2025-10-21T23:11:34.727Z",
-      "description": "Licensed plumber with 15+ years experience. Specializing in emergency repairs, drain cleaning, water heater installation, and bathroom remodels. Available 24/7 for emergencies.",
+      "title": "Cozy Downtown Studio",
+      "type": "room",
+      "emojicode": "💚🌍🔑💎🗡😆💡📧🚂",
+      "bdoPubKey": "02662e772b2fec7fe66b8c86f388da26df71cf8f9dc55fa348c4053b314066221d",
+      "savedAt": "2025-10-29T04:21:56.417Z",
+      "description": "Beautiful studio apartment in the heart of downtown with modern finishes and natural light.",
       "metadata": {
-        "rating": 4.9,
-        "reviewCount": 247,
-        "responseTime": "< 1 hour",
-        "completedJobs": 1500
-      }
-    },
-    {
-      "title": "Sarah's Childcare",
-      "type": "service-provider",
-      "emojicode": "🌍🔑💎🚃🏆💡🚂🕙",
-      "bdoPubKey": "023fe7f6839a3399d44aab3a34b96e3ef6e6e64f69332106861d1e63b4d6357904",
-      "savedAt": "2025-10-21T23:11:34.731Z",
-      "description": "Experienced and certified babysitter with CPR/First Aid training. Patient, creative, and nurturing care for children ages 6 months to 12 years. References available upon request.",
-      "metadata": {
-        "rating": 5,
-        "reviewCount": 89,
-        "responseTime": "< 2 hours",
-        "ageRange": "6 months - 12 years",
-        "specialties": [
-          "Toddlers",
-          "School-age",
-          "Multiple children"
-        ]
+        "beds": 1,
+        "baths": 1,
+        "size": 650,
+        "monthlyRent": 55000,
+        "deposit": 55000,
+        "dateAvailable": "2025-11-01T00:00:00.000Z",
+        "roomPic": "room1.png",
+        "amenities": [
+          "In-unit laundry",
+          "Dishwasher",
+          "Hardwood floors",
+          "High-speed internet",
+          "Pet-friendly"
+        ],
+        "address": "123 Main Street, Apt 4B",
+        "neighborhood": "Downtown",
+        "rentFormatted": "$550.00/mo",
+        "depositFormatted": "$550.00"
       }
     }
   ]

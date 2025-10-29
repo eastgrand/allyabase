@@ -1,67 +1,52 @@
 {
-  "environment": "hitchhikers",
+  "environment": "test",
   "baseNumber": "1",
-  "seedDate": "2025-10-24T05:37:53.167Z",
+  "seedDate": "2025-10-29T13:16:54.083Z",
   "emojicodedReferences": [
     {
-      "type": "Product",
-      "title": "Peace Love and Redistribution T-Shirt",
-      "productId": "peace-love-redistribution-tshirt",
-      "price": "$29.00",
-      "pubKey": "02c588e7d09bcb13c9514f2a59342ce40bfd00f82b5030153db13ceb9d319d3909",
-      "emojiShortcode": "🌍🔑💎🎻🐙📕🚅🎹",
-      "uuid": "4afb8d90-5f50-4844-bb1d-0baa70eace15"
+      "type": "Canimus Feed",
+      "title": "Sockpuppet Canimus Feed",
+      "artist": "Sockpuppet",
+      "feedUrl": "https://sockpuppet.band/canimus.json",
+      "pubKey": "026f8c27f548d236b2d81a46d378caea6fb519d28be37fa2208501478cc31ea8c3",
+      "emojiShortcode": "💚🌍🔑💎🚃🎭📎🔥🎹",
+      "uuid": "b59f5a9f-9a40-4f44-806e-4acb5d075e22"
     },
     {
-      "type": "Recipe",
-      "title": "Grandma's Secret Chocolate Chip Cookies Recipe",
-      "pubKey": "02e0038bfbf58e24fde439486eccc75bfe16bcc5e5b1b60babfb2f346b011ba209",
-      "emojiShortcode": "🌍🔑💎📢🐢📮🎨🎭",
-      "uuid": "3349c95c-0e55-4503-b8f1-694082be710d",
-      "htmlUpdated": true
+      "type": "Contract Signing UI",
+      "title": "Website Development Agreement",
+      "contractId": "website-dev-001",
+      "participants": 2,
+      "pubKey": "02cef9a9ba7176210bbbad4b3fe0b3983df3639160cc2f62b5fbe4832a1925ba3b",
+      "emojiShortcode": "💚🌍🔑💎📢👔🎪🌙🎨",
+      "uuid": "5a3cb7ed-5d88-4cbb-8b46-15d03d142842"
     },
     {
       "type": "Music",
       "title": "Digital Dreams",
       "artist": "The Synthesizers",
       "platform": "mirlo",
-      "pubKey": "02772190934c4eb6b505e48e46e1d78798d3aa2c977dc6078aa7a4acd749506e9b",
-      "emojiShortcode": "🌍🔑💎🔒🗝📚🔮🐻",
-      "uuid": "56ff0a49-0799-49e1-bb2f-9ceeac7bd5b5"
+      "pubKey": "02f65198c0901af16084c72d54bc43caad3fe5402ff5318a9bd214d7bf29e31fe0",
+      "emojiShortcode": "💚🌍🔑💎🌟🔮🎹🕑🕙",
+      "uuid": "9a52dfc6-56fd-462d-8593-603c5733f1e0"
     },
     {
-      "type": "Book",
-      "title": "The Digital Garden: Cultivating Creativity in the Information Age",
-      "author": "Sarah Chen",
-      "price": "$19.99",
-      "category": "technology",
-      "pubKey": "0267eed550b7a9792ef64e23565033e9564f79a3bd2d5e54472037b182d5b42e02",
-      "emojiShortcode": "🌍🔑💎🕐🚁🕒😄🌟",
-      "uuid": "5eb122d0-f071-4181-8dff-4979552cb2da"
+      "type": "Product",
+      "title": "Peace Love and Redistribution T-Shirt",
+      "productId": "peace-love-redistribution-tshirt",
+      "price": "$29.00",
+      "pubKey": "034ab2a547c63a30d2797e4cacb1df3f2af5b15c0b9addbd7ad4179c3455ebd98e",
+      "emojiShortcode": "💚🌍🔑💎🎸🐚📌🏆📙",
+      "uuid": "bd58b9fc-1c9f-4087-8ddf-0f338e39cac2"
     },
     {
-      "type": "Room",
-      "title": "Spacious 2BR Near Transit",
-      "beds": 2,
-      "baths": 1.5,
-      "size": 950,
-      "rent": "$650.00/mo",
-      "neighborhood": "Midtown",
-      "pubKey": "03a3a2e3d740b770b0968c657d6aba0c37939ceb44e8810866f427bb633f92f48d",
-      "emojiShortcode": "🌍🔑💎📦🐻🌟📢🐞",
-      "uuid": "251eff7d-e8fe-440f-aa86-11e3aae77e25"
-    },
-    {
-      "type": "Room",
-      "title": "Luxury 3BR Penthouse",
-      "beds": 3,
-      "baths": 2,
-      "size": 1400,
-      "rent": "$700.00/mo",
-      "neighborhood": "Uptown",
-      "pubKey": "03cdcdeb72e8054d51c088626d12d580194bcbdefb6541fba12ff176737f9662a3",
-      "emojiShortcode": "🌍🔑💎📢👑💰📘📎",
-      "uuid": "19d582bb-fa82-44f2-a631-005adbba984d"
+      "type": "Music",
+      "title": "Coffee Shop Jazz",
+      "artist": "Smooth Trio",
+      "platform": "mirlo",
+      "pubKey": "02e185647c9d50253bddb456002b2dae5f7e575b7dd1c9c2db8f098efc7c360d2b",
+      "emojiShortcode": "💚🌍🔑💎🎻🌙🎸🎨🕙",
+      "uuid": "adb4e610-a64f-4ccc-9bf3-7254698a1daf"
     },
     {
       "type": "Book",
@@ -69,50 +54,18 @@
       "author": "Elena Rodriguez",
       "price": "Free",
       "category": "programming",
-      "pubKey": "023853856da496d99cb7231d362f1e8c7a1d46756e34e8e9ab33b2a639a90b1d54",
-      "emojiShortcode": "🌍🔑💎🎭🕙🕖🙃🌙",
-      "uuid": "951ecd85-066b-4177-81d8-75301c66036d"
-    },
-    {
-      "type": "Book",
-      "title": "The Quiet Revolution: Finding Peace in a Noisy World",
-      "author": "Marcus Williams",
-      "price": "$24.99",
-      "category": "self-help",
-      "pubKey": "037f6f11e458b13589ad66b547c464aef1d0b888cd2ca4c9a95b6be1337051d35e",
-      "emojiShortcode": "🌍🔑💎🏺🎪💰📌🌟",
-      "uuid": "6f9e3f82-ae77-4a81-a70a-e14d8a914530"
+      "pubKey": "031486eff0b16a995ff3caf373e76aa565407adca3554495c6fa48ad5e00bf2619",
+      "emojiShortcode": "💚🌍🔑💎🕖🎭🎨🕔💫",
+      "uuid": "b09fcf5f-96ae-41e8-b966-c95f8610e09d"
     },
     {
       "type": "Music",
       "title": "Night Drive",
       "artist": "Retro Wave Collective",
       "platform": "mirlo",
-      "pubKey": "02759f9794f146483b24f37753fa27a92764df472bc9f55c0746c7fc7fbacf6f24",
-      "emojiShortcode": "🌍🔑💎😅🔩📦🌍💫",
-      "uuid": "b89d8d81-85dc-4d80-ba74-6315624f1e66"
-    },
-    {
-      "type": "Service Provider",
-      "title": "Mike's Plumbing Services",
-      "serviceType": "plumbing",
-      "provider": "Mike Rodriguez",
-      "rate": "$85.00/hr",
-      "rating": "4.9 ⭐ (247 reviews)",
-      "category": "home-services",
-      "pubKey": "024d54fba6f1377581e99982a38b65d57611c1dac1443e083c9632a7b0e5df4415",
-      "emojiShortcode": "🌍🔑💎👕🚆🐢🕐📌",
-      "uuid": "629e82b4-f52e-489f-a8de-f999d57a17cc"
-    },
-    {
-      "type": "Article",
-      "title": "If I Write Another Word",
-      "author": "From Medium/Illumination",
-      "price": "Free (Article)",
-      "category": "writing",
-      "pubKey": "02d6023a1acfa6b7be7ba72ef4f3994061d98f7cee6d4d5640a1aabb5e48412dd5",
-      "emojiShortcode": "🌍🔑💎📗📘🎺🔩📢",
-      "uuid": "86de2f91-9b01-4eef-97d5-999c9430a5af"
+      "pubKey": "022a1fbf3a50498c8db697e949698f0b942130fb582716bffc1ea8a86a092911c9",
+      "emojiShortcode": "💚🌍🔑💎🔥🌊💫🙄😄",
+      "uuid": "2dac0fa4-47d0-49e6-abb3-7e60fb39a6bd"
     },
     {
       "type": "Room",
@@ -122,27 +75,41 @@
       "size": 650,
       "rent": "$550.00/mo",
       "neighborhood": "Downtown",
-      "pubKey": "031ec0c97e8e14732c4cde3aaa966e1f6d6c506ec7f2404ff8c33eb40454007628",
-      "emojiShortcode": "🌍🔑💎🙄🌊🕕🎭🐙",
-      "uuid": "f29e3394-fbd3-44f5-8d8a-fc9883b43932"
+      "pubKey": "039ad82881b48a78cafc0a0006ba4e1a3c38c9c73d22a872313f26f81962d3fb88",
+      "emojiShortcode": "💚🌍🔑💎🗡🌟📮👓👑",
+      "uuid": "369f06f4-5c7a-4008-90b0-ef01d131e8ef"
     },
     {
-      "type": "Contract Signing UI",
-      "title": "Website Development Agreement",
-      "contractId": "website-dev-001",
-      "participants": 2,
-      "pubKey": "028d4803a9b3c1a6aa99fcf79a82612abc0b0f382d9c3b29f2c83a5f15a86c4460",
-      "emojiShortcode": "🌍🔑💎🐺🕐🐻📕💰",
-      "uuid": "15d3f31a-bf12-4fe5-8c8f-2b15fe32e5aa"
+      "type": "Article",
+      "title": "If I Write Another Word",
+      "author": "From Medium/Illumination",
+      "price": "Free (Article)",
+      "category": "writing",
+      "pubKey": "03c1d92a0feee0720902bb1205d2685470384f2845fb180931e59fcf26803e9bf9",
+      "emojiShortcode": "💚🌍🔑💎💼🔪📑🐢💎",
+      "uuid": "b10f4a49-b637-4be2-897b-63353a82e016"
     },
     {
-      "type": "Canimus Feed",
-      "title": "Sockpuppet Canimus Feed",
-      "artist": "Sockpuppet",
-      "feedUrl": "https://sockpuppet.band/canimus.json",
-      "pubKey": "027e0b4a39401cf83fd55c5809807520da333f8bb762eec27eb150d3ce35d2ddee",
-      "emojiShortcode": "🌍🔑💎🐻🌟💼💡📍",
-      "uuid": "416cbe03-8273-48fa-a1c1-bacb587a4dae"
+      "type": "Book",
+      "title": "The Digital Garden: Cultivating Creativity in the Information Age",
+      "author": "Sarah Chen",
+      "price": "$19.99",
+      "category": "technology",
+      "pubKey": "0357206dbe5577e081ced73213e41fde62b0893aa9cc5365468700a0b465ede02c",
+      "emojiShortcode": "💚🌍🔑💎🐙🎪🌟🏹🙃",
+      "uuid": "ad051781-f7e1-4352-860c-95a998cd293d"
+    },
+    {
+      "type": "Room",
+      "title": "Spacious 2BR Near Transit",
+      "beds": 2,
+      "baths": 1.5,
+      "size": 950,
+      "rent": "$650.00/mo",
+      "neighborhood": "Midtown",
+      "pubKey": "03d2210098c7f323cde40c9b3efc5439b25950ae1ecf1484299eebc682cd8d5a71",
+      "emojiShortcode": "💚🌍🔑💎🏰🗡🔥📘📑",
+      "uuid": "e373e3d4-6925-488d-b9f4-6a2cc522c8d7"
     },
     {
       "type": "Service Provider",
@@ -152,18 +119,51 @@
       "rate": "$25.00/hr",
       "rating": "5 ⭐ (89 reviews)",
       "category": "childcare",
-      "pubKey": "03e67fab1da099f8819399adbe80a372083632f9b756c4d93276515b7ba8579015",
-      "emojiShortcode": "🌍🔑💎🐉🐝💎🚆📨",
-      "uuid": "d5a57e6c-cc6d-463a-a7f5-335c6172621e"
+      "pubKey": "03b7998b89532009286fe9150a67cead030c7dce94678b7c8674a32c4ae22904e9",
+      "emojiShortcode": "💚🌍🔑💎🐙🕘🕙👒🎭",
+      "uuid": "4fd5ab7f-5084-4b15-8f8b-78fcc9b83d8a"
     },
     {
-      "type": "Music",
-      "title": "Coffee Shop Jazz",
-      "artist": "Smooth Trio",
-      "platform": "mirlo",
-      "pubKey": "030200f49a85fc0172144313e7044281dc65613d806f7419287802d8ee43627113",
-      "emojiShortcode": "🌍🔑💎👑🐳📍📌🌍",
-      "uuid": "0783ead8-042e-471a-a2ae-03f2f472facc"
+      "type": "Room",
+      "title": "Luxury 3BR Penthouse",
+      "beds": 3,
+      "baths": 2,
+      "size": 1400,
+      "rent": "$700.00/mo",
+      "neighborhood": "Uptown",
+      "pubKey": "02ee7ad0f23c2e176e29862fc24b190538dcab31665709afb735782972d96cd6a8",
+      "emojiShortcode": "💚🌍🔑💎🌟🏆📢😂💼",
+      "uuid": "4afbbd40-7a25-4bf7-9b0f-e3e64fe72d87"
+    },
+    {
+      "type": "Recipe",
+      "title": "Grandma's Secret Chocolate Chip Cookies Recipe",
+      "pubKey": "03b019d3ab9d9e00da0aadb081b85a0065300b922c4e78291ce0067b547a2d5a73",
+      "emojiShortcode": "💚🌍🔑💎🌊🚅🌍📍📘",
+      "uuid": "af63d082-bf36-474a-8428-b720493da14b",
+      "htmlUpdated": true
+    },
+    {
+      "type": "Service Provider",
+      "title": "Mike's Plumbing Services",
+      "serviceType": "plumbing",
+      "provider": "Mike Rodriguez",
+      "rate": "$85.00/hr",
+      "rating": "4.9 ⭐ (247 reviews)",
+      "category": "home-services",
+      "pubKey": "0335a2c6fae21c5f28b618511ef4870ae8bf22b0984f9c4cf1d48288b3af14f263",
+      "emojiShortcode": "💚🌍🔑💎🕗😆🔥🕒🔱",
+      "uuid": "b498e998-ac65-4ae1-a192-5dfe856cca48"
+    },
+    {
+      "type": "Book",
+      "title": "The Quiet Revolution: Finding Peace in a Noisy World",
+      "author": "Marcus Williams",
+      "price": "$24.99",
+      "category": "self-help",
+      "pubKey": "0223f8ca4d3a62099d69d31ce369fa1d3c6db615535ab2fb003fdaebfff4f80bdb",
+      "emojiShortcode": "💚🌍🔑💎🐝🔥🐳🐺👑",
+      "uuid": "6657894d-1eb3-4cc1-8a59-b2e2fdf2daf9"
     },
     {
       "type": "Popup Post",
@@ -171,11 +171,11 @@
       "location": "Pearl District Art Hub, 1000 NW Lovejoy St, Portland, OR 97209",
       "date": "11/22/2025",
       "category": "art-culture",
-      "pubKey": "038ae0cda09cc9330e9128d64a15e83895b089c2c73b22c6245aeba8548ce9a3d0",
-      "emojiShortcode": "🌍🔑💎📮🎲📙💀🏰",
-      "locationViewPubKey": "02a09fbbd2064bfa908817f511452726eb89522a69aa668d6d4fed26d3603bf249",
-      "locationEmojiShortcode": "🌍🔑💎📑🌟🐝📌🗿",
-      "uuid": "23c4f3e1-99fc-4bd9-a41d-12a2f3503a62"
+      "pubKey": "02c7e3e186302b23be534e6350e9cc02bdb397a2c702c27d3c23457d26c5a247ef",
+      "emojiShortcode": "💚🌍🔑💎😀🐻🏔🐳🎨",
+      "locationViewPubKey": "02b0b713849620eb90d2d8ebb87d06f522d0a99cc4bd81b462673270275301541a",
+      "locationEmojiShortcode": "💚🌍🔑💎📧🎻👑📐🌍",
+      "uuid": "5bdf676c-d17c-4720-88ff-b4dc3782e9e6"
     },
     {
       "type": "Popup Post",
@@ -183,11 +183,11 @@
       "location": "Cartlandia Food Cart Pod, SE 82nd Ave & Foster Rd, Portland, OR 97266",
       "date": "12/3/2025",
       "category": "food-drink",
-      "pubKey": "02b234ece886b8e146f8ab2d7775bf97fe2321b0473b988632b301a60c941455ee",
-      "emojiShortcode": "🌍🔑💎🗿💣🐚📙📦",
-      "locationViewPubKey": "038a2ec47d27ef8fd9393447d98db5a683ba44561cdbf883dc24a5c0b6e7fd2303",
-      "locationEmojiShortcode": "🌍🔑💎🎯🎸🏰🐻🕕",
-      "uuid": "38a2b2d5-7b59-4b37-9782-69cbf9ed5e0f"
+      "pubKey": "02b789a4e31c4503ff3ea2f2756efbe0a0f2361c57d509c8e5334bc7292ecab446",
+      "emojiShortcode": "💚🌍🔑💎🌊🕐👒📦🕕",
+      "locationViewPubKey": "03ee60cf9d9b86ceed293602d1267a127894b4fc3f6859238cf5ba18d4b0b431a1",
+      "locationEmojiShortcode": "💚🌍🔑💎🔩🐻🐢👔💡",
+      "uuid": "c0a2221e-d5c0-4106-9e6e-3f0d746a04f4"
     },
     {
       "type": "Popup Post",
@@ -195,65 +195,23 @@
       "location": "Stumptown Coffee Roasters, 128 SW 3rd Ave, Portland, OR 97204",
       "date": "11/15/2025",
       "category": "tech-meetup",
-      "pubKey": "02cfadfaf953e701c0d61b3af06b1ad776289f0bf1bc0625b1d438b474704a8991",
-      "emojiShortcode": "🌍🔑💎📦🐻🌍🎪🔨",
-      "locationViewPubKey": "02f4cb027e40a4293e52efda64b13fb708c4b06e23e1752fa9df29937f033337a3",
-      "locationEmojiShortcode": "🌍🔑💎🌍📧🌙🕘📣",
-      "uuid": "a5536b99-7b07-41c9-9cbe-b043f44f7a26"
-    },
-    {
-      "type": "Event",
-      "title": "Digital Realm Quest Tournament",
-      "date": "Sep 5, 2025, 11:00 AM",
-      "location": "Virtual - Planet Nine Metaverse",
-      "ticketPrice": "500 MP",
-      "capacity": 260,
-      "ticketFlavor": "EF01GH02IJ03",
-      "pubKey": "02f02d680b63bf3678a423c4c29839c92738677feca46da492092a493120169ac8",
-      "emojiShortcode": "🌍🔑💎🏹🐝📐👑💀",
-      "uuid": "912840d1-0b5f-4fa4-9841-326b9ef60c1a",
-      "arethaUUID": "0ab74474-287a-4ee0-b739-79d3858be35c",
-      "ticketsAllocated": 260
-    },
-    {
-      "type": "Event",
-      "title": "El Popupito",
-      "date": "Aug 15, 2025, 12:00 PM",
-      "location": "Secret Location, Portland, OR (revealed upon ticket purchase)",
-      "ticketPrice": "$75.00",
-      "capacity": 50,
-      "ticketFlavor": "AB01CD02EF03",
-      "pubKey": "028c53a9e729f89428c459bca83d511d4ede914f9be9b0694f01ff74c31f97f597",
-      "emojiShortcode": "🌍🔑💎🐙🔔🕑🎨🔨",
-      "uuid": "d9e546ae-2e5a-49e7-ae79-39705506eed7",
-      "arethaUUID": "6505e034-94f1-4d4b-af6c-d0ba638aab2f",
-      "ticketsAllocated": 50
-    },
-    {
-      "type": "Event",
-      "title": "Starlight Symphony Under the Stars",
-      "date": "Jul 22, 2025, 1:00 PM",
-      "location": "Pioneer Courthouse Square, Portland, OR",
-      "ticketPrice": "$35.00",
-      "capacity": 1000,
-      "ticketFlavor": "CD01EF02GH03",
-      "pubKey": "02bbdb7e028fa9a96715c2ffa6c136fbe31dcd2a0ef10f40104397ae1941062080",
-      "emojiShortcode": "🌍🔑💎🌊🔥🐞📎🎹",
-      "uuid": "2a1e2d69-fa26-41ab-986d-51743dcb7778",
-      "arethaUUID": "fc13ec2b-826b-4786-b365-1a87a115ae85",
-      "ticketsAllocated": 1000
+      "pubKey": "0246c327bfb4cc2114bf4a64f922f1ddb1c8154f58f203374bf13666c6252a4faa",
+      "emojiShortcode": "💚🌍🔑💎📘📡🐞🎲🎨",
+      "locationViewPubKey": "03f6c6c46188e7306e350a202ef1255774ab3ab68ad6cbfd9c3f345be9f2b97df4",
+      "locationEmojiShortcode": "💚🌍🔑💎🐚🐉📎🐳🌍",
+      "uuid": "d1351249-7f71-46f5-9688-30ee6e030c51"
     }
   ],
   "services": {
-    "dolores": "https://hitchhikers.dolores.allyabase.com",
-    "prof": "https://hitchhikers.prof.allyabase.com",
-    "sanora": "https://hitchhikers.sanora.allyabase.com",
-    "bdo": "https://hitchhikers.bdo.allyabase.com",
-    "covenant": "https://hitchhikers.covenant.allyabase.com",
-    "julia": "https://hitchhikers.julia.allyabase.com",
-    "continuebee": "https://hitchhikers.continuebee.allyabase.com",
-    "fount": "https://hitchhikers.fount.allyabase.com",
-    "aretha": "https://hitchhikers.aretha.allyabase.com",
-    "advancement": "https://hitchhikers.advancement.allyabase.com"
+    "dolores": "http://localhost:5118",
+    "prof": "http://localhost:5123",
+    "sanora": "http://localhost:5121",
+    "bdo": "http://localhost:5114",
+    "covenant": "http://localhost:5122",
+    "julia": "http://localhost:5111",
+    "continuebee": "http://localhost:5112",
+    "fount": "http://localhost:5117",
+    "aretha": "http://localhost:5120",
+    "advancement": "http://localhost:3456"
   }
 }

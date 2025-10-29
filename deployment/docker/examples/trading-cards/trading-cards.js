@@ -49,7 +49,7 @@ export const tradingCardsPosts = [
       secondary: '#c084fc',
       accent: '#fbbf24'
     },
-    imageUrl: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400',
+    imageUrl: 'https://collectionimages.npg.org.uk/std/mw304536/Ada-Lovelace.jpg',
     tags: ['ada-lovelace', 'computer-science', 'mathematics', 'programming', 'pioneer'],
     metadata: {
       era: 'Victorian Era',
@@ -97,7 +97,7 @@ export const tradingCardsPosts = [
       secondary: '#38bdf8',
       accent: '#ec4899'
     },
-    imageUrl: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400',
+    imageUrl: 'https://collectionimages.npg.org.uk/std/mw62979/Rosalind-Franklin.jpg',
     tags: ['rosalind-franklin', 'dna', 'chemistry', 'x-ray-crystallography', 'pioneer'],
     metadata: {
       era: 'Post-War Era',
@@ -145,7 +145,7 @@ export const tradingCardsPosts = [
       secondary: '#4ade80',
       accent: '#fbbf24'
     },
-    imageUrl: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400',
+    imageUrl: 'https://www.nobelprize.org/images/curie-marie-irene-lab-photo-3515-landscape-gallery.jpg',
     tags: ['marie-curie', 'physics', 'chemistry', 'radioactivity', 'nobel-prize'],
     metadata: {
       era: 'Early 20th Century',
@@ -195,7 +195,7 @@ export const tradingCardsPosts = [
       secondary: '#f87171',
       accent: '#a78bfa'
     },
-    imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400',
+    imageUrl: 'https://mathshistory.st-andrews.ac.uk/Biographies/Noether_Emmy/noether_emmy_4.jpg',
     tags: ['emmy-noether', 'mathematics', 'physics', 'algebra', 'theorem'],
     metadata: {
       era: 'Early 20th Century',
