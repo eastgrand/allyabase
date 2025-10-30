@@ -299,7 +299,7 @@ export function generateCosmeticSVG(cosmetic, cosmeticBDOPubKey) {
   <text class="cosmetic-description" x="20" y="175">${cosmetic.description.substring(60, 120)}...</text>
 
   <!-- Features -->
-  ${cosmetic.features.slice(0, 3).map((feature, i) =>
+  ${(cosmetic.features || []).slice(0, 3).map((feature, i) =>
     `<text class="feature-text" x="20" y="${195 + (i * 15)}">✓ ${feature}</text>`
   ).join('\n  ')}
 
@@ -428,7 +428,7 @@ export function generateRemedySVG(remedy, remedyBDOPubKey) {
   <text class="remedy-description" x="20" y="175">${remedy.description.substring(60, 120)}...</text>
 
   <!-- Benefits -->
-  ${remedy.benefits.slice(0, 3).map((benefit, i) =>
+  ${(remedy.benefits || []).slice(0, 3).map((benefit, i) =>
     `<text class="benefit-text" x="20" y="${195 + (i * 15)}">✓ ${benefit}</text>`
   ).join('\n  ')}
 

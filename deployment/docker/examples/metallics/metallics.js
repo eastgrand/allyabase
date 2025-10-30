@@ -293,7 +293,7 @@ export function generateGemstoneSVG(gem, gemBDOPubKey) {
   <text class="gem-description" x="20" y="175">${gem.description.substring(60, 120)}...</text>
 
   <!-- Properties -->
-  ${gem.metaphysicalProperties.slice(0, 3).map((prop, i) =>
+  ${(gem.metaphysicalProperties || []).slice(0, 3).map((prop, i) =>
     `<text class="property-text" x="20" y="${195 + (i * 15)}">✦ ${prop}</text>`
   ).join('\n  ')}
 
@@ -415,7 +415,7 @@ export function generateJewelrySVG(jewelry, jewelryBDOPubKey) {
   <text class="jewelry-designer" x="200" y="88">${jewelry.designer}</text>
 
   <!-- Materials -->
-  <text class="jewelry-meta" x="20" y="110">${jewelry.materials.metal}${jewelry.materials.stone ? ' • ' + jewelry.materials.stone : ''}</text>
+  <text class="jewelry-meta" x="20" y="110">${jewelry.materials?.metal || 'Metal'}${jewelry.materials?.stone ? ' • ' + jewelry.materials.stone : ''}</text>
 
   <!-- Price -->
   <text class="price-text" x="200" y="135">${priceDisplay}</text>
@@ -425,7 +425,7 @@ export function generateJewelrySVG(jewelry, jewelryBDOPubKey) {
   <text class="jewelry-description" x="20" y="175">${jewelry.description.substring(60, 120)}...</text>
 
   <!-- Features -->
-  ${jewelry.features.slice(0, 3).map((feature, i) =>
+  ${(jewelry.features || []).slice(0, 3).map((feature, i) =>
     `<text class="feature-text" x="20" y="${195 + (i * 15)}">✓ ${feature}</text>`
   ).join('\n  ')}
 

@@ -537,15 +537,21 @@ export const networkTopologyPosts = [
  * @returns {string} SVG string
  */
 export function generateHubSpokeSVG(topology, topologyBDOPubKey) {
+  // Only handle centralized hub-spoke topologies
+  if (topology.category !== 'centralized') {
+    return null;
+  }
+
   const { primary, secondary, accent } = topology.colors;
 
   // Calculate spoke positions in circle
-  const spokeCount = topology.components.spokes.length;
+  const spokes = topology.components?.spokes || [];
+  const spokeCount = spokes.length;
   const centerX = 200;
   const centerY = 220;
   const radius = 100;
 
-  const spokePositions = topology.components.spokes.map((_, i) => {
+  const spokePositions = spokes.map((_, i) => {
     const angle = (i / spokeCount) * 2 * Math.PI - Math.PI / 2;
     return {
       x: centerX + radius * Math.cos(angle),
@@ -709,6 +715,11 @@ export function generateHubSpokeSVG(topology, topologyBDOPubKey) {
  * @returns {string} SVG string
  */
 export function generateFederatedNetworkSVG(topology, topologyBDOPubKey) {
+  // Only handle federated network topologies
+  if (topology.category !== 'federated') {
+    return null;
+  }
+
   const { primary, secondary, accent } = topology.colors;
 
   // Determine specific network type
@@ -717,9 +728,9 @@ export function generateFederatedNetworkSVG(topology, topologyBDOPubKey) {
   const isFedwiki = topology.name.includes('Wiki');
 
   // Get nodes based on network type
-  const nodes = isFediverse ? topology.networkStructure.instances :
-                isMatrix ? topology.networkStructure.homeservers :
-                topology.networkStructure.wikis;
+  const nodes = isFediverse ? (topology.networkStructure?.instances || []) :
+                isMatrix ? (topology.networkStructure?.homeservers || []) :
+                (topology.networkStructure?.wikis || []);
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" width="400" height="560">
   <defs>
@@ -913,6 +924,11 @@ export function generateFederatedNetworkSVG(topology, topologyBDOPubKey) {
  * @returns {string} SVG string
  */
 export function generateFFXIVServersSVG(topology, topologyBDOPubKey) {
+  // Only handle game-servers topologies
+  if (topology.category !== 'game-servers') {
+    return null;
+  }
+
   const { primary, secondary, accent } = topology.colors;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580">
@@ -1146,6 +1162,11 @@ export function generateFFXIVServersSVG(topology, topologyBDOPubKey) {
  * @returns {string} SVG string
  */
 export function generateOverlayNetworkSVG(topology, topologyBDOPubKey) {
+  // Only handle overlay-network topologies
+  if (topology.category !== 'overlay-network') {
+    return null;
+  }
+
   const { primary, secondary, accent } = topology.colors;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580">

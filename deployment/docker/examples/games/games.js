@@ -465,26 +465,15 @@ export function generateFTPSVG(ftp, ftpBDOPubKey) {
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" width="400" height="280">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:${ftp.colors.primary};stop-opacity:1" />
-      <stop offset="50%" style="stop-color:${ftp.colors.secondary};stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:${ftp.colors.primary};stop-opacity:1" />
-    </linearGradient>
-
-    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:${ftp.colors.secondary};stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:1" />
-    </linearGradient>
-
-    <linearGradient id="saveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="saveGrad-${ftp.id}" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:${ftp.colors.secondary};stop-opacity:1" />
       <stop offset="100%" style="stop-color:${ftp.colors.primary};stop-opacity:1" />
     </linearGradient>
 
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="textGlow-${ftp.id}" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
       <feOffset dx="0" dy="0" result="offsetblur"/>
-      <feFlood flood-color="${ftp.colors.secondary}" flood-opacity="0.8"/>
+      <feFlood flood-color="white" flood-opacity="0.6"/>
       <feComposite in2="offsetblur" operator="in"/>
       <feMerge>
         <feMergeNode/>
@@ -492,7 +481,7 @@ export function generateFTPSVG(ftp, ftpBDOPubKey) {
       </feMerge>
     </filter>
 
-    <filter id="saveGlow" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="saveGlow-${ftp.id}" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
       <feOffset dx="0" dy="0" result="offsetblur"/>
       <feFlood flood-color="${ftp.colors.secondary}" flood-opacity="0.8"/>
@@ -507,30 +496,23 @@ export function generateFTPSVG(ftp, ftpBDOPubKey) {
   <style>
     .ftp-text {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 120px;
+      font-size: 140px;
       font-weight: 900;
-      fill: url(#textGrad);
+      fill: white;
       text-anchor: middle;
       dominant-baseline: middle;
-      letter-spacing: 8px;
-      filter: url(#glow);
-    }
-    .team-text {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 14px;
-      font-weight: bold;
-      fill: ${ftp.colors.secondary};
-      text-anchor: middle;
+      letter-spacing: 12px;
+      filter: url(#textGlow-${ftp.id});
     }
     .save-button {
-      fill: url(#saveGrad);
+      fill: url(#saveGrad-${ftp.id});
       stroke: ${ftp.colors.secondary};
       stroke-width: 2;
       cursor: pointer;
       transition: all 0.3s ease;
     }
     .save-button:hover {
-      filter: url(#saveGlow);
+      filter: url(#saveGlow-${ftp.id});
     }
     .button-text {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -543,14 +525,16 @@ export function generateFTPSVG(ftp, ftpBDOPubKey) {
     }
   </style>
 
-  <!-- Background -->
-  <rect x="0" y="0" width="400" height="280" fill="url(#bgGrad)" rx="12"/>
+  <!-- Card border with rounded corners -->
+  <rect x="0" y="0" width="400" height="280" fill="none" rx="12"/>
 
-  <!-- FTP Text -->
+  <!-- Color bands: dark on sides, light in middle -->
+  <rect x="0" y="0" width="120" height="280" fill="${ftp.colors.primary}" rx="12" />
+  <rect x="120" y="0" width="160" height="280" fill="${ftp.colors.secondary}" />
+  <rect x="280" y="0" width="120" height="280" fill="${ftp.colors.primary}" rx="12" />
+
+  <!-- FTP Text centered over the light band -->
   <text class="ftp-text" x="200" y="120">FTP</text>
-
-  <!-- Team name -->
-  <text class="team-text" x="200" y="180">${ftp.team}</text>
 
   <!-- Single centered save button -->
   <rect

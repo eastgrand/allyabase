@@ -317,46 +317,51 @@ export function generateSTEMPioneerCardSVG(card, cardBDOPubKey) {
   <!-- Card Border -->
   <rect class="card-border" x="10" y="10" width="380" height="540" rx="16"/>
 
-  <!-- Header Banner -->
-  <rect x="20" y="20" width="360" height="60" fill="url(#headerGrad-${card.id})" rx="8"/>
+  <!-- Portrait image -->
+  <rect x="20" y="20" width="360" height="180" fill="rgba(0,0,0,0.3)" rx="8"/>
+  <image
+    href="${card.imageUrl}"
+    x="20"
+    y="20"
+    width="360"
+    height="180"
+    preserveAspectRatio="xMidYMid slice"
+    style="clip-path: inset(0 round 8px);"
+  />
 
-  <!-- Portrait placeholder (decorative circle) -->
-  <circle cx="200" cy="50" r="25" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2"/>
-  <text x="200" y="60" text-anchor="middle" font-size="28">👤</text>
+  <!-- Name banner overlay -->
+  <rect x="20" y="170" width="360" height="50" fill="url(#headerGrad-${card.id})" rx="0 0 8px 8px"/>
 
   <!-- Name -->
-  <text class="card-name" x="200" y="110">${card.name}</text>
-  <text class="card-title" x="200" y="130">${card.knownFor}</text>
-  <text class="card-dates" x="200" y="145">${card.born}–${card.died} • ${card.nationality}</text>
+  <text class="card-name" x="200" y="192">${card.name}</text>
+  <text class="card-title" x="200" y="212">${card.knownFor}</text>
+  <text class="card-dates" x="200" y="227">${card.born}–${card.died} • ${card.nationality}</text>
 
   <!-- Divider -->
-  <line x1="30" y1="160" x2="370" y2="160" stroke="${accent}" stroke-width="2" opacity="0.5"/>
+  <line x1="30" y1="242" x2="370" y2="242" stroke="${accent}" stroke-width="2" opacity="0.5"/>
 
   <!-- Field -->
-  <text class="section-header" x="30" y="180">Field</text>
-  <text class="info-text" x="30" y="195">${card.field}</text>
+  <text class="section-header" x="30" y="262">Field</text>
+  <text class="info-text" x="30" y="277">${card.field}</text>
 
   <!-- Major Contributions -->
-  <text class="section-header" x="30" y="220">Major Contributions</text>
+  <text class="section-header" x="30" y="302">Major Contributions</text>
   ${card.majorContributions.slice(0, 3).map((contrib, i) =>
-    `<text class="info-text" x="30" y="${238 + (i * 14)}">• ${contrib.substring(0, 52)}${contrib.length > 52 ? '...' : ''}</text>`
+    `<text class="info-text" x="30" y="${320 + (i * 14)}">• ${contrib.substring(0, 52)}${contrib.length > 52 ? '...' : ''}</text>`
   ).join('\n  ')}
 
   <!-- Achievements -->
-  <text class="section-header" x="30" y="300">Achievements</text>
-  ${card.achievements.slice(0, 3).map((achievement, i) =>
-    `<text class="info-text" x="30" y="${318 + (i * 14)}">★ ${achievement.substring(0, 50)}${achievement.length > 50 ? '...' : ''}</text>`
+  <text class="section-header" x="30" y="382">Achievements</text>
+  ${card.achievements.slice(0, 2).map((achievement, i) =>
+    `<text class="info-text" x="30" y="${400 + (i * 14)}">★ ${achievement.substring(0, 50)}${achievement.length > 50 ? '...' : ''}</text>`
   ).join('\n  ')}
 
   <!-- Famous Quote -->
-  <text class="section-header" x="30" y="380">Famous Quote</text>
-  <rect x="25" y="388" width="350" height="60" fill="rgba(0,0,0,0.2)" rx="6"/>
-  ${wrapQuoteText(card.famousQuote, 30, 402, 46)}
+  <text class="section-header" x="30" y="450">Famous Quote</text>
+  <rect x="25" y="458" width="350" height="50" fill="rgba(0,0,0,0.2)" rx="6"/>
+  ${wrapQuoteText(card.famousQuote, 30, 472, 46)}
 
-  <!-- Fun Fact -->
-  <text class="section-header" x="30" y="470">Fun Fact</text>
-  <text class="info-text" x="30" y="485">💡 ${card.funFacts[0].substring(0, 52)}</text>
-  ${card.funFacts[0].length > 52 ? `<text class="info-text" x="30" y="498">${card.funFacts[0].substring(52, 104)}${card.funFacts[0].length > 104 ? '...' : ''}</text>` : ''}
+  <!-- Fun Fact (removed to save space) -->
 
   <!-- Save Button -->
   <rect

@@ -201,6 +201,11 @@ export const oracularPosts = [
  * @returns {string} SVG string
  */
 export function generateTarotSVG(card, cardBDOPubKey) {
+  // Only handle tarot cards
+  if (card.type !== 'tarot') {
+    return null;
+  }
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="400" height="360">
   <defs>
     <linearGradient id="saveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -297,7 +302,7 @@ export function generateTarotSVG(card, cardBDOPubKey) {
 
   <!-- Upright meaning -->
   <text class="section-title" x="20" y="170">Upright Keywords:</text>
-  ${card.uprightMeaning.keywords.slice(0, 3).map((keyword, i) =>
+  ${(card.uprightMeaning?.keywords || []).slice(0, 3).map((keyword, i) =>
     `<text class="keyword-text" x="20" y="${185 + (i * 14)}">• ${keyword}</text>`
   ).join('\n  ')}
 
@@ -334,6 +339,11 @@ export function generateTarotSVG(card, cardBDOPubKey) {
  * @returns {string} SVG string
  */
 export function generateAstrologySVG(chart, chartBDOPubKey) {
+  // Only handle astrology charts
+  if (chart.type !== 'astrology') {
+    return null;
+  }
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 340" width="400" height="340">
   <defs>
     <linearGradient id="astroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
