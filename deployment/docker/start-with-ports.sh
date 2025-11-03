@@ -106,10 +106,10 @@ module.exports = {
     {
       name: 'addie',
       script: '/usr/src/app/addie/src/server/node/addie.js',
-      env: { 
+      env: {
         LOCALHOST: 'true',
         PORT: '$ADDIE_PORT',
-        STRIPE_KEY: '<api key here>', 
+        STRIPE_KEY: '<api key here>',
         STRIPE_PUBLISHING_KEY: '<publishing key here>',
         SQUARE_KEY: '<api key here>'
       }

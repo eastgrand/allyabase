@@ -11,42 +11,43 @@ import sessionless from 'sessionless-node';
 
 export const oracularPosts = [
   {
-    id: 'tarot-the-tower-001',
+    id: 'tarot-king-of-wands-001',
     uuid: sessionless.generateUUID(),
     type: 'tarot',
-    category: 'major-arcana',
-    name: 'The Tower',
-    subtitle: 'Sudden Change & Revelation',
-    number: 'XVI',
-    description: 'A dramatic card depicting a tall tower struck by lightning, with figures falling from its heights. The Tower represents sudden upheaval, revelation, and the breaking down of false structures.',
+    category: 'minor-arcana',
+    name: 'King of Wands',
+    subtitle: 'Visionary Leadership',
+    suit: 'Wands',
+    number: 'King',
+    description: 'A confident king sits on his throne holding a wand, symbolizing pure fire energy, vision, and entrepreneurial spirit. The King of Wands represents natural-born leadership, boldness, and the ability to inspire others.',
     uprightMeaning: {
-      keywords: ['Upheaval', 'Sudden change', 'Revelation', 'Awakening', 'Destruction of illusions'],
-      interpretation: 'The Tower signals a sudden, dramatic change that may feel disruptive or uncomfortable. However, this destruction is necessary to clear away false beliefs and outdated structures. What falls away was built on unstable foundations. Though initially shocking, this change ultimately leads to liberation and truth.',
-      advice: 'Embrace the change rather than resist it. What is falling apart was never truly stable. Use this opportunity to rebuild on a stronger, more authentic foundation.'
+      keywords: ['Leadership', 'Vision', 'Entrepreneurship', 'Boldness', 'Charisma'],
+      interpretation: 'The King of Wands embodies natural leadership and entrepreneurial vision. You have the confidence and charisma to inspire others and turn bold visions into reality. This card signals taking charge of situations with passion and determination, leading by example rather than authority.',
+      advice: 'Step into your power as a leader. Share your vision boldly and inspire others to follow. Your entrepreneurial energy and natural charisma can turn ambitious ideas into tangible success.'
     },
     reversedMeaning: {
-      keywords: ['Avoiding disaster', 'Fear of change', 'Resisting transformation', 'Delayed upheaval'],
-      interpretation: 'Reversed, The Tower suggests you may be resisting necessary change or trying to avoid an inevitable transformation. You might be clinging to structures that need to fall, or experiencing ongoing anxiety about potential upheaval.',
-      advice: 'Consider what changes you are avoiding. Sometimes delaying the inevitable only makes it more difficult. Face necessary transformations with courage.'
+      keywords: ['Arrogance', 'Impulsiveness', 'Ruthlessness', 'Domineering', 'Lack of direction'],
+      interpretation: 'Reversed, the King of Wands suggests leadership abilities turned destructive. You may be acting impulsively, dominating others, or using your charisma manipulatively. Alternatively, you may be lacking direction or failing to take charge when needed.',
+      advice: 'Balance confidence with humility. Ensure your leadership serves others, not just your ego. Channel your passionate energy constructively rather than destructively.'
     },
     symbolism: [
-      'Lightning: Divine intervention and sudden revelation',
-      'Falling figures: Loss of ego and false security',
-      'Crown falling: Destruction of false authority',
-      'Gray sky: Spiritual storm and awakening',
-      'Mountain: Solid ground of truth beneath illusion'
+      'Wand/Staff: Power, creativity, and leadership',
+      'Salamanders: Transformation through fire',
+      'Crown: Authority and mastery',
+      'Throne: Established power and stability',
+      'Orange/Red robes: Passion and action'
     ],
     elements: {
       element: 'Fire',
-      astrology: 'Mars',
-      numerology: '16 (1+6=7: spiritual awakening)'
+      astrology: 'Sagittarius, Aries, Leo',
+      numerology: 'Court card - maturity and mastery'
     },
-    imageUrl: 'https://images.unsplash.com/photo-1633269540827-728aabbb7646?w=400',
-    tags: ['tarot', 'major-arcana', 'tower', 'transformation', 'awakening'],
+    imageUrl: 'https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_622,h_1024/https://calmingcosmos.com/wp-content/uploads/2020/07/20200724_113453-622x1024.jpg',
+    tags: ['tarot', 'minor-arcana', 'wands', 'king', 'leadership'],
     metadata: {
       deck: 'Rider-Waite-Smith',
-      readingType: 'major-arcana',
-      energyLevel: 'intense'
+      readingType: 'minor-arcana',
+      energyLevel: 'dynamic'
     }
   },
   {
@@ -206,7 +207,7 @@ export function generateTarotSVG(card, cardBDOPubKey) {
     return null;
   }
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="400" height="360">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600">
   <defs>
     <linearGradient id="saveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
@@ -286,47 +287,40 @@ export function generateTarotSVG(card, cardBDOPubKey) {
   </style>
 
   <!-- Background -->
-  <rect x="0" y="0" width="400" height="360" fill="#1a0033" rx="12"/>
+  <rect x="0" y="0" width="400" height="600" fill="#1a0033" rx="12"/>
 
-  <!-- Icon -->
-  <text x="200" y="35" text-anchor="middle" font-size="30">🔮</text>
+  <!-- Card Image -->
+  ${card.imageUrl ? `<image x="100" y="20" width="200" height="330" href="${card.imageUrl}" preserveAspectRatio="xMidYMid meet"/>` : ''}
 
   <!-- Card Info -->
-  <text class="tarot-name" x="200" y="70">${card.name}</text>
-  <text class="tarot-number" x="200" y="90">${card.number}</text>
-  <text class="tarot-category" x="200" y="105">${card.category.replace('-', ' ').toUpperCase()}</text>
-
-  <!-- Description -->
-  <text class="tarot-description" x="20" y="130">${card.description.substring(0, 60)}...</text>
-  <text class="tarot-description" x="20" y="145">${card.description.substring(60, 120)}...</text>
+  <text class="tarot-name" x="200" y="370">${card.name}</text>
+  <text class="tarot-number" x="200" y="390">${card.number}</text>
+  <text class="tarot-category" x="200" y="405">${card.category.replace('-', ' ').toUpperCase()}</text>
 
   <!-- Upright meaning -->
-  <text class="section-title" x="20" y="170">Upright Keywords:</text>
+  <text class="section-title" x="20" y="430">Upright Keywords:</text>
   ${(card.uprightMeaning?.keywords || []).slice(0, 3).map((keyword, i) =>
-    `<text class="keyword-text" x="20" y="${185 + (i * 14)}">• ${keyword}</text>`
+    `<text class="keyword-text" x="20" y="${445 + (i * 14)}">• ${keyword}</text>`
   ).join('\n  ')}
 
   <!-- Interpretation preview -->
-  <text class="section-title" x="20" y="240">Interpretation:</text>
-  <text class="tarot-description" x="20" y="255">${card.uprightMeaning.interpretation.substring(0, 65)}...</text>
-  <text class="tarot-description" x="20" y="270">${card.uprightMeaning.interpretation.substring(65, 130)}...</text>
-
-  <!-- Element -->
-  <text class="keyword-text" x="20" y="295">Element: ${card.elements.element} • ${card.elements.astrology}</text>
+  <text class="section-title" x="20" y="495">Interpretation:</text>
+  <text class="tarot-description" x="20" y="510">${card.uprightMeaning.interpretation.substring(0, 65)}...</text>
+  <text class="tarot-description" x="20" y="525">${card.uprightMeaning.interpretation.substring(65, 130)}...</text>
 
   <!-- Single centered save button -->
   <rect
     class="save-button"
     id="button1"
     x="50"
-    y="305"
+    y="545"
     width="300"
     height="50"
     rx="12"
     spell="save"
     spell-components='{"bdoPubKey":"${cardBDOPubKey}","collection":"oracular"}'
   />
-  <text class="button-text" x="200" y="330">🔮 Save to Oracular</text>
+  <text class="button-text" x="200" y="570">🔮 Save to Oracular</text>
 </svg>`;
 }
 

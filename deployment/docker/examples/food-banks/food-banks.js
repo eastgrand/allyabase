@@ -288,6 +288,116 @@ export const foodBanksPosts = [
     ],
     founded: '1982',
     tags: ['food-bank', 'pennsylvania', 'hunger-relief', 'charity', 'harrisburg']
+  },
+  {
+    id: 'snap-monthly-benefits-008',
+    uuid: sessionless.generateUUID(),
+    type: 'snap-benefits',
+    category: 'benefits-info',
+    name: 'SNAP Monthly Benefits 2024',
+    subtitle: 'Understanding Your Food Assistance',
+    description: 'The Supplemental Nutrition Assistance Program (SNAP) provides monthly benefits to help low-income families purchase food. Benefit amounts are based on household size, income, and expenses.',
+    colors: {
+      primary: '#2E7D32',
+      accent: '#4CAF50',
+      background: '#1B5E20'
+    },
+    benefitAmounts: [
+      { householdSize: 1, maxMonthly: 291, average: 195 },
+      { householdSize: 2, maxMonthly: 535, average: 357 },
+      { householdSize: 3, maxMonthly: 766, average: 511 },
+      { householdSize: 4, maxMonthly: 973, average: 649 },
+      { householdSize: 5, maxMonthly: 1155, average: 771 },
+      { householdSize: 6, maxMonthly: 1386, average: 924 },
+      { householdSize: 7, maxMonthly: 1532, average: 1022 },
+      { householdSize: 8, maxMonthly: 1751, average: 1168 }
+    ],
+    keyFacts: [
+      'Benefits are loaded monthly on EBT card',
+      'Amounts adjust based on income and expenses',
+      'Can purchase food at authorized retailers',
+      'Average benefit: $195/person per month',
+      'Recertification required every 6-12 months'
+    ],
+    eligibility: [
+      'U.S. citizen or qualified non-citizen',
+      'Meet income guidelines (130% of poverty level)',
+      'Meet resource limits ($2,750 general, $4,250 elderly/disabled)',
+      'Work requirements apply for able-bodied adults'
+    ],
+    applyUrl: 'https://www.fns.usda.gov/snap/state-directory',
+    tags: ['snap', 'benefits', 'food-assistance', 'government', 'nutrition']
+  },
+  {
+    id: 'snap-how-it-works-009',
+    uuid: sessionless.generateUUID(),
+    type: 'snap-benefits',
+    category: 'benefits-info',
+    name: 'How SNAP Works',
+    subtitle: 'From Application to Purchase',
+    description: 'SNAP (Supplemental Nutrition Assistance Program) helps millions of Americans buy healthy food. Understanding the process from application to purchase helps families access the nutrition assistance they need.',
+    colors: {
+      primary: '#1565C0',
+      accent: '#42A5F5',
+      background: '#0D47A1'
+    },
+    processSteps: [
+      {
+        step: 1,
+        title: 'Apply',
+        description: 'Submit application online, by mail, or in person at local SNAP office',
+        icon: '📝',
+        timeframe: 'Day 1'
+      },
+      {
+        step: 2,
+        title: 'Interview',
+        description: 'Complete phone or in-person interview with caseworker',
+        icon: '💬',
+        timeframe: 'Within 7 days'
+      },
+      {
+        step: 3,
+        title: 'Verification',
+        description: 'Provide documents: ID, income proof, residency, expenses',
+        icon: '🔍',
+        timeframe: 'Within 10 days'
+      },
+      {
+        step: 4,
+        title: 'Determination',
+        description: 'Receive approval or denial notice with benefit amount',
+        icon: '✅',
+        timeframe: 'Within 30 days'
+      },
+      {
+        step: 5,
+        title: 'EBT Card',
+        description: 'Receive Electronic Benefit Transfer card by mail',
+        icon: '💳',
+        timeframe: 'Within 7-10 days'
+      },
+      {
+        step: 6,
+        title: 'Shop',
+        description: 'Use EBT card at authorized stores, farmers markets, online',
+        icon: '🛒',
+        timeframe: 'Monthly benefits'
+      }
+    ],
+    whatYouCanBuy: [
+      '✅ Fruits and vegetables',
+      '✅ Meat, poultry, and fish',
+      '✅ Dairy products',
+      '✅ Breads and cereals',
+      '✅ Seeds and plants (for growing food)',
+      '❌ Alcohol and tobacco',
+      '❌ Hot prepared foods',
+      '❌ Non-food items (soap, paper products)'
+    ],
+    emergencyBenefits: 'Expedited service available for qualifying households within 7 days',
+    moreInfoUrl: 'https://www.fns.usda.gov/snap/recipient',
+    tags: ['snap', 'how-it-works', 'food-assistance', 'ebt', 'application']
   }
 ];
 
@@ -300,6 +410,11 @@ export const foodBanksPosts = [
  * @returns {string} SVG string
  */
 export function generateFoodBankSVG(foodBank, foodBankBDOPubKey) {
+  // Only handle food-bank type (not SNAP benefits)
+  if (foodBank.type === 'snap-benefits') {
+    return null;
+  }
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 360" width="400" height="360">
   <defs>
     <linearGradient id="bgGradient-${foodBank.id}" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -427,5 +542,293 @@ export function generateFoodBankSVG(foodBank, foodBankBDOPubKey) {
     spell-components='{"bdoPubKey":"${foodBankBDOPubKey}","collection":"charity"}'
   />
   <text class="button-text" x="200" y="330">💚 Support This Cause</text>
+</svg>`;
+}
+
+/**
+ * Generate SVG for SNAP monthly benefits
+ * Shows benefit amounts by household size
+ *
+ * @param {Object} snap - SNAP benefits object
+ * @param {string} snapBDOPubKey - PubKey of this SNAP benefits BDO
+ * @returns {string} SVG string or null if not right type
+ */
+export function generateSNAPBenefitsSVG(snap, snapBDOPubKey) {
+  // Only handle SNAP monthly benefits
+  if (snap.type !== 'snap-benefits' || !snap.benefitAmounts) {
+    return null;
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bgGradient-${snap.id}" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:${snap.colors.background};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:${snap.colors.primary};stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="saveGrad-${snap.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:${snap.colors.primary};stop-opacity:1" />
+      <stop offset="50%" style="stop-color:${snap.colors.accent};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:${snap.colors.primary};stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="saveGlow-${snap.id}" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="0" result="offsetblur"/>
+      <feFlood flood-color="${snap.colors.accent}" flood-opacity="0.8"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .title {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      fill: white;
+      text-anchor: middle;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px;
+      fill: ${snap.colors.accent};
+      text-anchor: middle;
+      font-weight: 600;
+    }
+    .header-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 10px;
+      fill: ${snap.colors.accent};
+      font-weight: bold;
+      text-anchor: start;
+    }
+    .benefit-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 10px;
+      fill: white;
+      text-anchor: start;
+    }
+    .info-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 9px;
+      fill: white;
+      text-anchor: start;
+      opacity: 0.9;
+    }
+    .save-button {
+      fill: url(#saveGrad-${snap.id});
+      stroke: ${snap.colors.accent};
+      stroke-width: 2;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .save-button:hover {
+      filter: url(#saveGlow-${snap.id});
+    }
+    .button-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      fill: white;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="400" height="400" fill="url(#bgGradient-${snap.id})" rx="12"/>
+
+  <!-- Icon -->
+  <text x="200" y="40" text-anchor="middle" font-size="36">💳</text>
+
+  <!-- Title -->
+  <text class="title" x="200" y="75">${snap.name}</text>
+  <text class="subtitle" x="200" y="92">${snap.subtitle}</text>
+
+  <!-- Benefit amounts table header -->
+  <rect x="20" y="105" width="360" height="18" fill="rgba(255,255,255,0.15)" rx="4"/>
+  <text class="header-text" x="30" y="117">Household Size</text>
+  <text class="header-text" x="200" y="117">Max Monthly</text>
+  <text class="header-text" x="310" y="117">Average</text>
+
+  <!-- Benefit amounts (first 6 rows) -->
+  ${snap.benefitAmounts.slice(0, 6).map((benefit, i) => `
+  <rect x="20" y="${128 + (i * 22)}" width="360" height="20" fill="rgba(255,255,255,${i % 2 === 0 ? 0.08 : 0.04})" rx="3"/>
+  <text class="benefit-text" x="30" y="${142 + (i * 22)}">${benefit.householdSize} ${benefit.householdSize === 1 ? 'person' : 'people'}</text>
+  <text class="benefit-text" x="200" y="${142 + (i * 22)}">$${benefit.maxMonthly}</text>
+  <text class="benefit-text" x="310" y="${142 + (i * 22)}">$${benefit.average}</text>
+  `).join('')}
+
+  <!-- Key facts -->
+  <text class="header-text" x="20" y="270">Key Information:</text>
+  ${snap.keyFacts.slice(0, 3).map((fact, i) =>
+    `<text class="info-text" x="20" y="${285 + (i * 13)}">• ${fact}</text>`
+  ).join('\n  ')}
+
+  <!-- Save button -->
+  <rect
+    class="save-button"
+    id="button1"
+    x="50"
+    y="345"
+    width="300"
+    height="50"
+    rx="12"
+    spell="save"
+    spell-components='{"bdoPubKey":"${snapBDOPubKey}","collection":"charity"}'
+  />
+  <text class="button-text" x="200" y="370">📋 Save Benefits Info</text>
+</svg>`;
+}
+
+/**
+ * Generate SVG for SNAP process explanation
+ * Shows how SNAP works step by step
+ *
+ * @param {Object} snap - SNAP process object
+ * @param {string} snapBDOPubKey - PubKey of this SNAP process BDO
+ * @returns {string} SVG string or null if not right type
+ */
+export function generateSNAPProcessSVG(snap, snapBDOPubKey) {
+  // Only handle SNAP process/how-it-works
+  if (snap.type !== 'snap-benefits' || !snap.processSteps) {
+    return null;
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 440" width="400" height="440">
+  <defs>
+    <linearGradient id="bgGradient-${snap.id}" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:${snap.colors.background};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:${snap.colors.primary};stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="saveGrad-${snap.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:${snap.colors.primary};stop-opacity:1" />
+      <stop offset="50%" style="stop-color:${snap.colors.accent};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:${snap.colors.primary};stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="saveGlow-${snap.id}" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="0" result="offsetblur"/>
+      <feFlood flood-color="${snap.colors.accent}" flood-opacity="0.8"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .title {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      fill: white;
+      text-anchor: middle;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px;
+      fill: ${snap.colors.accent};
+      text-anchor: middle;
+      font-weight: 600;
+    }
+    .step-title {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 12px;
+      fill: white;
+      font-weight: bold;
+      text-anchor: start;
+    }
+    .step-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 9px;
+      fill: white;
+      text-anchor: start;
+      opacity: 0.9;
+    }
+    .timeframe-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 9px;
+      fill: ${snap.colors.accent};
+      text-anchor: start;
+      font-style: italic;
+    }
+    .header-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11px;
+      fill: ${snap.colors.accent};
+      font-weight: bold;
+      text-anchor: start;
+    }
+    .info-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 9px;
+      fill: white;
+      text-anchor: start;
+      opacity: 0.9;
+    }
+    .save-button {
+      fill: url(#saveGrad-${snap.id});
+      stroke: ${snap.colors.accent};
+      stroke-width: 2;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .save-button:hover {
+      filter: url(#saveGlow-${snap.id});
+    }
+    .button-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      fill: white;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="400" height="440" fill="url(#bgGradient-${snap.id})" rx="12"/>
+
+  <!-- Icon -->
+  <text x="200" y="40" text-anchor="middle" font-size="36">🛒</text>
+
+  <!-- Title -->
+  <text class="title" x="200" y="75">${snap.name}</text>
+  <text class="subtitle" x="200" y="92">${snap.subtitle}</text>
+
+  <!-- Process steps -->
+  ${snap.processSteps.map((step, i) => `
+  <!-- Step ${step.step} -->
+  <rect x="20" y="${105 + (i * 48)}" width="360" height="44" fill="rgba(255,255,255,0.1)" rx="6"/>
+  <text x="35" y="${122 + (i * 48)}" font-size="24">${step.icon}</text>
+  <text class="step-title" x="70" y="${122 + (i * 48)}">${step.step}. ${step.title}</text>
+  <text class="step-text" x="70" y="${135 + (i * 48)}">${(step.description || '').substring(0, 50)}</text>
+  ${(step.description || '').length > 50 ? `<text class="step-text" x="70" y="${144 + (i * 48)}">${step.description.substring(50, 100)}</text>` : ''}
+  <text class="timeframe-text" x="320" y="${122 + (i * 48)}">${step.timeframe}</text>
+  `).join('')}
+
+  <!-- Save button -->
+  <rect
+    class="save-button"
+    id="button1"
+    x="50"
+    y="385"
+    width="300"
+    height="50"
+    rx="12"
+    spell="save"
+    spell-components='{"bdoPubKey":"${snapBDOPubKey}","collection":"charity"}'
+  />
+  <text class="button-text" x="200" y="410">📖 Save Process Guide</text>
 </svg>`;
 }

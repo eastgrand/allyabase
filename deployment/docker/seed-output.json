@@ -1,27 +1,45 @@
 {
   "environment": "test",
   "baseNumber": "1",
-  "seedDate": "2025-10-29T15:03:42.296Z",
+  "seedDate": "2025-11-03T06:13:57.952Z",
   "emojicodedReferences": [
     {
-      "type": "Service Provider",
-      "title": "Sarah's Childcare",
-      "serviceType": "childcare",
-      "provider": "Sarah Chen",
-      "rate": "$25.00/hr",
-      "rating": "5 ⭐ (89 reviews)",
-      "category": "childcare",
-      "pubKey": "032811cb2b7049795ceffd7de14d5405f81d96364ab62584fa9c08541626ea10ae",
-      "emojiShortcode": "💚🌍🔑💎🎭🕔🌙🕘📙",
-      "uuid": "84225bd8-ab47-478c-aaff-e9eb7e2fa230"
+      "type": "Room",
+      "title": "Cozy Downtown Studio",
+      "beds": 1,
+      "baths": 1,
+      "size": 650,
+      "rent": "$550.00/mo",
+      "neighborhood": "Downtown",
+      "pubKey": "02eecb8aeebd9c3e4f326742e1d2a219016e867d09f990d709bd36682f6e814ea5",
+      "emojiShortcode": "💚🌍🔑💎🕙😄📎🐝👕",
+      "uuid": "f4de4a6a-861f-412f-9800-4e1860d1006d"
     },
     {
       "type": "Recipe",
       "title": "Grandma's Secret Chocolate Chip Cookies Recipe",
-      "pubKey": "02baba8a9ab8e3625809e76079341c671183690f11465093b46c6616a99636a623",
-      "emojiShortcode": "💚🌍🔑💎🐳🎲💡📙📑",
-      "uuid": "79737223-7773-46a4-95e1-2e0023071c52",
+      "pubKey": "0287d90b3d5a23545c615840dfe1bfbbc1171273e6330e2a8251129c0a0e9d6b69",
+      "emojiShortcode": "💚🌍🔑💎🔒📝🕒🗝🐺",
+      "uuid": "c9bdd4be-09f1-48cf-9e31-cbf574d28bd3",
       "htmlUpdated": true
+    },
+    {
+      "type": "Canimus Feed",
+      "title": "Sockpuppet Canimus Feed",
+      "artist": "Sockpuppet",
+      "feedUrl": "https://sockpuppet.band/canimus.json",
+      "pubKey": "03325e1231acdbe00e224115dfe2e1e9b0b960f3ad33ad06a390928a77c69df498",
+      "emojiShortcode": "💚🌍🔑💎🐢😆📨🕗🔨",
+      "uuid": "1477eb1b-be5d-4811-bd3f-8e13e2c17621"
+    },
+    {
+      "type": "Product",
+      "title": "Peace Love and Redistribution T-Shirt",
+      "productId": "peace-love-redistribution-tshirt",
+      "price": "$29.00",
+      "pubKey": "03d400daac79d889cd8c1f039373dc688cace96b0396e62bd4b874c3e0f54f7405",
+      "emojiShortcode": "💚🌍🔑💎📧🎨🎸📘🐙",
+      "uuid": "5206b7df-7c89-4572-ac89-f4d69a7b423a"
     },
     {
       "type": "Room",
@@ -31,68 +49,9 @@
       "size": 950,
       "rent": "$650.00/mo",
       "neighborhood": "Midtown",
-      "pubKey": "0360279efde155a50b7fb404f4d00587e5b3344510198b13681ab1650f8bf8265d",
-      "emojiShortcode": "💚🌍🔑💎🔒🕐🌊🐚🐝",
-      "uuid": "c10a8fe9-4897-44d7-bd06-993b9518672d"
-    },
-    {
-      "type": "Service Provider",
-      "title": "Mike's Plumbing Services",
-      "serviceType": "plumbing",
-      "provider": "Mike Rodriguez",
-      "rate": "$85.00/hr",
-      "rating": "4.9 ⭐ (247 reviews)",
-      "category": "home-services",
-      "pubKey": "0204474b7183dcd4a22cee3daabb5dba98df5242b8634012c726e81eaa4a5cb270",
-      "emojiShortcode": "💚🌍🔑💎👒🎯📦🚂🚄",
-      "uuid": "8a0fe0bf-3997-44cc-9af8-cba28e483cd1"
-    },
-    {
-      "type": "Canimus Feed",
-      "title": "Sockpuppet Canimus Feed",
-      "artist": "Sockpuppet",
-      "feedUrl": "https://sockpuppet.band/canimus.json",
-      "pubKey": "03572b93ef49cd308deaf889c1993bb47d990aef151ff8d0d603d1e8dc8fcc5d28",
-      "emojiShortcode": "💚🌍🔑💎🕐📢🎸🎨😂",
-      "uuid": "05957b7d-4060-4d44-b4e0-f48f5830a06c"
-    },
-    {
-      "type": "Book",
-      "title": "The Digital Garden: Cultivating Creativity in the Information Age",
-      "author": "Sarah Chen",
-      "price": "$19.99",
-      "category": "technology",
-      "pubKey": "02acf447fe6b24a16d03b53fdda8f41eaf607adf87d9d5dab95221325924aa96e8",
-      "emojiShortcode": "💚🌍🔑💎🚀📚🕔🔨📐",
-      "uuid": "b3ecd42c-3e0d-41c1-9de9-ee82d610ab83"
-    },
-    {
-      "type": "Product",
-      "title": "Peace Love and Redistribution T-Shirt",
-      "productId": "peace-love-redistribution-tshirt",
-      "price": "$29.00",
-      "pubKey": "0397333ee838b97f94ce8276bd2239d17920dd242b1392d3e30b23530f88ade9ca",
-      "emojiShortcode": "💚🌍🔑💎🚁🐉🏆📡💡",
-      "uuid": "9ccacef2-7e29-4bdf-9ef3-05a9c0207842"
-    },
-    {
-      "type": "Article",
-      "title": "If I Write Another Word",
-      "author": "From Medium/Illumination",
-      "price": "Free (Article)",
-      "category": "writing",
-      "pubKey": "02bac097da3556eec2eeb9a5f6c81dfc8a75b05cda6e0e671f2f585a0a9816abe8",
-      "emojiShortcode": "💚🌍🔑💎🎹🕕🐞🏆🔨",
-      "uuid": "7900d2ba-b379-4fac-98c9-149d58618749"
-    },
-    {
-      "type": "Contract Signing UI",
-      "title": "Website Development Agreement",
-      "contractId": "website-dev-001",
-      "participants": 2,
-      "pubKey": "021ac2e277f629ea55c7b2442797df6045853c4a8c6eb5c0d43eb8033cf5b62a55",
-      "emojiShortcode": "💚🌍🔑💎🎨🕖🏺👔📚",
-      "uuid": "3a45f0b2-4253-4cb6-8b85-827eb80a4fc0"
+      "pubKey": "03b7b2a142897244122854c4fe7da010759e35a0d0c8753701013e832b30f121df",
+      "emojiShortcode": "💚🌍🔑💎🌙🌟📙🏹🎪",
+      "uuid": "3890c9bd-90aa-4bf7-a1df-566e0c00f52f"
     },
     {
       "type": "Room",
@@ -102,9 +61,30 @@
       "size": 1400,
       "rent": "$700.00/mo",
       "neighborhood": "Uptown",
-      "pubKey": "035f9d8290f9285adc6871f7af25402349aadf6f1db867d73b3d8e773e4c739aa3",
-      "emojiShortcode": "💚🌍🔑💎🎹📦🗿🚆🐳",
-      "uuid": "56d89374-ac64-4ba3-9e51-f0b9836f54f5"
+      "pubKey": "02134a233e0ef9e83bf242c2ba5ed637dff078aaacd317759dbb80c78e9432fb8e",
+      "emojiShortcode": "💚🌍🔑💎🎲🎸🕗💡🔑",
+      "uuid": "ee27fed0-f599-4abe-a702-b15f46f56e1c"
+    },
+    {
+      "type": "Contract Signing UI",
+      "title": "Website Development Agreement",
+      "contractId": "website-dev-001",
+      "participants": 2,
+      "pubKey": "0277e7044b892ecc83045a16331487b90fd590eba6bac3b2cb044f7532abd1d6b5",
+      "emojiShortcode": "💚🌍🔑💎🎯📨📣📗🌟",
+      "uuid": "5820c45a-42f4-44ae-8519-423c49de2877"
+    },
+    {
+      "type": "Service Provider",
+      "title": "Sarah's Childcare",
+      "serviceType": "childcare",
+      "provider": "Sarah Chen",
+      "rate": "$25.00/hr",
+      "rating": "5 ⭐ (89 reviews)",
+      "category": "childcare",
+      "pubKey": "02853da49cbf9f795b4e65e50df83bcf9c415a656598f3c058e46cbe10caebb286",
+      "emojiShortcode": "💚🌍🔑💎😁🎭📦🚁😄",
+      "uuid": "964735d5-9904-48be-a3da-c66e26b6c93d"
     },
     {
       "type": "Book",
@@ -112,21 +92,31 @@
       "author": "Marcus Williams",
       "price": "$24.99",
       "category": "self-help",
-      "pubKey": "031b2c7633d5fd4014d79bbc3431c3a31f1dc79db0763d677e464efaf15b919cde",
-      "emojiShortcode": "💚🌍🔑💎💰📢👑📑🎹",
-      "uuid": "e56baa6b-ef3d-44d5-9006-2ac511b9381d"
+      "pubKey": "03328073bd0aaa2e2251fa9e2a26a440964a70fbbdf095c05f7b02823be2cbe9e9",
+      "emojiShortcode": "💚🌍🔑💎😀🐙🐢🎸🎯",
+      "uuid": "327ff9b1-d80d-4a67-a2ed-c433d1ec30ec"
     },
     {
-      "type": "Room",
-      "title": "Cozy Downtown Studio",
-      "beds": 1,
-      "baths": 1,
-      "size": 650,
-      "rent": "$550.00/mo",
-      "neighborhood": "Downtown",
-      "pubKey": "03d188215399e0205c588d354c67f8ef3b975408b30aaf925b6aa151a26692092b",
-      "emojiShortcode": "💚🌍🔑💎😃🔓🚃🕙😀",
-      "uuid": "5718bff0-ffa4-40c7-bd9a-ceb4c3a5aa44"
+      "type": "Service Provider",
+      "title": "Mike's Plumbing Services",
+      "serviceType": "plumbing",
+      "provider": "Mike Rodriguez",
+      "rate": "$85.00/hr",
+      "rating": "4.9 ⭐ (247 reviews)",
+      "category": "home-services",
+      "pubKey": "02c2efb3578a3417a483403499f6d1b7f58f581a4ae9289809d4897b6f8199ee51",
+      "emojiShortcode": "💚🌍🔑💎🏆🐼🔩🎯🐚",
+      "uuid": "242de9af-555b-426a-80c6-6cde953adc95"
+    },
+    {
+      "type": "Article",
+      "title": "If I Write Another Word",
+      "author": "From Medium/Illumination",
+      "price": "Free (Article)",
+      "category": "writing",
+      "pubKey": "0390535070ce52454b1d7c3dd264cd25bd488ceedcb06681ea30479df8dbf736b7",
+      "emojiShortcode": "💚🌍🔑💎📌🎭🎯📎💎",
+      "uuid": "30f5bc8f-8270-41dd-88d2-66e027bd1cc2"
     },
     {
       "type": "Book",
@@ -134,9 +124,19 @@
       "author": "Elena Rodriguez",
       "price": "Free",
       "category": "programming",
-      "pubKey": "02e99f5a6892d2e7a7401fd981be904d2a1cabae466ecfe795da0b0862e2b1545b",
-      "emojiShortcode": "💚🌍🔑💎🕑📌🏔🎺📗",
-      "uuid": "8be4893d-8596-41e8-af97-02fc521733f6"
+      "pubKey": "038d3b6d7bb6b3479675fd961862173e54888d030a335f26adf7d8eb890fd5bfcf",
+      "emojiShortcode": "💚🌍🔑💎🙄💎🌙🐉🌍",
+      "uuid": "a0a47693-acdd-4991-ad61-556f6f2d8f42"
+    },
+    {
+      "type": "Book",
+      "title": "The Digital Garden: Cultivating Creativity in the Information Age",
+      "author": "Sarah Chen",
+      "price": "$19.99",
+      "category": "technology",
+      "pubKey": "02d27dbd462ff00d27a37e19577b3d02abaae8ab9eebc97aa99601a4179fd9ff77",
+      "emojiShortcode": "💚🌍🔑💎🔥🚀🕗🙃🕒",
+      "uuid": "81fcef69-44e0-4543-a5f0-27ee1d987eab"
     },
     {
       "type": "Popup Post",
@@ -144,11 +144,11 @@
       "location": "Stumptown Coffee Roasters, 128 SW 3rd Ave, Portland, OR 97204",
       "date": "11/15/2025",
       "category": "tech-meetup",
-      "pubKey": "03f3cd77b15f9b0b784d06716aff400754df21d718025ab7e0eab2fdcc3fbbefc4",
-      "emojiShortcode": "💚🌍🔑💎🔱🕗🔮📗🎯",
-      "locationViewPubKey": "02165d1de616c479ea8fe3be3f2bd77f870f8a1260c74ae1abcb3bbe7555fcc7eb",
-      "locationEmojiShortcode": "💚🌍🔑💎🚃🙃🔩🙂🐼",
-      "uuid": "b4443a10-ffd1-43c4-8e05-d9dd82da508b"
+      "pubKey": "0266095dc402755a1f7f5b1ff1b50db6a183dce57653370ed5d221174e455c55c7",
+      "emojiShortcode": "💚🌍🔑💎🌟🔔🐢💀🔪",
+      "locationViewPubKey": "02b1d0c9ad43622e3bdbe572f4eb2f0529e5b6d2a7b9559d6bb927c24446aff7fc",
+      "locationEmojiShortcode": "💚🌍🔑💎🕒🏹🚃🏺💰",
+      "uuid": "5b3ba669-1d31-4a38-a101-4bf030e9a524"
     },
     {
       "type": "Popup Post",
@@ -156,11 +156,11 @@
       "location": "Pearl District Art Hub, 1000 NW Lovejoy St, Portland, OR 97209",
       "date": "11/22/2025",
       "category": "art-culture",
-      "pubKey": "03369d92ffc8f699237d285eaa451f3b014cead2227db8f3e2977096864ebc6d1b",
-      "emojiShortcode": "💚🌍🔑💎👒📡🎻🕗🏰",
-      "locationViewPubKey": "02c51fb756a8ee45259703d8adc3485a2bf4fe9479df31115887c5227196a57460",
-      "locationEmojiShortcode": "💚🌍🔑💎🐻🕑🎻📌👕",
-      "uuid": "36cc4fc5-49ee-4c4d-b5fd-56e4d99b5ebd"
+      "pubKey": "02044cd8062e7d1b659fedc5607ab6af4bd37b24d0252a559c3e7865c78e163605",
+      "emojiShortcode": "💚🌍🔑💎🎸🕓🚁🎭🌊",
+      "locationViewPubKey": "02a75dcbfe5bfce05363d9f03f0ff109f4b959d57abc3e21dccc80f4c78e773328",
+      "locationEmojiShortcode": "💚🌍🔑💎🗝🔥📢🎻📎",
+      "uuid": "27d9615c-2610-4ba4-9cc8-5d8a74d7917e"
     },
     {
       "type": "Popup Post",
@@ -168,11 +168,11 @@
       "location": "Cartlandia Food Cart Pod, SE 82nd Ave & Foster Rd, Portland, OR 97266",
       "date": "12/3/2025",
       "category": "food-drink",
-      "pubKey": "0384fad43e6c6af7d5527d29d74bb8310c7493c847a531b2a8c13b167fe430fd30",
-      "emojiShortcode": "💚🌍🔑💎📙🚁🏆🐼📮",
-      "locationViewPubKey": "027b1c58cf3d44657691c0dfdc65932c2fea042c0785bf4a74cc2b333071187cfa",
-      "locationEmojiShortcode": "💚🌍🔑💎🕙🕔🎺📍🔓",
-      "uuid": "79c1b2ad-66df-4e30-8782-42d82a0784f0"
+      "pubKey": "029db02883e9d9cb9e4587574a4303c54ec58692903780203a71fc6370b52e07df",
+      "emojiShortcode": "💚🌍🔑💎😄🐺🔒📡🌟",
+      "locationViewPubKey": "0290b7881f332b7a5a9087b63b195e6afb1df49735414940d7fbb670cc253d15c6",
+      "locationEmojiShortcode": "💚🌍🔑💎📣📝🔮🚆🙄",
+      "uuid": "d6c2417f-6d87-4310-acd6-f086264e7887"
     },
     {
       "type": "Event",
@@ -182,10 +182,10 @@
       "ticketPrice": "$35.00",
       "capacity": 1000,
       "ticketFlavor": "CD01EF02GH03",
-      "pubKey": "034efbf418fe69ea4fb92a5cb1ce0aef56bfac5110b6f12b413f1c87c892314fe0",
-      "emojiShortcode": "💚🌍🔑💎🌙🎺🕗🐝📍",
-      "uuid": "7975d46a-a614-474f-97cc-11a36008784d",
-      "arethaUUID": "9481d996-1695-4c32-b3b5-2a19c163e0f6",
+      "pubKey": "0302977cfd2a7089471165d8604cffbe80d67276042fc7f0bfa98884be251cf901",
+      "emojiShortcode": "💚🌍🔑💎🌟📢🚀📡🕑",
+      "uuid": "0aabe2fb-6579-455d-abbd-ffc9e939d73d",
+      "arethaUUID": "86f9feb3-df86-4b74-95c1-29770f4124ef",
       "ticketsAllocated": 1000
     },
     {
@@ -196,10 +196,10 @@
       "ticketPrice": "500 MP",
       "capacity": 260,
       "ticketFlavor": "EF01GH02IJ03",
-      "pubKey": "03d38b4ec6b43062d556295a535ed405fb884ad1b0b7f165153d2e57417b02b363",
-      "emojiShortcode": "💚🌍🔑💎🌍🔓😂🎸💫",
-      "uuid": "7db3f86a-496a-49c6-b186-8e43d0c1321c",
-      "arethaUUID": "033050eb-818b-4092-966e-53183e3a1d4c",
+      "pubKey": "03bebd339530b865b6b4487b92012882e03f9b9e98a8117b1570db36360baf41e3",
+      "emojiShortcode": "💚🌍🔑💎🕖😆🏰🕙🕐",
+      "uuid": "a3124ced-1252-4c14-a565-15f9f043bc9b",
+      "arethaUUID": "e6c55e84-9690-45c5-8a2b-8f79376d3847",
       "ticketsAllocated": 260
     },
     {
@@ -210,10 +210,10 @@
       "ticketPrice": "$75.00",
       "capacity": 50,
       "ticketFlavor": "AB01CD02EF03",
-      "pubKey": "022896addac6d45500c7f9e04f204c36f6be1da8bc7d085d88ab9eb620e296c13d",
-      "emojiShortcode": "💚🌍🔑💎📢😆📡🗿🕙",
-      "uuid": "805e5a0b-de5d-440f-ab3a-286146d49815",
-      "arethaUUID": "5bd816b0-abe1-49da-be21-7fb2a9427de4",
+      "pubKey": "0358ed813bb25676f8daa3abef8cd0a043634e0ba72a3c0533ec8d027bc9d02a9d",
+      "emojiShortcode": "💚🌍🔑💎🔪🎪📢🎲📗",
+      "uuid": "39b26e74-30ef-4473-8624-add52e3e6533",
+      "arethaUUID": "8e0e1c53-f744-4dc5-851d-f92c5e41a424",
       "ticketsAllocated": 50
     }
   ],
