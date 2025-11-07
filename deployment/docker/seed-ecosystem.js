@@ -32,6 +32,7 @@ import { events as exampleEvents, generateEventSVG } from './examples/events/eve
 import { popupPosts, generatePopupTwoButtonSVG, generateLocationViewSVG } from './examples/popups/popups.js';
 import { literaryPosts, generateBookTwoButtonSVG, generateLiteraryOneButtonSVG } from './examples/literary/literary.js';
 import { idothisPosts, generateIdothisBookNowSVG } from './examples/idothis/idothis.js';
+import { gamesPosts, generateGameSVG, generateFTPSVG } from './examples/games/games.js';
 
 // Set up in-memory key storage for seed script
 const keyStorage = new Map();
@@ -123,6 +124,23 @@ const getServiceURLs = (env, baseNum) => {
       fount: `http://localhost:${portBase + 17}`,
       aretha: `http://localhost:${portBase + 20}`, // Aretha service on port 5120 for Base 1
       advancement: 'http://localhost:3456' // The Advancement test server runs on fixed port
+    };
+  } else if (env.startsWith('wiki-')) {
+    // Wiki plugin pattern: https://ENV.allyabase.com/plugin/allyabase/SERVICE
+    // Example: node seed-ecosystem.js wiki-ent
+    const wikiEnv = env.substring(5); // Remove 'wiki-' prefix
+    const baseURL = `https://${wikiEnv}.allyabase.com/plugin/allyabase`;
+    return {
+      dolores: `${baseURL}/dolores`,
+      prof: `${baseURL}/prof`,
+      sanora: `${baseURL}/sanora`,
+      bdo: `${baseURL}/bdo`,
+      covenant: `${baseURL}/covenant`,
+      julia: `${baseURL}/julia`,
+      continuebee: `${baseURL}/continuebee`,
+      fount: `${baseURL}/fount`,
+      aretha: `${baseURL}/aretha`,
+      advancement: `https://${wikiEnv}.allyabase.com` // Main wiki serves advancement
     };
   } else {
     // For any other environment, use it as a subdomain prefix (e.g., 'ent', 'staging', 'prod')
@@ -1771,6 +1789,113 @@ class BDOSeeder {
       return null;
     }
   }
+
+  async seedGameBDO(gameData) {
+    console.log(`🎮 Seeding game BDO for: ${gameData.name}...`);
+
+    try {
+      const user = await this.createUser(`game-bdo-${gameData.id}`);
+      if (!user) {
+        throw new Error('Failed to create game BDO user');
+      }
+
+      // Determine which SVG generator to use
+      const isFTPGame = gameData.type === 'ftp';
+      const svgContent = isFTPGame
+        ? generateFTPSVG(gameData, user.pubKey)
+        : generateGameSVG(gameData, user.pubKey);
+
+      const gameBDOData = {
+        title: gameData.name,
+        type: gameData.type, // 'board-game', 'video-game', or 'ftp'
+        contentType: "game",
+        svgContent: svgContent,
+        gameData: {
+          name: gameData.name,
+          type: gameData.type,
+          price: gameData.price,
+          category: gameData.category,
+          tags: gameData.tags
+        },
+        metadata: gameData.metadata || {},
+        description: gameData.description
+      };
+
+      // Add type-specific fields
+      if (gameData.type === 'board-game') {
+        gameBDOData.gameData.designer = gameData.designer;
+        gameBDOData.gameData.playerCount = gameData.playerCount;
+        gameBDOData.gameData.playTime = gameData.playTime;
+        gameBDOData.gameData.complexity = gameData.complexity;
+      } else if (gameData.type === 'video-game') {
+        gameBDOData.gameData.developer = gameData.developer;
+        gameBDOData.gameData.platform = gameData.platform;
+        gameBDOData.gameData.genre = gameData.genre;
+        gameBDOData.gameData.releaseDate = gameData.releaseDate;
+      } else if (gameData.type === 'ftp') {
+        gameBDOData.gameData.team = gameData.team;
+        gameBDOData.gameData.division = gameData.division;
+        gameBDOData.gameData.city = gameData.city;
+        gameBDOData.gameData.stadium = gameData.stadium;
+      }
+
+      // Create the BDO
+      const timestamp = new Date().getTime();
+      const hash = '';
+      const messageToSign = timestamp + user.pubKey + hash;
+      const signature = await signMessage(user.privateKey, messageToSign, user.pubKey);
+
+      const bdoPayload = {
+        timestamp: timestamp.toString(),
+        hash,
+        pubKey: user.pubKey,
+        signature,
+        public: true,
+        bdo: gameBDOData
+      };
+
+      const bdoResponse = await put(`${this.baseURL}/user/create`, bdoPayload);
+      const emojiShortcode = bdoResponse.emojiShortcode || await this.getEmojicodeForPubKey(user.pubKey);
+
+      const priceDisplay = `$${(gameData.price / 100).toFixed(2)}`;
+      const gameTypeLabel = gameData.type === 'board-game' ? 'Board Game' :
+                           gameData.type === 'video-game' ? 'Video Game' : 'FTP';
+
+      console.log(`  ✅ Game BDO created successfully`);
+      console.log(`  🎮 Type: ${gameTypeLabel}`);
+      if (gameData.designer) {
+        console.log(`  ✏️  Designer: ${gameData.designer}`);
+      } else if (gameData.developer) {
+        console.log(`  💻 Developer: ${gameData.developer}`);
+      } else if (gameData.team) {
+        console.log(`  🏈 Team: ${gameData.team}`);
+      }
+      console.log(`  🔑 PubKey: ${user.pubKey}`);
+      console.log(`  🎨 Emoji Shortcode: ${emojiShortcode}`);
+      console.log(`  💰 Price: ${priceDisplay}`);
+
+      emojicodedReferences.push({
+        type: gameTypeLabel,
+        title: gameData.name,
+        gameType: gameData.type,
+        designer: gameData.designer || gameData.developer || gameData.team,
+        price: priceDisplay,
+        category: gameData.category,
+        pubKey: user.pubKey,
+        emojiShortcode,
+        uuid: bdoResponse.uuid || user.uuid
+      });
+
+      return {
+        uuid: bdoResponse.uuid || user.uuid,
+        pubKey: user.pubKey,
+        emojiShortcode
+      };
+    } catch (error) {
+      console.error(`❌ Game BDO seeding failed:`, error.message);
+      return null;
+    }
+  }
 }
 
 class AdvancementSeeder {
@@ -1995,6 +2120,11 @@ const seedEcosystem = async () => {
       // Seed IDothis.biz BDOs (service providers)
       for (const provider of idothisPosts) {
         seeders.push(bdoSeeder.seedIdothisBDO(provider));
+      }
+
+      // Seed game BDOs (board games, video games, FTP)
+      for (const game of gamesPosts) {
+        seeders.push(bdoSeeder.seedGameBDO(game));
       }
     } else {
       console.log('⚠️  BDO service not healthy, skipping BDO seeding');
