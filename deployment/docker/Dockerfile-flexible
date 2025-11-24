@@ -43,11 +43,15 @@ RUN npm install -g wiki-security-sessionless
 # Clone allyabase for startup scripts and wiki plugin
 RUN git clone https://www.github.com/planet-nine-app/allyabase.git allyabase
 
-# Install wiki-plugin-allyabase into wiki's node_modules (same pattern as deploy-do.js)
+# Install wiki-plugin-allyabase dependencies from local clone
+WORKDIR /usr/src/app/allyabase/src/wiki/wiki-plugin-allyabase
+RUN npm install
+
+# Install wiki-plugin-allyabase into wiki's node_modules from local clone
+WORKDIR /usr/src/app
 RUN WIKI_PATH=$(npm root -g)/wiki/node_modules && \
     mkdir -p "$WIKI_PATH" && \
-    cd /usr/src/app && \
-    npm install --prefix "$WIKI_PATH/.." wiki-plugin-allyabase@latest
+    cp -r /usr/src/app/allyabase/src/wiki/wiki-plugin-allyabase "$WIKI_PATH/"
 
 WORKDIR /usr/src/app/julia/src/server/node
 RUN npm install
