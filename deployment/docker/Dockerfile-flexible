@@ -40,6 +40,9 @@ RUN npm install -g pm2
 RUN npm install -g wiki
 RUN npm install -g wiki-security-sessionless
 
+# Clone allyabase for startup scripts and wiki plugin
+RUN git clone https://www.github.com/planet-nine-app/allyabase.git allyabase
+
 # Install wiki-plugin-allyabase into wiki's node_modules (same pattern as deploy-do.js)
 RUN WIKI_PATH=$(npm root -g)/wiki/node_modules && \
     mkdir -p "$WIKI_PATH" && \
