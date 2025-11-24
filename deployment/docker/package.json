@@ -12,10 +12,10 @@
     "install-deps": "npm install"
   },
   "dependencies": {
-    "sessionless-node": "latest",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "sanora-js": "latest",
+    "sessionless-node": "latest"
   },
-  "devDependencies": {},
   "keywords": [
     "planet-nine",
     "allyabase",

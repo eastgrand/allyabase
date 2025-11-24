@@ -1,100 +1,25 @@
 {
   "environment": "test",
   "baseNumber": "1",
-  "seedDate": "2025-11-03T06:13:57.952Z",
+  "seedDate": "2025-11-12T22:51:26.649Z",
   "emojicodedReferences": [
-    {
-      "type": "Room",
-      "title": "Cozy Downtown Studio",
-      "beds": 1,
-      "baths": 1,
-      "size": 650,
-      "rent": "$550.00/mo",
-      "neighborhood": "Downtown",
-      "pubKey": "02eecb8aeebd9c3e4f326742e1d2a219016e867d09f990d709bd36682f6e814ea5",
-      "emojiShortcode": "💚🌍🔑💎🕙😄📎🐝👕",
-      "uuid": "f4de4a6a-861f-412f-9800-4e1860d1006d"
-    },
     {
       "type": "Recipe",
       "title": "Grandma's Secret Chocolate Chip Cookies Recipe",
-      "pubKey": "0287d90b3d5a23545c615840dfe1bfbbc1171273e6330e2a8251129c0a0e9d6b69",
-      "emojiShortcode": "💚🌍🔑💎🔒📝🕒🗝🐺",
-      "uuid": "c9bdd4be-09f1-48cf-9e31-cbf574d28bd3",
+      "pubKey": "029a442655e971f7e016548739bb7dd6b166927e1dca602be696d808b740efcee4",
+      "emojiShortcode": "💚🌍🔑💎📣👒📍📗👔",
+      "uuid": "eedaa5bb-a03d-4363-98bf-895b3bc95a53",
       "htmlUpdated": true
     },
     {
-      "type": "Canimus Feed",
-      "title": "Sockpuppet Canimus Feed",
-      "artist": "Sockpuppet",
-      "feedUrl": "https://sockpuppet.band/canimus.json",
-      "pubKey": "03325e1231acdbe00e224115dfe2e1e9b0b960f3ad33ad06a390928a77c69df498",
-      "emojiShortcode": "💚🌍🔑💎🐢😆📨🕗🔨",
-      "uuid": "1477eb1b-be5d-4811-bd3f-8e13e2c17621"
-    },
-    {
-      "type": "Product",
-      "title": "Peace Love and Redistribution T-Shirt",
-      "productId": "peace-love-redistribution-tshirt",
-      "price": "$29.00",
-      "pubKey": "03d400daac79d889cd8c1f039373dc688cace96b0396e62bd4b874c3e0f54f7405",
-      "emojiShortcode": "💚🌍🔑💎📧🎨🎸📘🐙",
-      "uuid": "5206b7df-7c89-4572-ac89-f4d69a7b423a"
-    },
-    {
-      "type": "Room",
-      "title": "Spacious 2BR Near Transit",
-      "beds": 2,
-      "baths": 1.5,
-      "size": 950,
-      "rent": "$650.00/mo",
-      "neighborhood": "Midtown",
-      "pubKey": "03b7b2a142897244122854c4fe7da010759e35a0d0c8753701013e832b30f121df",
-      "emojiShortcode": "💚🌍🔑💎🌙🌟📙🏹🎪",
-      "uuid": "3890c9bd-90aa-4bf7-a1df-566e0c00f52f"
-    },
-    {
-      "type": "Room",
-      "title": "Luxury 3BR Penthouse",
-      "beds": 3,
-      "baths": 2,
-      "size": 1400,
-      "rent": "$700.00/mo",
-      "neighborhood": "Uptown",
-      "pubKey": "02134a233e0ef9e83bf242c2ba5ed637dff078aaacd317759dbb80c78e9432fb8e",
-      "emojiShortcode": "💚🌍🔑💎🎲🎸🕗💡🔑",
-      "uuid": "ee27fed0-f599-4abe-a702-b15f46f56e1c"
-    },
-    {
-      "type": "Contract Signing UI",
-      "title": "Website Development Agreement",
-      "contractId": "website-dev-001",
-      "participants": 2,
-      "pubKey": "0277e7044b892ecc83045a16331487b90fd590eba6bac3b2cb044f7532abd1d6b5",
-      "emojiShortcode": "💚🌍🔑💎🎯📨📣📗🌟",
-      "uuid": "5820c45a-42f4-44ae-8519-423c49de2877"
-    },
-    {
-      "type": "Service Provider",
-      "title": "Sarah's Childcare",
-      "serviceType": "childcare",
-      "provider": "Sarah Chen",
-      "rate": "$25.00/hr",
-      "rating": "5 ⭐ (89 reviews)",
-      "category": "childcare",
-      "pubKey": "02853da49cbf9f795b4e65e50df83bcf9c415a656598f3c058e46cbe10caebb286",
-      "emojiShortcode": "💚🌍🔑💎😁🎭📦🚁😄",
-      "uuid": "964735d5-9904-48be-a3da-c66e26b6c93d"
-    },
-    {
-      "type": "Book",
-      "title": "The Quiet Revolution: Finding Peace in a Noisy World",
-      "author": "Marcus Williams",
-      "price": "$24.99",
-      "category": "self-help",
-      "pubKey": "03328073bd0aaa2e2251fa9e2a26a440964a70fbbdf095c05f7b02823be2cbe9e9",
-      "emojiShortcode": "💚🌍🔑💎😀🐙🐢🎸🎯",
-      "uuid": "327ff9b1-d80d-4a67-a2ed-c433d1ec30ec"
+      "type": "FTP",
+      "title": "FTP",
+      "gameType": "ftp",
+      "designer": "Green Bay Packers",
+      "price": "$NaN",
+      "pubKey": "02df6b397e1966925a58c09c807cfcca6d66477ed3ad2935b79938a84882b5a668",
+      "emojiShortcode": "💚🌍🔑💎🐢🔮🐙🗡🎪",
+      "uuid": "67521c10-0627-43a8-9d9e-e4de11bcf525"
     },
     {
       "type": "Service Provider",
@@ -104,19 +29,105 @@
       "rate": "$85.00/hr",
       "rating": "4.9 ⭐ (247 reviews)",
       "category": "home-services",
-      "pubKey": "02c2efb3578a3417a483403499f6d1b7f58f581a4ae9289809d4897b6f8199ee51",
-      "emojiShortcode": "💚🌍🔑💎🏆🐼🔩🎯🐚",
-      "uuid": "242de9af-555b-426a-80c6-6cde953adc95"
+      "pubKey": "0211632fe14a03c76b6955df04f9c1ce02cc6e3f0398679b0183dc74cdbd641012",
+      "emojiShortcode": "💚🌍🔑💎🌙🎺🐺📦🗡",
+      "uuid": "47ee9f2f-313b-4dcb-a7e5-0e66ede2b77e"
     },
     {
-      "type": "Article",
-      "title": "If I Write Another Word",
-      "author": "From Medium/Illumination",
-      "price": "Free (Article)",
-      "category": "writing",
-      "pubKey": "0390535070ce52454b1d7c3dd264cd25bd488ceedcb06681ea30479df8dbf736b7",
-      "emojiShortcode": "💚🌍🔑💎📌🎭🎯📎💎",
-      "uuid": "30f5bc8f-8270-41dd-88d2-66e027bd1cc2"
+      "type": "Service Provider",
+      "title": "Sarah's Childcare",
+      "serviceType": "childcare",
+      "provider": "Sarah Chen",
+      "rate": "$25.00/hr",
+      "rating": "5 ⭐ (89 reviews)",
+      "category": "childcare",
+      "pubKey": "02b6d5001c53955b0932f479e62df51927511903dd5eabbb36cdefc72043de0be1",
+      "emojiShortcode": "💚🌍🔑💎🔨🙂📙🐼🏺",
+      "uuid": "8f1feff6-1f71-408f-a5b6-b015b5adc3be"
+    },
+    {
+      "type": "Book",
+      "title": "The Quiet Revolution: Finding Peace in a Noisy World",
+      "author": "Marcus Williams",
+      "price": "$24.99",
+      "category": "self-help",
+      "pubKey": "02f0c3e1e5ac3f470cdd910942590538f3532ad71ec71293294250a9facb22de74",
+      "emojiShortcode": "💚🌍🔑💎🚅🐻🐼🙂🏆",
+      "uuid": "b6aba0f6-563c-45e6-874c-1bc2608af8b3"
+    },
+    {
+      "type": "Video Game",
+      "title": "Stardew Valley",
+      "gameType": "video-game",
+      "designer": "ConcernedApe (Eric Barone)",
+      "price": "$14.99",
+      "category": "simulation",
+      "pubKey": "029591da17da6aa17bdee6b65931c7065c4a212fa715efa6683c34f3b38c4150b2",
+      "emojiShortcode": "💚🌍🔑💎🎻💣🌊🎯🕓",
+      "uuid": "8f5ad884-8f7a-4c8a-b6ab-b1f9078faed3"
+    },
+    {
+      "type": "Room",
+      "title": "Spacious 2BR Near Transit",
+      "beds": 2,
+      "baths": 1.5,
+      "size": 950,
+      "rent": "$650.00/mo",
+      "neighborhood": "Midtown",
+      "pubKey": "028d04beb654e4eb4f61183d0d0780d5c308789d7ed78e79f79fc091f1c879c7c2",
+      "emojiShortcode": "💚🌍🔑💎🎻🏆🎲🕑🕖",
+      "uuid": "a487d68a-4a3c-4bc2-b318-e9d6ccb8b7fe"
+    },
+    {
+      "type": "Board Game",
+      "title": "Settlers of Catan",
+      "gameType": "board-game",
+      "designer": "Klaus Teuber",
+      "price": "$44.99",
+      "category": "strategy",
+      "pubKey": "02b86ba834274d6550588280ed4e5c9f9b8cc6d133bdcc1226fc26d46db5a965a1",
+      "emojiShortcode": "💚🌍🔑💎🎲📢🌍📡💣",
+      "uuid": "53a96cac-b057-4a2d-953f-47de58381165"
+    },
+    {
+      "type": "Contract Signing UI",
+      "title": "Website Development Agreement",
+      "contractId": "website-dev-001",
+      "participants": 2,
+      "pubKey": "034a8c0f1c7887415d2edd2ee6b2abfd40c25372f1f3ba91fcca85e230dc60c557",
+      "emojiShortcode": "💚🌍🔑💎📌📨📧🐙📦",
+      "uuid": "85a2906f-3589-4754-a1dd-0cd273245a41"
+    },
+    {
+      "type": "Video Game",
+      "title": "The Legend of Zelda: Breath of the Wild",
+      "gameType": "video-game",
+      "designer": "Nintendo EPD",
+      "price": "$59.99",
+      "category": "action-adventure",
+      "pubKey": "032504214af82f4a49538e6c20f9a206dfae0fe75c85cef797ca4ca58cd8800b70",
+      "emojiShortcode": "💚🌍🔑💎🎪🎹🎭📍🔨",
+      "uuid": "e7c05760-9765-4382-9506-250e6819664b"
+    },
+    {
+      "type": "FTP",
+      "title": "FTP",
+      "gameType": "ftp",
+      "designer": "Chicago Bears",
+      "price": "$NaN",
+      "pubKey": "0216dbb287634ca6c1ae2778ce4f6fa60a04dafb1061c96d2419007f2c381cd94f",
+      "emojiShortcode": "💚🌍🔑💎🚄📌🏰🎹🎭",
+      "uuid": "00104db6-5655-4ab4-93f5-11d1d25baf7c"
+    },
+    {
+      "type": "FTP",
+      "title": "FTP",
+      "gameType": "ftp",
+      "designer": "Detroit Lions",
+      "price": "$NaN",
+      "pubKey": "03e911a4db6e2294359589f4c759e622c8a48deef5548c09707c5bddc184f15bf7",
+      "emojiShortcode": "💚🌍🔑💎🔑👓🎸👒🏔",
+      "uuid": "930d635c-0025-4345-8e7e-ede3f13c837c"
     },
     {
       "type": "Book",
@@ -124,9 +135,20 @@
       "author": "Elena Rodriguez",
       "price": "Free",
       "category": "programming",
-      "pubKey": "038d3b6d7bb6b3479675fd961862173e54888d030a335f26adf7d8eb890fd5bfcf",
-      "emojiShortcode": "💚🌍🔑💎🙄💎🌙🐉🌍",
-      "uuid": "a0a47693-acdd-4991-ad61-556f6f2d8f42"
+      "pubKey": "02d78f26e7b60467aab1552d93e3b4262f6e7cde2a0cf03cefe73e5c9a47492187",
+      "emojiShortcode": "💚🌍🔑💎🕗🌟🎯📌🐉",
+      "uuid": "2bfae166-edca-4be1-accb-0e210232d234"
+    },
+    {
+      "type": "Board Game",
+      "title": "Wingspan",
+      "gameType": "board-game",
+      "designer": "Elizabeth Hargrave",
+      "price": "$59.99",
+      "category": "strategy",
+      "pubKey": "032fe5d7b0f87723c7c31cdbf0cb8a519e32cab77bcd18fa404f9cb7b3176ac39d",
+      "emojiShortcode": "💚🌍🔑💎🐚🕕🔥🐼🐻",
+      "uuid": "18418f0f-cb4c-4c48-8cdf-5fbe2ce020c1"
     },
     {
       "type": "Book",
@@ -134,9 +156,71 @@
       "author": "Sarah Chen",
       "price": "$19.99",
       "category": "technology",
-      "pubKey": "02d27dbd462ff00d27a37e19577b3d02abaae8ab9eebc97aa99601a4179fd9ff77",
-      "emojiShortcode": "💚🌍🔑💎🔥🚀🕗🙃🕒",
-      "uuid": "81fcef69-44e0-4543-a5f0-27ee1d987eab"
+      "pubKey": "0346b275c5cece907084cc6a63b57c9eb12329463541bb16a402cf0ba9c5a4dc50",
+      "emojiShortcode": "💚🌍🔑💎🐺🚆🎹📘👓",
+      "uuid": "b19f23be-bb05-4ce4-8e55-8de4b4598d1d"
+    },
+    {
+      "type": "Article",
+      "title": "If I Write Another Word",
+      "author": "From Medium/Illumination",
+      "price": "Free (Article)",
+      "category": "writing",
+      "pubKey": "020039317169f7cc2dcf4cf7673606a0e1d7d4c01bf7a8746e086cea70f4604948",
+      "emojiShortcode": "💚🌍🔑💎🔑🚁📦📚🌟",
+      "uuid": "e9b02063-626a-4714-944a-3dd0d1a523ec"
+    },
+    {
+      "type": "Product",
+      "title": "Peace Love and Redistribution T-Shirt",
+      "productId": "peace-love-redistribution-tshirt",
+      "price": "$29.00",
+      "pubKey": "023442b1a8e7e3874eb699a2a471eff7e48cab5e23af893aa4b897b7cdc9824b8a",
+      "emojiShortcode": "💚🌍🔑💎🏰🎲👔🚆🐞",
+      "uuid": "492032cc-831c-40f2-97b5-122776347e1c"
+    },
+    {
+      "type": "FTP",
+      "title": "FTP",
+      "gameType": "ftp",
+      "designer": "Minnesota Vikings",
+      "price": "$NaN",
+      "pubKey": "02cec97ded2ee871344e1ccd01c9248bbd4b22af08039758f449ac8dce652b5f3a",
+      "emojiShortcode": "💚🌍🔑💎🔨📮😂🌊💎",
+      "uuid": "22396eea-f118-426e-ab30-8268cd922d2d"
+    },
+    {
+      "type": "Room",
+      "title": "Cozy Downtown Studio",
+      "beds": 1,
+      "baths": 1,
+      "size": 650,
+      "rent": "$550.00/mo",
+      "neighborhood": "Downtown",
+      "pubKey": "02f3d874cc4a6d0dc60ad192aa74a2a7b28b9a3c47ec5b8be9fce8e522dfaf8daf",
+      "emojiShortcode": "💚🌍🔑💎🕘🎻💡🐺🏆",
+      "uuid": "69433350-c6e7-4903-bd9c-e55816f8dfd5"
+    },
+    {
+      "type": "Canimus Feed",
+      "title": "Sockpuppet Canimus Feed",
+      "artist": "Sockpuppet",
+      "feedUrl": "https://sockpuppet.band/canimus.json",
+      "pubKey": "031229aa0eababe1281b47031ff90a08f6548b382e96e40364b22f917471dcaedf",
+      "emojiShortcode": "💚🌍🔑💎🎲🎨🔪🐉🕙",
+      "uuid": "b4890ecf-6325-440d-a3d3-5d2618653915"
+    },
+    {
+      "type": "Room",
+      "title": "Luxury 3BR Penthouse",
+      "beds": 3,
+      "baths": 2,
+      "size": 1400,
+      "rent": "$700.00/mo",
+      "neighborhood": "Uptown",
+      "pubKey": "03b70994896625b386f8befecd139b6f26ea6a75d27248f58079a206209ec570f2",
+      "emojiShortcode": "💚🌍🔑💎🌍🐙💡🌙🎸",
+      "uuid": "fa0abbad-bed1-4bd7-b518-7b3cdf7a6fe7"
     },
     {
       "type": "Popup Post",
@@ -144,11 +228,11 @@
       "location": "Stumptown Coffee Roasters, 128 SW 3rd Ave, Portland, OR 97204",
       "date": "11/15/2025",
       "category": "tech-meetup",
-      "pubKey": "0266095dc402755a1f7f5b1ff1b50db6a183dce57653370ed5d221174e455c55c7",
-      "emojiShortcode": "💚🌍🔑💎🌟🔔🐢💀🔪",
-      "locationViewPubKey": "02b1d0c9ad43622e3bdbe572f4eb2f0529e5b6d2a7b9559d6bb927c24446aff7fc",
-      "locationEmojiShortcode": "💚🌍🔑💎🕒🏹🚃🏺💰",
-      "uuid": "5b3ba669-1d31-4a38-a101-4bf030e9a524"
+      "pubKey": "02b3465d3fe90563bbd5247b5ee9131a6241caf2d94303223d99031e2008b2f1d2",
+      "emojiShortcode": "💚🌍🔑💎👒🌟🌙📗🎪",
+      "locationViewPubKey": "0288a7a2bc497b08a2a8456207060e3a84dede56cfd488db8b470b60aadb2123cd",
+      "locationEmojiShortcode": "💚🌍🔑💎🔥📮🔨🌊📗",
+      "uuid": "e8e3e7c0-2b42-45ce-984e-5a5240f85ca4"
     },
     {
       "type": "Popup Post",
@@ -156,11 +240,11 @@
       "location": "Pearl District Art Hub, 1000 NW Lovejoy St, Portland, OR 97209",
       "date": "11/22/2025",
       "category": "art-culture",
-      "pubKey": "02044cd8062e7d1b659fedc5607ab6af4bd37b24d0252a559c3e7865c78e163605",
-      "emojiShortcode": "💚🌍🔑💎🎸🕓🚁🎭🌊",
-      "locationViewPubKey": "02a75dcbfe5bfce05363d9f03f0ff109f4b959d57abc3e21dccc80f4c78e773328",
-      "locationEmojiShortcode": "💚🌍🔑💎🗝🔥📢🎻📎",
-      "uuid": "27d9615c-2610-4ba4-9cc8-5d8a74d7917e"
+      "pubKey": "02f431b6e6119150d6b17288b40977fedd0020490311177f409e51f34767a69d0f",
+      "emojiShortcode": "💚🌍🔑💎🕗🗡🚃🚆🎻",
+      "locationViewPubKey": "028625a2f9cdad8fafe4d41d0dfda68bad6fc4384fb96cd533605a7b4c0762d416",
+      "locationEmojiShortcode": "💚🌍🔑💎👓🔑📐💎👒",
+      "uuid": "7f04e7e7-5916-42f7-9676-d23923e0ffad"
     },
     {
       "type": "Popup Post",
@@ -168,53 +252,11 @@
       "location": "Cartlandia Food Cart Pod, SE 82nd Ave & Foster Rd, Portland, OR 97266",
       "date": "12/3/2025",
       "category": "food-drink",
-      "pubKey": "029db02883e9d9cb9e4587574a4303c54ec58692903780203a71fc6370b52e07df",
-      "emojiShortcode": "💚🌍🔑💎😄🐺🔒📡🌟",
-      "locationViewPubKey": "0290b7881f332b7a5a9087b63b195e6afb1df49735414940d7fbb670cc253d15c6",
-      "locationEmojiShortcode": "💚🌍🔑💎📣📝🔮🚆🙄",
-      "uuid": "d6c2417f-6d87-4310-acd6-f086264e7887"
-    },
-    {
-      "type": "Event",
-      "title": "Starlight Symphony Under the Stars",
-      "date": "Jul 22, 2025, 1:00 PM",
-      "location": "Pioneer Courthouse Square, Portland, OR",
-      "ticketPrice": "$35.00",
-      "capacity": 1000,
-      "ticketFlavor": "CD01EF02GH03",
-      "pubKey": "0302977cfd2a7089471165d8604cffbe80d67276042fc7f0bfa98884be251cf901",
-      "emojiShortcode": "💚🌍🔑💎🌟📢🚀📡🕑",
-      "uuid": "0aabe2fb-6579-455d-abbd-ffc9e939d73d",
-      "arethaUUID": "86f9feb3-df86-4b74-95c1-29770f4124ef",
-      "ticketsAllocated": 1000
-    },
-    {
-      "type": "Event",
-      "title": "Digital Realm Quest Tournament",
-      "date": "Sep 5, 2025, 11:00 AM",
-      "location": "Virtual - Planet Nine Metaverse",
-      "ticketPrice": "500 MP",
-      "capacity": 260,
-      "ticketFlavor": "EF01GH02IJ03",
-      "pubKey": "03bebd339530b865b6b4487b92012882e03f9b9e98a8117b1570db36360baf41e3",
-      "emojiShortcode": "💚🌍🔑💎🕖😆🏰🕙🕐",
-      "uuid": "a3124ced-1252-4c14-a565-15f9f043bc9b",
-      "arethaUUID": "e6c55e84-9690-45c5-8a2b-8f79376d3847",
-      "ticketsAllocated": 260
-    },
-    {
-      "type": "Event",
-      "title": "El Popupito",
-      "date": "Aug 15, 2025, 12:00 PM",
-      "location": "Secret Location, Portland, OR (revealed upon ticket purchase)",
-      "ticketPrice": "$75.00",
-      "capacity": 50,
-      "ticketFlavor": "AB01CD02EF03",
-      "pubKey": "0358ed813bb25676f8daa3abef8cd0a043634e0ba72a3c0533ec8d027bc9d02a9d",
-      "emojiShortcode": "💚🌍🔑💎🔪🎪📢🎲📗",
-      "uuid": "39b26e74-30ef-4473-8624-add52e3e6533",
-      "arethaUUID": "8e0e1c53-f744-4dc5-851d-f92c5e41a424",
-      "ticketsAllocated": 50
+      "pubKey": "028db48515f5dbae8213790ced74e67047a2e165035f88bbb1e7cf51ea092aa0bf",
+      "emojiShortcode": "💚🌍🔑💎🌟🗝👕😃🏰",
+      "locationViewPubKey": "028e8af1ee257562c9452a164dae76b33b7b2c6b8435b4566a0425131db48ca877",
+      "locationEmojiShortcode": "💚🌍🔑💎🐞👒💣💎🐝",
+      "uuid": "11b926f1-887e-467b-8cbf-7d33a606eca9"
     }
   ],
   "services": {

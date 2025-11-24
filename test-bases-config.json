@@ -1,0 +1,132 @@
+{
+  "$schema": "./test-bases-config-schema.json",
+  "description": "Configuration for the three Planet Nine test bases",
+  "bases": [
+    {
+      "id": 1,
+      "name": "Allyabase",
+      "description": "Primary test base - Purple/Green theme (production theme)",
+      "emojicode": "💚☮️💚🏴‍☠️",
+      "ports": {
+        "offset": 100,
+        "wiki": 4001,
+        "bdo": 5114,
+        "addie": 5116,
+        "fount": 5117,
+        "dolores": 5118,
+        "sanora": 5121,
+        "covenant": 5122,
+        "linkitylink": 3010
+      },
+      "theme": {
+        "name": "Allyabase",
+        "colors": {
+          "backgroundGradientStart": "#1a0033",
+          "backgroundGradientEnd": "#2d1b4e",
+          "accent": "#7fff7f",
+          "accentLight": "#a8ffa8",
+          "accentDark": "#66ff66",
+          "border": "#4a2a6a",
+          "borderHover": "#5a3a7a",
+          "text": "#7fff7f",
+          "textSecondary": "#a8ffa8"
+        },
+        "glowOpacity": {
+          "text": 0.5,
+          "textHover": 0.8,
+          "border": 0.2,
+          "button": 0.4
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Ocean",
+      "description": "Secondary test base - Blue/Cyan theme",
+      "emojicode": "🌊💙🐋🦈",
+      "ports": {
+        "offset": 200,
+        "wiki": 4002,
+        "bdo": 5214,
+        "addie": 5216,
+        "fount": 5217,
+        "dolores": 5218,
+        "sanora": 5221,
+        "covenant": 5222,
+        "linkitylink": 3011
+      },
+      "theme": {
+        "name": "Ocean",
+        "colors": {
+          "backgroundGradientStart": "#0a1a3a",
+          "backgroundGradientEnd": "#1b2d4e",
+          "accent": "#7fffff",
+          "accentLight": "#a8ffff",
+          "accentDark": "#66ffff",
+          "border": "#2a4a6a",
+          "borderHover": "#3a5a7a",
+          "text": "#7fffff",
+          "textSecondary": "#a8ffff"
+        },
+        "glowOpacity": {
+          "text": 0.5,
+          "textHover": 0.8,
+          "border": 0.2,
+          "button": 0.4
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Ember",
+      "description": "Tertiary test base - Red/Gold theme",
+      "emojicode": "🔥❤️‍🔥🌋⚔️",
+      "ports": {
+        "offset": 300,
+        "wiki": 4003,
+        "bdo": 5314,
+        "addie": 5316,
+        "fount": 5317,
+        "dolores": 5318,
+        "sanora": 5321,
+        "covenant": 5322,
+        "linkitylink": 3012
+      },
+      "theme": {
+        "name": "Ember",
+        "colors": {
+          "backgroundGradientStart": "#3a0a1a",
+          "backgroundGradientEnd": "#4e1b2d",
+          "accent": "#ffd700",
+          "accentLight": "#ffe066",
+          "accentDark": "#ffcc00",
+          "border": "#6a2a4a",
+          "borderHover": "#7a3a5a",
+          "text": "#ffd700",
+          "textSecondary": "#ffe066"
+        },
+        "glowOpacity": {
+          "text": 0.5,
+          "textHover": 0.8,
+          "border": 0.2,
+          "button": 0.4
+        }
+      }
+    }
+  ],
+  "services": {
+    "portMapping": {
+      "bdo": 14,
+      "addie": 16,
+      "fount": 17,
+      "dolores": 18,
+      "sanora": 21,
+      "covenant": 22
+    },
+    "basePortStart": 5000
+  },
+  "wiki": {
+    "basePort": 4000,
+    "pluginPath": "/plugin/allyabase"
+  }
+}

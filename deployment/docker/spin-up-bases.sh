@@ -274,12 +274,13 @@ if [ "$ENABLE_PROF" = true ]; then
   PROF_PORTS="-p 5123:3008"
 fi
 
-# Start Base 1 (Host ports 5111-5124 → Standard Docker internal ports)
-echo "🏗️  Starting Base 1 (Host ports 5111-5124)..."
+# Start Base 1 (Host ports 5111-5125 → Standard Docker internal ports)
+echo "🏗️  Starting Base 1 (Host ports 5111-5125)..."
 if [ "$ENABLE_PROF" = true ]; then
   echo "   Prof enabled on port 5123"
 fi
 echo "   Wiki enabled on port 5124"
+echo "   Glyphenge enabled on port 5125"
 
 docker run -d \
   --name allyabase-base1 \
@@ -298,11 +299,12 @@ docker run -d \
   -p 5121:7243 \
   -p 5122:3011 \
   -p 5124:3333 \
+  -p 5125:3010 \
   $PROF_PORTS \
   allyabase-flexible
 
 # Wait for Base 1 services (check host ports)
-BASE1_PORTS=(5111 5112 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122 5124)
+BASE1_PORTS=(5111 5112 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122 5124 5125)
 if [ "$ENABLE_PROF" = true ]; then
   BASE1_PORTS+=(5123)
 fi
@@ -320,12 +322,13 @@ if [ "$ENABLE_PROF" = true ]; then
   PROF_PORTS_BASE2="-p 5223:3008"
 fi
 
-# Start Base 2 (Host ports 5211-5224 → Standard Docker internal ports)
-echo "🏗️  Starting Base 2 (Host ports 5211-5224)..."
+# Start Base 2 (Host ports 5211-5225 → Standard Docker internal ports)
+echo "🏗️  Starting Base 2 (Host ports 5211-5225)..."
 if [ "$ENABLE_PROF" = true ]; then
   echo "   Prof enabled on port 5223"
 fi
 echo "   Wiki enabled on port 5224"
+echo "   Glyphenge enabled on port 5225"
 
 docker run -d \
   --name allyabase-base2 \
@@ -344,11 +347,12 @@ docker run -d \
   -p 5221:7243 \
   -p 5222:3011 \
   -p 5224:3333 \
+  -p 5225:3010 \
   $PROF_PORTS_BASE2 \
   allyabase-flexible
 
 # Wait for Base 2 services (check host ports)
-BASE2_PORTS=(5211 5212 5213 5214 5215 5216 5217 5218 5219 5220 5221 5222 5224)
+BASE2_PORTS=(5211 5212 5213 5214 5215 5216 5217 5218 5219 5220 5221 5222 5224 5225)
 if [ "$ENABLE_PROF" = true ]; then
   BASE2_PORTS+=(5223)
 fi
@@ -366,12 +370,13 @@ if [ "$ENABLE_PROF" = true ]; then
   PROF_PORTS_BASE3="-p 5323:3008"
 fi
 
-# Start Base 3 (Host ports 5311-5324 → Standard Docker internal ports)
-echo "🏗️  Starting Base 3 (Host ports 5311-5324)..."
+# Start Base 3 (Host ports 5311-5325 → Standard Docker internal ports)
+echo "🏗️  Starting Base 3 (Host ports 5311-5325)..."
 if [ "$ENABLE_PROF" = true ]; then
   echo "   Prof enabled on port 5323"
 fi
 echo "   Wiki enabled on port 5324"
+echo "   Glyphenge enabled on port 5325"
 
 docker run -d \
   --name allyabase-base3 \
@@ -390,11 +395,12 @@ docker run -d \
   -p 5321:7243 \
   -p 5322:3011 \
   -p 5324:3333 \
+  -p 5325:3010 \
   $PROF_PORTS_BASE3 \
   allyabase-flexible
 
 # Wait for Base 3 services (check host ports)
-BASE3_PORTS=(5311 5312 5313 5314 5315 5316 5317 5318 5319 5320 5321 5322 5324)
+BASE3_PORTS=(5311 5312 5313 5314 5315 5316 5317 5318 5319 5320 5321 5322 5324 5325)
 if [ "$ENABLE_PROF" = true ]; then
   BASE3_PORTS+=(5323)
 fi
@@ -468,6 +474,7 @@ if [ "$ENABLE_PROF" = true ]; then
   echo "  prof: http://localhost:5123 → docker:3008"
 fi
 echo "  wiki: http://localhost:5124 → docker:3333"
+echo "  glyphenge: http://localhost:5125 → docker:3010"
 echo ""
 echo "Base 2:"
 echo "  julia: http://localhost:5211 → docker:3000"
@@ -486,6 +493,7 @@ if [ "$ENABLE_PROF" = true ]; then
   echo "  prof: http://localhost:5223 → docker:3008"
 fi
 echo "  wiki: http://localhost:5224 → docker:3333"
+echo "  glyphenge: http://localhost:5225 → docker:3010"
 echo ""
 echo "Base 3:"
 echo "  julia: http://localhost:5311 → docker:3000"
@@ -504,6 +512,7 @@ if [ "$ENABLE_PROF" = true ]; then
   echo "  prof: http://localhost:5323 → docker:3008"
 fi
 echo "  wiki: http://localhost:5324 → docker:3333"
+echo "  glyphenge: http://localhost:5325 → docker:3010"
 echo ""
 if [ "$ENABLE_ADVANCEMENT" = true ]; then
   echo "The Advancement Test Server:"

@@ -23,7 +23,6 @@ services=(
     'pref'
     'prof'
     'sanora'
-    'wiki'
 )
 
 setup_services() {

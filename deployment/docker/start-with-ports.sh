@@ -27,6 +27,7 @@ SANORA_PORT=$((7243 + PORT_OFFSET))
 DOLORES_PORT=$((3007 + PORT_OFFSET))
 MINNIE_PORT=$((2525 + PORT_OFFSET))
 COVENANT_PORT=$((3011 + PORT_OFFSET))
+GLYPHENGE_PORT=$((3010 + PORT_OFFSET))
 PROF_PORT=$((3008 + PORT_OFFSET))
 WIKI_PORT=$((3333 + PORT_OFFSET))
 
@@ -44,6 +45,7 @@ echo "  sanora: $SANORA_PORT"
 echo "  dolores: $DOLORES_PORT"
 echo "  minnie: $MINNIE_PORT"
 echo "  covenant: $COVENANT_PORT"
+echo "  glyphenge: $GLYPHENGE_PORT (link tapestry weaver)"
 echo "  wiki: $WIKI_PORT (federated wiki with sessionless security)"
 if [ "$ENABLE_PROF" = "true" ]; then
   echo "  prof: $PROF_PORT (optional - enabled)"
@@ -149,9 +151,18 @@ module.exports = {
     {
       name: 'covenant',
       script: '/usr/src/app/covenant/src/server/node/covenant.js',
-      env: { 
+      env: {
         LOCALHOST: 'true',
         PORT: '$COVENANT_PORT'
+      }
+    },
+    {
+      name: 'glyphenge',
+      script: '/usr/src/app/the-advancement/glyphenge/server.js',
+      env: {
+        PORT: '$GLYPHENGE_PORT',
+        BDO_BASE_URL: 'http://localhost:$BDO_PORT',
+        FOUNT_BASE_URL: 'http://localhost:$FOUNT_PORT'
       }
     }
 EOL

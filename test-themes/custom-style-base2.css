@@ -1,0 +1,191 @@
+/* Base 2 Theme: Ocean */
+/* Generated from test-bases-config.json - DO NOT EDIT DIRECTLY */
+/* Edit test-bases-config.json and run: node scripts/generate-theme-css.js */
+
+/* Main background */
+body {
+  background: linear-gradient(135deg, #0a1a3a 0%, #1b2d4e 100%) !important;
+  color: #7fffff !important;
+}
+
+/* Page container */
+.main {
+  background: rgba(27, 45, 78, 0.8) !important;
+}
+
+/* Individual page styling */
+.page {
+  background: rgba(10, 26, 58, 0.9) !important;
+  border: 1px solid #2a4a6a !important;
+  box-shadow: 0 0 20px rgba(127, 255, 255, 0.2) !important;
+}
+
+/* Page title */
+.page h1,
+.page .header h1 {
+  color: #7fffff !important;
+  text-shadow: 0 0 10px rgba(127, 255, 255, 0.5) !important;
+}
+
+/* Paragraph text */
+.page p,
+.page .item p {
+  color: #a8ffff !important;
+  text-shadow: 0 0 5px rgba(127, 255, 255, 0.3) !important;
+}
+
+/* Links */
+a {
+  color: #66ffff !important;
+  text-shadow: 0 0 8px rgba(102, 255, 255, 0.6) !important;
+}
+
+a:hover {
+  color: #7fffff !important;
+  text-shadow: 0 0 15px rgba(127, 255, 255, 0.8) !important;
+}
+
+/* Footer */
+.footer {
+  background: rgba(10, 26, 58, 0.95) !important;
+  border-top: 1px solid #2a4a6a !important;
+  color: #7fffff !important;
+}
+
+/* Journal (page history) */
+.journal {
+  background: rgba(10, 26, 58, 0.9) !important;
+}
+
+.action {
+  border-left: 3px solid #2a4a6a !important;
+}
+
+.action:hover {
+  background: rgba(42, 74, 106, 0.3) !important;
+}
+
+/* Fork indicator */
+.fork {
+  color: #7fffff !important;
+}
+
+/* Item styling */
+.item {
+  background: rgba(10, 26, 58, 0.5) !important;
+  border: 1px solid rgba(42, 74, 106, 0.5) !important;
+  color: #a8ffff !important;
+}
+
+.item:hover {
+  background: rgba(27, 45, 78, 0.6) !important;
+  box-shadow: 0 0 10px rgba(127, 255, 255, 0.2) !important;
+}
+
+/* Code blocks */
+pre,
+code {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #66ffff !important;
+  border: 1px solid #2a4a6a !important;
+  text-shadow: 0 0 3px rgba(102, 255, 255, 0.4) !important;
+}
+
+/* Buttons */
+button,
+.button {
+  background: linear-gradient(135deg, #2a4a6a 0%, #1b2d4e 100%) !important;
+  color: #7fffff !important;
+  border: 1px solid #7fffff !important;
+  text-shadow: 0 0 5px rgba(127, 255, 255, 0.5) !important;
+}
+
+button:hover,
+.button:hover {
+  background: linear-gradient(135deg, #3a5a7a 0%, #1b2d4e 100%) !important;
+  box-shadow: 0 0 15px rgba(127, 255, 255, 0.4) !important;
+}
+
+/* Input fields */
+input[type="text"],
+textarea {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: #7fffff !important;
+  border: 1px solid #2a4a6a !important;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #7fffff !important;
+  box-shadow: 0 0 10px rgba(127, 255, 255, 0.3) !important;
+}
+
+/* Twin pages (multiple pages side by side) */
+.twin {
+  border-left: 2px solid #2a4a6a !important;
+}
+
+/* Search results */
+.search-results {
+  background: rgba(10, 26, 58, 0.95) !important;
+  border: 1px solid #2a4a6a !important;
+}
+
+/* Lineup (pages opened) */
+.lineup {
+  background: transparent !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 26, 58, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #2a4a6a 0%, #1b2d4e 100%);
+  border: 1px solid #7fffff;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #3a5a7a 0%, #1b2d4e 100%);
+  box-shadow: 0 0 10px rgba(127, 255, 255, 0.5);
+}
+
+/* Selection highlight */
+::selection {
+  background: rgba(127, 255, 255, 0.3) !important;
+  color: #7fffff !important;
+}
+
+/* Plugin-specific: Allyabase */
+.allyabase-item {
+  background: rgba(10, 26, 58, 0.8) !important;
+  border: 1px solid #7fffff !important;
+  box-shadow: 0 0 15px rgba(127, 255, 255, 0.3) !important;
+}
+
+/* Base identifier banner - shows which base you're on */
+body::before {
+  content: "BASE 2 - OCEAN";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #2a4a6a, #7fffff, #2a4a6a) !important;
+  color: #0a1a3a !important;
+  text-align: center;
+  padding: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Offset body content for banner */
+body {
+  padding-top: 28px !important;
+}
