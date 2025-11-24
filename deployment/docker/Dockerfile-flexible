@@ -40,6 +40,15 @@ RUN npm install -g pm2
 RUN npm install -g wiki
 RUN npm install -g wiki-security-sessionless
 
+# Clone allyabase for wiki-plugin-allyabase
+RUN git clone https://www.github.com/planet-nine-app/allyabase.git allyabase
+
+# Install wiki-plugin-allyabase globally (contains proxy routes)
+WORKDIR /usr/src/app/allyabase/src/wiki/wiki-plugin-allyabase
+RUN npm install
+RUN npm link
+WORKDIR /usr/src/app
+
 WORKDIR /usr/src/app/julia/src/server/node
 RUN npm install
 
@@ -90,8 +99,8 @@ RUN npm install
 WORKDIR /usr/src/app
 
 # Copy scripts for flexible port management
-COPY start-with-ports.sh /usr/src/app/
-COPY update-service-ports.sh /usr/src/app/
+COPY allyabase/deployment/docker/start-with-ports.sh /usr/src/app/
+COPY allyabase/deployment/docker/update-service-ports.sh /usr/src/app/
 RUN chmod +x /usr/src/app/start-with-ports.sh
 RUN chmod +x /usr/src/app/update-service-ports.sh
 

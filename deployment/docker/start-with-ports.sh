@@ -186,8 +186,8 @@ cat >> ecosystem.config.js << EOL
 }
 EOL
 
-# Start federated wiki with sessionless security plugin in background
-echo "Starting federated wiki on port $WIKI_PORT with sessionless security..."
-wiki --security wiki-security-sessionless --port $WIKI_PORT > /var/log/wiki.log 2>&1 &
+# Start federated wiki with sessionless security and allyabase plugin for proxy routes
+echo "Starting federated wiki on port $WIKI_PORT with sessionless security and allyabase proxy..."
+wiki --security wiki-security-sessionless --plugin wiki-plugin-allyabase --port $WIKI_PORT > /var/log/wiki.log 2>&1 &
 
 pm2-runtime start ecosystem.config.js

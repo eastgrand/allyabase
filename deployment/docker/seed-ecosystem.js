@@ -125,8 +125,26 @@ const getServiceURLs = (env, baseNum) => {
       aretha: `http://localhost:${portBase + 20}`, // Aretha service on port 5120 for Base 1
       advancement: 'http://localhost:3456' // The Advancement test server runs on fixed port
     };
+  } else if (env === 'test-wiki') {
+    // Local wiki proxy mode: route through local wiki plugin on test bases
+    // Example: node seed-ecosystem.js test-wiki 1
+    // Wiki ports: Base 1 = 5124, Base 2 = 5224, Base 3 = 5324
+    const wikiPort = 5000 + (parseInt(baseNum) * 100) + 24;
+    const baseURL = `http://127.0.0.1:${wikiPort}/plugin/allyabase`;
+    return {
+      dolores: `${baseURL}/dolores`,
+      prof: `${baseURL}/prof`,
+      sanora: `${baseURL}/sanora`,
+      bdo: `${baseURL}/bdo`,
+      covenant: `${baseURL}/covenant`,
+      julia: `${baseURL}/julia`,
+      continuebee: `${baseURL}/continuebee`,
+      fount: `${baseURL}/fount`,
+      aretha: `${baseURL}/aretha`,
+      advancement: 'http://localhost:3456' // The Advancement test server runs on fixed port
+    };
   } else if (env.startsWith('wiki-')) {
-    // Wiki plugin pattern: https://ENV.allyabase.com/plugin/allyabase/SERVICE
+    // Production wiki plugin pattern: https://ENV.allyabase.com/plugin/allyabase/SERVICE
     // Example: node seed-ecosystem.js wiki-ent
     const wikiEnv = env.substring(5); // Remove 'wiki-' prefix
     const baseURL = `https://${wikiEnv}.allyabase.com/plugin/allyabase`;
