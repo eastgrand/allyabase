@@ -43,6 +43,10 @@ RUN npm install
 WORKDIR /usr/src/app/pref/src/server/node
 RUN npm install
 
+# Fix upstream pref.js syntax error: extra parenthesis on line ~257 and missing fs import
+RUN sed -i 's/res.send({preferences}));/res.send({preferences});/' pref.js && \
+    sed -i "/import db from '.\/src\/persistence\/db.js';/a import fs from 'fs\/promises';" pref.js
+
 WORKDIR /usr/src/app/bdo/src/server/node
 RUN npm install
 
